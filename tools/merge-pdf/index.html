@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Merge PDF — Combine PDFs Online (No Upload)</title>
+  <meta name="description" content="Merge multiple PDF files into one. Runs locally in your browser — no upload." />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+
+  <!-- AdSense承認後にここへ共通コードを貼る -->
+  <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js" data-ad-client="ca-pub-XXXX"></script> -->
+</head>
+<body>
+<header>
+  <div class="container bar">
+    <div><a href="/" style="text-decoration:none;"><strong>Fast Tools</strong></a></div>
+    <nav>
+      <a href="/legal/privacy.html">Privacy</a>
+      <a href="/legal/terms.html">Terms</a>
+      <a href="/legal/contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <h1>Merge PDF</h1>
+  <p class="note">Your files are processed locally in your browser. We do not upload or store your PDFs.</p>
+
+  <!-- 上の余白広告（任意） -->
+  <div class="ad-wrap">
+    <ins class="adsbygoogle" style="display:block" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <div class="card" id="drop" style="border-style:dashed;">
+    <input id="file" type="file" accept="application/pdf" multiple />
+    <p class="note" style="margin:8px 0 0;">Tip: Drag & drop PDFs here. Reorder, then merge.</p>
+
+    <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:12px;">
+      <button class="btn primary" id="merge" disabled>Merge & Download</button>
+      <button class="btn" id="clear" disabled>Clear</button>
+      <span class="badge" id="status">No files</span>
+    </div>
+
+    <ul class="clean" id="list"></ul>
+  </div>
+
+  <!-- ツール下の広告（鉄板：ここに1枠） -->
+  <div class="ad-wrap">
+    <ins class="adsbygoogle" style="display:block" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
+  <div class="card">
+    <h2 style="margin:0 0 8px;">FAQ</h2>
+    <p style="margin:0;"><strong>Is this safe?</strong> Yes — the merge runs locally in your browser. See our <a href="/legal/privacy.html">Privacy Policy</a>.</p>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    © <span id="y"></span> Fast Tools
+  </div>
+</footer>
+
+<!-- pdf-lib -->
+<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="/assets/js/ads.js"></script>
+<script>
+  document.getElementById('y').textContent = new Date().getFullYear();
+
+  const fileInput = document.getElementById('file');
+  const drop = document.getElementById('drop');
+  const listEl = document.getElementById('list');
+  const mergeBtn = document.getElementById('merge');
+  const clearBtn = document.getElementById('clear');
+  const statusEl = document.getElementById('status');
+
+  let items = [];
+  const uid = () => Math.random().toString(36).slice(2) + Date.now().toString(36);
+
+  function setStatus(t){ statusEl.textContent = t; }
+  function refresh(){
+    listEl.innerHTML = '';
+    items.forEach((it, idx) => {
+      const li = document.createElement('li');
+      const name = document.createElement('div');
+      name.className = 'name';
+      name.textContent = `${idx+1}. ${it.file.name}`;
+      const size = document.createElement('span');
+      size.className = 'badge';
+      size.textContent = `${Math.round(it.file.size/1024)} KB`;
+
+      const up = document.createElement('button');
+      up.className='btn'; up.textContent='↑'; up.disabled = idx===0;
+      up.onclick=()=>{ const j=idx-1; [items[idx],items[j]]=[items[j],items[idx]]; refresh(); };
+
+      const down = document.createElement('button');
+      down.className='btn'; down.textContent='↓'; down.disabled = idx===items.length-1;
+      down.onclick=()=>{ const j=idx+1; [items[idx],items[j]]=[items[j],items[idx]]; refresh(); };
+
+      const rm = document.createElement('button');
+      rm.className='btn'; rm.textContent='Remove';
+      rm.onclick=()=>{ items = items.filter(x=>x.id!==it.id); refresh(); };
+
+      li.append(name,size,up,down,rm);
+      listEl.appendChild(li);
+    });
+
+    mergeBtn.disabled = items.length < 2;
+    clearBtn.disabled = items.length === 0;
+    setStatus(items.length===0 ? 'No files' : (items.length===1 ? 'Add one more PDF' : `${items.length} PDFs ready`));
+  }
+
+  function addFiles(fileList){
+    const files = Array.from(fileList).filter(f => f.type === 'application/pdf');
+    for (const f of files) items.push({ id: uid(), file: f });
+    refresh();
+    window.renderAds?.(); // 広告ON後の再描画用
+  }
+
+  fileInput.addEventListener('change', (e)=>{ addFiles(e.target.files); fileInput.value=''; });
+
+  drop.addEventListener('dragover', (e)=>{ e.preventDefault(); drop.style.borderColor='#111'; });
+  drop.addEventListener('dragleave', ()=>{ drop.style.borderColor='#eee'; });
+  drop.addEventListener('drop', (e)=>{ e.preventDefault(); drop.style.borderColor='#eee'; addFiles(e.dataTransfer.files); });
+
+  clearBtn.onclick=()=>{ items=[]; refresh(); };
+
+  mergeBtn.onclick = async () => {
+    try{
+      mergeBtn.disabled = true;
+      setStatus('Merging…');
+      const mergedPdf = await PDFLib.PDFDocument.create();
+      for (const it of items){
+        const bytes = await it.file.arrayBuffer();
+        const srcPdf = await PDFLib.PDFDocument.load(bytes);
+        const pages = await mergedPdf.copyPages(srcPdf, srcPdf.getPageIndices());
+        pages.forEach(p => mergedPdf.addPage(p));
+      }
+      const out = await mergedPdf.save();
+      const blob = new Blob([out], {type:'application/pdf'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'merged.pdf';
+      document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(url);
+      setStatus('Done! Download started.');
+    } catch(e){
+      console.error(e);
+      setStatus('Failed. Try smaller files/pages.');
+    } finally{
+      mergeBtn.disabled = items.length < 2;
+    }
+  };
+
+  refresh();
+  window.renderAds?.();
+</script>
+</body>
+</html>
