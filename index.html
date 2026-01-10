@@ -10,17 +10,18 @@
   <!-- AdSense (keep this) -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5493851170081090"
     crossorigin="anonymous"></script>
+  <script defer src="/assets/js/tools-ui.js"></script>
 </head>
 
 <body>
   <header class="header">
     <div class="header-inner">
-      <div class="brand">
+      <a class="brand" href="/">
         <div class="logo">FT</div>
         <div>
           <div>Simple Web Tools <span class="badge">beta</span></div>
         </div>
-      </div>
+      </a>
 
       <nav class="nav" aria-label="Legal">
         <a href="/legal/privacy.html">Privacy</a>
@@ -36,19 +37,11 @@
     <div class="card">
       <div class="section-title">
         <h2>Categories</h2>
-        <div class="hint">All tools</div>
+        <a class="hint" href="/">All tools</a>
       </div>
 
-      <div class="cat-list">
-        <a class="cat" href="/#pdf">PDF <small>3</small></a>
-        <a class="cat" href="/#image">Image <small>2</small></a>
-        <a class="cat" href="/#text">Text <small>1</small></a>
-        <a class="cat" href="/#audio">Audio <small>1</small></a>
-        <a class="cat" href="/#dev">Engineer <small>1</small></a>
-      </div>
-    </div>
-
-    <div class="card" style="margin-top:14px;">
+      <div class="cat-list" id="sidebar-categories"></div>
+<div class="card" style="margin-top:14px;">
       <h2 style="margin-top:0;">Support</h2>
       <p style="color:var(--muted);margin:8px 0 0;">This site is supported by ads.</p>
       <div class="ad-slot" style="margin-top:12px;">Ad space</div>
@@ -65,118 +58,8 @@
           <div class="note">Tip: Bookmark this page — more tools will be added regularly.</div>
         </section>
 
-        <section class="grid" aria-label="Tools">
-          <div class="card" id="pdf">
-            <div class="section-title">
-              <h2>PDF</h2>
-              <div class="hint">Quick PDF utilities</div>
-            </div>
-
-            <div class="tool-list">
-              <div class="tool">
-                <div class="left">
-                  <p class="name">Merge PDFs</p>
-                  <p class="desc">Combine multiple PDF files into one.</p>
-                </div>
-                <a class="btn primary" href="/tools/merge-pdf/">Open</a>
-              </div>
-
-              <div class="tool">
-                <div class="left">
-                  <p class="name">Split PDF</p>
-                  <p class="desc">Split a PDF into pages.</p>
-                </div>
-                <a class="btn primary" href="/tools/split-pdf/">Open</a>
-              </div>
-
-              <div class="tool">
-                <div class="left">
-                  <p class="name">Compress PDF</p>
-                  <p class="desc">Reduce file size while keeping quality. (Coming soon)</p>
-                </div>
-                <span class="btn disabled" aria-disabled="true">Soon</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="card" id="image">
-            <div class="section-title">
-              <h2>Image</h2>
-              <div class="hint">Image utilities</div>
-            </div>
-
-            <div class="tool-list">
-              <div class="tool">
-                <div class="left">
-                  <p class="name">JPG to PDF</p>
-                  <p class="desc">Convert images to a PDF. (Coming soon)</p>
-                </div>
-                <span class="btn disabled" aria-disabled="true">Soon</span>
-              </div>
-
-              <div class="tool">
-                <div class="left">
-                  <p class="name">PDF to PNG</p>
-                  <p class="desc">Export PDF pages as images. (Coming soon)</p>
-                </div>
-                <span class="btn disabled" aria-disabled="true">Soon</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="card" id="text">
-            <div class="section-title">
-              <h2>Text</h2>
-              <div class="hint">Text utilities</div>
-            </div>
-
-            <div class="tool-list">
-              <div class="tool">
-                <div class="left">
-                  <p class="name">Text tools</p>
-                  <p class="desc">Clean, format, count, and transform text. (Coming soon)</p>
-                </div>
-                <span class="btn disabled" aria-disabled="true">Soon</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="card" id="audio">
-            <div class="section-title">
-              <h2>Audio</h2>
-              <div class="hint">Audio utilities</div>
-            </div>
-
-            <div class="tool-list">
-              <div class="tool">
-                <div class="left">
-                  <p class="name">Audio Spectrum</p>
-                  <p class="desc">Visualize audio frequency spectrum. (Coming soon)</p>
-                </div>
-                <span class="btn disabled" aria-disabled="true">Soon</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="card" id="dev">
-            <div class="section-title">
-              <h2>Engineer</h2>
-              <div class="hint">Developer utilities</div>
-            </div>
-
-            <div class="tool-list">
-              <div class="tool">
-                <div class="left">
-                  <p class="name">JSON Formatter</p>
-                  <p class="desc">Format & validate JSON. (Coming soon)</p>
-                </div>
-                <span class="btn disabled" aria-disabled="true">Soon</span>
-              </div>
-            </div>
-          </div>
-
-        </section>
-      </div>
+        <section class="grid" aria-label="Tools" id="home-grid"></section>
+</div>
     </div>
   </main>
 

@@ -1,0 +1,14 @@
+[
+  {
+    "category": "pdf",
+    "slug": "merge",
+    "title": "Merge PDF",
+    "description": "Combine multiple PDF files into one — in your browser."
+  },
+  {
+    "category": "pdf",
+    "slug": "split",
+    "title": "Split PDF",
+    "description": "Split a PDF into pages or page ranges — in your browser."
+  }
+]

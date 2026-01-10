@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Text Tools — Simple Web Tools</title>
+  <meta name="description" content="Tools for text." />
+  <meta name="page-type" content="category" />
+  <meta name="page-category" content="text" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+  <script defer src="/assets/js/tools-ui.js"></script>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a class="brand" href="/">
+        <div class="logo">FT</div>
+        <div>
+          <div>Simple Web Tools <span class="badge">beta</span></div>
+          <div class="tagline">Fast, simple, private</div>
+        </div>
+      </a>
+
+      <nav class="nav" aria-label="Legal">
+        <a href="/legal/privacy.html">Privacy</a>
+        <a href="/legal/terms.html">Terms</a>
+        <a href="/legal/contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="card">
+          <div class="section-title">
+            <h2>Categories</h2>
+            <a class="hint" href="/">All tools</a>
+          </div>
+          <div class="cat-list" id="sidebar-categories"></div>
+        </div>
+
+        <div class="card" style="margin-top:14px;">
+          <h2 style="margin-top:0;">Support</h2>
+          <p style="color:var(--muted);margin:8px 0 0;">This site is supported by ads.</p>
+          <div class="ad-slot" style="margin-top:12px;">Ad space</div>
+        </div>
+      </aside>
+
+      <div class="main">
+        <section class="hero">
+          <div class="breadcrumbs" id="breadcrumbs"></div>
+          <h1>Text Tools</h1>
+          <p>Tools for text.</p>
+        </section>
+
+        <section class="grid" aria-label="Text Tools">
+          <div class="card">
+            <div class="section-title">
+              <h2>Text</h2>
+              <div class="hint">Category</div>
+            </div>
+            <div class="tool-list" id="category-tools"></div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
