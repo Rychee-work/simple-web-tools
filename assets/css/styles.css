@@ -51,6 +51,13 @@ a:hover{text-decoration:underline}
   gap:10px;
   min-width:190px;
 }
+
+/* ✅ Root以外で出てくる「Fast, simple, private」等の2行目を消す
+   brandのテキスト側（logoの隣のdiv）の「2番目の子要素」を非表示 */
+.brand > div:last-child > :nth-child(2){
+  display:none !important;
+}
+
 .logo{
   width:34px;height:34px;
   border-radius:12px;
@@ -60,6 +67,8 @@ a:hover{text-decoration:underline}
   color:#fff;
   background:var(--text);
 }
+.logo svg{ display:block; }
+
 .badge{
   display:inline-block;
   margin-left:8px;
