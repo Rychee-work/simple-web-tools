@@ -84,14 +84,14 @@ a:hover{text-decoration:underline}
 }
 .nav a:hover{color:var(--text)}
 
-/* Mobile menu button (JS inserts) */
+/* Mobile menu button */
 .menu-btn{
   display:none;
   align-items:center;
   justify-content:center;
-  width:40px;
-  height:40px;
-  border-radius:12px;
+  width:44px;
+  height:44px;
+  border-radius:14px;
   border:1px solid var(--border);
   background:#fff;
   color:var(--text);
@@ -122,14 +122,13 @@ a:hover{text-decoration:underline}
 }
 .main{min-width:0}
 
-/* ===== Drawer (420px and below) ===== */
+/* Drawer (420px and below) */
 @media (max-width: 420px){
   .nav{display:none}
   .menu-btn{display:inline-flex}
 
   .layout{grid-template-columns: 1fr;}
 
-  /* hidden by default, shown only when body.sidebar-open */
   .sidebar{
     position: fixed;
     top: 0;
@@ -149,7 +148,6 @@ a:hover{text-decoration:underline}
     transform: translateX(0);
   }
 
-  /* overlay */
   .sidebar-overlay{
     position: fixed;
     inset: 0;

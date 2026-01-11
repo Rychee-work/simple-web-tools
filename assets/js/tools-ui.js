@@ -19,8 +19,7 @@
   function el(tag, cls){ const e=document.createElement(tag); if(cls) e.className=cls; return e; }
 
   function getPathParts(){
-    const parts = location.pathname.replace(/\/+$/,'').split('/').filter(Boolean);
-    return parts;
+    return location.pathname.replace(/\/+$/,'').split('/').filter(Boolean);
   }
 
   async function loadTools(){
@@ -50,14 +49,12 @@
   }
 
   function toolHref(t){
-    if(!t) return "#";
     return `/${t.category}/${t.slug}/`;
   }
 
   function renderSidebar(categoriesMap){
     const host = document.getElementById('sidebar-categories');
     if(!host) return;
-
     host.innerHTML = "";
 
     const counts = {};
@@ -81,9 +78,9 @@
     const sidebar = document.querySelector('aside.sidebar');
     if(!sidebar) return;
 
-    // 既に Support 見出し or ad-slot があれば追加しない（HTML手書きでもOK）
-    if (sidebar.querySelector('.ad-slot')) return;
-    if ([...sidebar.querySelectorAll('h2')].some(h => h.textContent.trim().toLowerCase() === 'support')) return;
+    // HTMLに既にあるなら追加しない
+    if(sidebar.querySelector('.ad-slot')) return;
+    if([...sidebar.querySelectorAll('h2')].some(h => h.textContent.trim().toLowerCase() === 'support')) return;
 
     const card = el('div','card');
     card.style.marginTop = "14px";
@@ -122,7 +119,6 @@
   function renderHome(categoriesMap){
     const grid = document.getElementById('home-grid');
     if(!grid) return;
-
     grid.innerHTML = "";
 
     for(const c of CATEGORY_LABELS){
@@ -204,66 +200,70 @@
     }
   }
 
-  /* ===== Mobile drawer (fix: bind to existing .menu-btn too) ===== */
-  function injectMobileMenu(){
-    const headerInner = document.querySelector('.header-inner');
+  /* ===== Mobile drawer =====
+     ✅ 重要: 既存の .menu-btn があっても必ず click を付ける
+  */
+  function setupDrawer(){
+    const btn = document.querySelector('.menu-btn'); // header-inner の中に限定しない
     const sidebar = document.querySelector('aside.sidebar');
-    if(!headerInner || !sidebar) return;
+    if(!btn || !sidebar) return;
 
-    // overlay (必ず存在させる)
+    // overlay（必ず用意）
     let ov = document.querySelector('.sidebar-overlay');
     if(!ov){
       ov = document.createElement('div');
       ov.className = 'sidebar-overlay';
       document.body.appendChild(ov);
     }
-    ov.addEventListener('click', () => document.body.classList.remove('sidebar-open'));
 
-    // button（既存があればそれを使う）
-    let btn = headerInner.querySelector('.menu-btn');
-    if(!btn){
-      btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'menu-btn';
-      btn.setAttribute('aria-label', 'Open categories');
-      btn.innerHTML = `
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>`;
-      headerInner.appendChild(btn);
-    }
+    const close = () => {
+      document.body.classList.remove('sidebar-open');
+      btn.setAttribute('aria-expanded', 'false');
+    };
+    const open = () => {
+      document.body.classList.add('sidebar-open');
+      btn.setAttribute('aria-expanded', 'true');
+    };
+    const toggle = () => {
+      if(document.body.classList.contains('sidebar-open')) close();
+      else open();
+    };
 
-    // 重要：一度だけイベントを付ける（多重登録防止）
+    // 多重登録防止
     if(!btn.dataset.bound){
-      btn.addEventListener('click', () => {
-        document.body.classList.toggle('sidebar-open');
-      });
+      btn.addEventListener('click', toggle);
       btn.dataset.bound = "1";
     }
 
-    // close when clicking a sidebar link (phone UX)
+    // overlay クリックで閉じる
+    if(!ov.dataset.bound){
+      ov.addEventListener('click', close);
+      ov.dataset.bound = "1";
+    }
+
+    // サイドバー内リンク押したら閉じる（スマホUX）
     if(!sidebar.dataset.bound){
       sidebar.addEventListener('click', (e) => {
         const a = e.target.closest('a');
-        if(a) document.body.classList.remove('sidebar-open');
+        if(a) close();
       });
       sidebar.dataset.bound = "1";
     }
 
-    // ESC
+    // ESCで閉じる
     window.addEventListener('keydown', (e) => {
-      if(e.key === 'Escape') document.body.classList.remove('sidebar-open');
+      if(e.key === 'Escape') close();
     });
 
-    // if leaving phone width, ensure closed
+    // 420超に戻ったら必ず閉じる（被りっぱなし防止）
     window.addEventListener('resize', () => {
-      if(window.innerWidth > 420) document.body.classList.remove('sidebar-open');
+      if(window.innerWidth > 420) close();
     });
   }
 
   // Boot
   document.addEventListener('DOMContentLoaded', async () => {
-    injectMobileMenu();
+    setupDrawer();
 
     const tools = await loadTools();
     const categoriesMap = groupByCategory(tools);
