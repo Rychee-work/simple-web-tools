@@ -4,20 +4,25 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Text Tools — Simple Web Tools</title>
-  <meta name="description" content="Tools for text." />
+  <meta name="description" content="Text utilities: format, convert, count, and more." />
   <meta name="page-type" content="category" />
   <meta name="page-category" content="text" />
+
   <link rel="stylesheet" href="/assets/css/styles.css" />
   <script defer src="/assets/js/tools-ui.js"></script>
 </head>
+
 <body>
   <header class="header">
     <div class="header-inner">
       <a class="brand" href="/">
-        <div class="logo">FT</div>
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 5h5v5H5V5Zm9 0h5v5h-5V5ZM5 14h5v5H5v-5Zm9 0h5v5h-5v-5Z" fill="currentColor"/>
+          </svg>
+        </div>
         <div>
           <div>Simple Web Tools <span class="badge">beta</span></div>
-          <div class="tagline">Fast, simple, private</div>
         </div>
       </a>
 
@@ -26,12 +31,18 @@
         <a href="/legal/terms.html">Terms</a>
         <a href="/legal/contact.html">Contact</a>
       </nav>
+
+      <button class="menu-btn" type="button" aria-label="Open categories" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
     </div>
   </header>
 
   <main class="container">
     <div class="layout">
-      <aside class="sidebar">
+      <aside class="sidebar" aria-label="Categories">
         <div class="card">
           <div class="section-title">
             <h2>Categories</h2>
@@ -51,14 +62,14 @@
         <section class="hero">
           <div class="breadcrumbs" id="breadcrumbs"></div>
           <h1>Text Tools</h1>
-          <p>Tools for text.</p>
+          <p>Clean, format, convert, and analyze text quickly.</p>
         </section>
 
         <section class="grid" aria-label="Text Tools">
           <div class="card">
             <div class="section-title">
-              <h2>Text</h2>
-              <div class="hint">Category</div>
+              <h2>Tools</h2>
+              <div class="hint">Text</div>
             </div>
             <div class="tool-list" id="category-tools"></div>
           </div>
@@ -66,5 +77,7 @@
       </div>
     </div>
   </main>
+
+  <div class="sidebar-overlay"></div>
 </body>
 </html>

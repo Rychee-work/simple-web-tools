@@ -51,13 +51,6 @@ a:hover{text-decoration:underline}
   gap:10px;
   min-width:190px;
 }
-
-/* ✅ Root以外で出てくる「Fast, simple, private」等の2行目を消す
-   brandのテキスト側（logoの隣のdiv）の「2番目の子要素」を非表示 */
-.brand > div:last-child > :nth-child(2){
-  display:none !important;
-}
-
 .logo{
   width:34px;height:34px;
   border-radius:12px;
@@ -67,7 +60,10 @@ a:hover{text-decoration:underline}
   color:#fff;
   background:var(--text);
 }
-.logo svg{ display:block; }
+.logo svg{ width:18px; height:18px; display:block; color:#fff; }
+
+/* Root以外で出てしまう "Fast, simple, private" を消す */
+.tagline{ display:none; }
 
 .badge{
   display:inline-block;
@@ -131,13 +127,14 @@ a:hover{text-decoration:underline}
 }
 .main{min-width:0}
 
-/* Drawer (420px and below) */
+/* ===== Drawer (420px and below) ===== */
 @media (max-width: 420px){
   .nav{display:none}
   .menu-btn{display:inline-flex}
 
   .layout{grid-template-columns: 1fr;}
 
+  /* hidden by default, shown only when body.sidebar-open */
   .sidebar{
     position: fixed;
     top: 0;
@@ -157,6 +154,7 @@ a:hover{text-decoration:underline}
     transform: translateX(0);
   }
 
+  /* overlay */
   .sidebar-overlay{
     position: fixed;
     inset: 0;
@@ -265,55 +263,46 @@ a:hover{text-decoration:underline}
   background:#fff;
 }
 .tool .left{min-width:0}
-.name{margin:0; font-weight:900;}
-.desc{margin:6px 0 0; color:var(--muted); line-height:1.4;}
-
+.name{margin:0; font-weight:800}
+.desc{margin:6px 0 0; color:var(--muted)}
 .btn{
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  color:var(--text);
-  text-decoration:none;
-  font-weight:800;
-  padding:10px 14px;
-  border-radius:14px;
+  min-width:74px;
+  padding:10px 16px;
+  border-radius:999px;
   border:1px solid var(--border);
+  font-weight:800;
+  text-decoration:none !important;
+  color:var(--text);
   background:#fff;
-  white-space:nowrap;
 }
-.btn:hover{text-decoration:none}
 .btn.primary{
   background:var(--accent);
   color:#fff;
   border-color:transparent;
 }
-.btn.primary:hover{filter:brightness(.98)}
-.btn.disabled{opacity:.6; pointer-events:none;}
+.btn.disabled{
+  color:var(--muted);
+  background:#f3f4f6;
+  border-color:#e5e7eb;
+  cursor:not-allowed;
+}
 
+.breadcrumbs{
+  color:var(--muted);
+  font-weight:700;
+  font-size:13px;
+  margin-bottom:10px;
+}
 .ad-slot{
-  border:1px dashed rgba(229,231,235,.9);
+  height:140px;
   border-radius:14px;
-  padding:18px;
+  border:1px dashed rgba(229,231,235,.9);
+  display:flex;
+  align-items:center;
+  justify-content:center;
   color:var(--muted);
   background:#fff;
 }
-
-/* Footer */
-.footer{
-  border-top:1px solid rgba(229,231,235,.8);
-  margin-top:30px;
-  background:transparent;
-}
-.footer-inner{
-  max-width:1100px;
-  margin:0 auto;
-  padding:18px 18px 26px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  color:var(--muted);
-  flex-wrap:wrap;
-}
-.footer a{color:var(--muted);font-weight:700}
-.footer a:hover{color:var(--text)}
