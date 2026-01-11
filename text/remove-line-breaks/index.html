@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Remove line breaks from text. Convert newlines to spaces or nothing. Local tool." />
+  <link rel="canonical" href="/text/remove-line-breaks/" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5493851170081090"
+    crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script type="module">
+    import { mountLayout } from "/assets/js/layout.js";
+
+    const mainHtml = `
+      <div class="tool-head">
+        <h1>Remove Line Breaks</h1>
+        <p class="muted">Flatten text by removing newlines. Runs locally.</p>
+      </div>
+
+      <div class="tool-grid">
+        <div class="card">
+          <label class="label">Input</label>
+          <textarea id="input" class="textarea" rows="10" placeholder="Paste text with line breaks..."></textarea>
+
+          <div class="row wrap">
+            <label class="pill"><input type="radio" name="mode" value="space" checked> Replace with space</label>
+            <label class="pill"><input type="radio" name="mode" value="none"> Remove completely</label>
+            <label class="pill"><input type="checkbox" id="trim"> Trim extra spaces</label>
+          </div>
+
+          <div class="row">
+            <button class="btn" id="run">Convert</button>
+            <button class="btn" id="clear">Clear</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <label class="label">Output</label>
+          <textarea id="output" class="textarea" rows="10" readonly></textarea>
+          <div class="row">
+            <button class="btn" id="copy">Copy</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>FAQ</h2>
+        <details><summary>Does this upload my text?</summary><p>No.</p></details>
+        <details><summary>What about multiple blank lines?</summary><p>Use “Trim extra spaces” to collapse whitespace.</p></details>
+        <details><summary>Can I keep paragraphs?</summary><p>This tool flattens everything; keeping paragraphs is a different tool.</p></details>
+      </div>
+    `;
+
+    mountLayout({
+      activeCategory: "text",
+      activeTool: "remove-line-breaks",
+      pageTitle: "Remove Line Breaks | Simple Web Tools",
+      pageDescription: "Remove line breaks from text locally in your browser.",
+      mainHtml
+    });
+
+    const $ = (id) => document.getElementById(id);
+
+    function convert() {
+      const t = $("input").value || "";
+      const mode = document.querySelector('input[name="mode"]:checked').value;
+      const rep = mode === "space" ? " " : "";
+      let out = t.replace(/\r\n|\r|\n/g, rep);
+      if ($("trim").checked) out = out.replace(/\s+/g, " ").trim();
+      $("output").value = out;
+    }
+
+    $("run").addEventListener("click", convert);
+    $("clear").addEventListener("click", () => { $("input").value = ""; $("output").value = ""; });
+
+    $("copy").addEventListener("click", async () => {
+      try { await navigator.clipboard.writeText($("output").value || ""); }
+      catch { $("output").select(); document.execCommand("copy"); }
+    });
+  </script>
+</body>
+</html>

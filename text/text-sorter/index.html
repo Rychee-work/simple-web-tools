@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Sort lines of text: A→Z, Z→A, unique, numeric sort. Local tool." />
+  <link rel="canonical" href="/text/text-sorter/" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5493851170081090"
+    crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script type="module">
+    import { mountLayout } from "/assets/js/layout.js";
+
+    const mainHtml = `
+      <div class="tool-head">
+        <h1>Text Sorter</h1>
+        <p class="muted">Sort lines, remove duplicates, and sort numerically. Runs locally.</p>
+      </div>
+
+      <div class="tool-grid">
+        <div class="card">
+          <label class="label">Input (one item per line)</label>
+          <textarea id="input" class="textarea" rows="12" placeholder="banana&#10;apple&#10;10&#10;2"></textarea>
+
+          <div class="row wrap">
+            <label class="pill"><input type="checkbox" id="trim" checked> Trim lines</label>
+            <label class="pill"><input type="checkbox" id="unique"> Unique</label>
+            <label class="pill"><input type="checkbox" id="numeric"> Numeric sort</label>
+            <label class="pill"><input type="checkbox" id="ignoreCase" checked> Ignore case</label>
+          </div>
+
+          <div class="row wrap">
+            <button class="btn" data-sort="az">Sort A → Z</button>
+            <button class="btn" data-sort="za">Sort Z → A</button>
+            <button class="btn" id="clear">Clear</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <label class="label">Output</label>
+          <textarea id="output" class="textarea" rows="12" readonly></textarea>
+          <div class="row">
+            <button class="btn" id="copy">Copy</button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    mountLayout({
+      activeCategory: "text",
+      activeTool: "text-sorter",
+      pageTitle: "Text Sorter | Simple Web Tools",
+      pageDescription: "Sort lines of text locally: A→Z, Z→A, unique, numeric sort.",
+      mainHtml
+    });
+
+    const $ = (id) => document.getElementById(id);
+
+    function getLines() {
+      const raw = ($("input").value || "").split(/\r\n|\r|\n/);
+      const trim = $("trim").checked;
+      let lines = raw.map(s => trim ? s.trim() : s);
+      lines = lines.filter(s => s.length > 0);
+      if ($("unique").checked) {
+        const seen = new Set();
+        lines = lines.filter(s => {
+          const k = $("ignoreCase").checked ? s.toLowerCase() : s;
+          if (seen.has(k)) return false;
+          seen.add(k);
+          return true;
+        });
+      }
+      return lines;
+    }
+
+    function sortLines(dir) {
+      const lines = getLines();
+      const numeric = $("numeric").checked;
+      const ignoreCase = $("ignoreCase").checked;
+
+      lines.sort((a,b) => {
+        if (numeric) {
+          const na = Number(a), nb = Number(b);
+          if (!Number.isNaN(na) && !Number.isNaN(nb)) return na - nb;
+        }
+        const aa = ignoreCase ? a.toLowerCase() : a;
+        const bb = ignoreCase ? b.toLowerCase() : b;
+        return aa.localeCompare(bb);
+      });
+
+      if (dir === "za") lines.reverse();
+      $("output").value = lines.join("\\n");
+    }
+
+    document.querySelectorAll("button[data-sort]").forEach(btn => {
+      btn.addEventListener("click", () => sortLines(btn.dataset.sort));
+    });
+
+    $("clear").addEventListener("click", () => { $("input").value = ""; $("output").value = ""; });
+
+    $("copy").addEventListener("click", async () => {
+      try { await navigator.clipboard.writeText($("output").value || ""); }
+      catch { $("output").select(); document.execCommand("copy"); }
+    });
+  </script>
+</body>
+</html>

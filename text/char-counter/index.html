@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Count characters with/without spaces, lines, bytes (UTF-8 estimate). Runs locally." />
+  <link rel="canonical" href="/text/char-counter/" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5493851170081090"
+    crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script type="module">
+    import { mountLayout } from "/assets/js/layout.js";
+
+    const mainHtml = `
+      <div class="tool-head">
+        <h1>Character Counter</h1>
+        <p class="muted">Count characters, lines, and estimated UTF-8 bytes.</p>
+      </div>
+
+      <div class="tool-grid">
+        <div class="card">
+          <label class="label">Text</label>
+          <textarea id="input" class="textarea" rows="12" placeholder="Type or paste..."></textarea>
+          <div class="row">
+            <button class="btn" id="clear">Clear</button>
+            <button class="btn" id="copy">Copy</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="stat"><span>Characters</span><b id="chars">0</b></div>
+          <div class="stat"><span>Characters (no spaces)</span><b id="charsNo">0</b></div>
+          <div class="stat"><span>Lines</span><b id="lines">0</b></div>
+          <div class="stat"><span>UTF-8 bytes (estimate)</span><b id="bytes">0</b></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>FAQ</h2>
+        <details><summary>Is byte count exact?</summary><p>We use UTF-8 encoding via TextEncoder, so it’s accurate for modern browsers.</p></details>
+        <details><summary>Does it upload my text?</summary><p>No — local only.</p></details>
+        <details><summary>Why do lines show 0?</summary><p>Empty input is treated as 0 lines.</p></details>
+      </div>
+    `;
+
+    mountLayout({
+      activeCategory: "text",
+      activeTool: "char-counter",
+      pageTitle: "Character Counter | Simple Web Tools",
+      pageDescription: "Count characters, lines, and UTF-8 bytes locally in your browser.",
+      mainHtml
+    });
+
+    const $ = (id) => document.getElementById(id);
+    const enc = new TextEncoder();
+
+    function compute() {
+      const t = $("input").value || "";
+      $("chars").textContent = String(t.length);
+      $("charsNo").textContent = String(t.replace(/\s+/g, "").length);
+      $("lines").textContent = String(t.length ? t.split(/\r\n|\r|\n/).length : 0);
+      $("bytes").textContent = String(enc.encode(t).length);
+    }
+
+    $("input").addEventListener("input", compute);
+    $("clear").addEventListener("click", () => { $("input").value = ""; compute(); });
+
+    $("copy").addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText($("input").value || "");
+      } catch {
+        $("input").select();
+        document.execCommand("copy");
+      }
+    });
+
+    compute();
+  </script>
+</body>
+</html>

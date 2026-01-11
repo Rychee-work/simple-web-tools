@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Count words, characters, sentences and paragraphs in your text. Runs locally in your browser." />
+  <link rel="canonical" href="/text/word-counter/" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5493851170081090"
+    crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script type="module">
+    import { mountLayout } from "/assets/js/layout.js";
+
+    const mainHtml = `
+      <div class="tool-head">
+        <h1>Word Counter</h1>
+        <p class="muted">Count words, characters, sentences, and paragraphs — locally in your browser.</p>
+      </div>
+
+      <div class="tool-grid">
+        <div class="card">
+          <label class="label">Text</label>
+          <textarea id="input" class="textarea" rows="12" placeholder="Paste or type text here..."></textarea>
+          <div class="row">
+            <button class="btn" id="clear">Clear</button>
+            <button class="btn" id="sample">Sample</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="stat"><span>Words</span><b id="words">0</b></div>
+          <div class="stat"><span>Characters (with spaces)</span><b id="charsWith">0</b></div>
+          <div class="stat"><span>Characters (no spaces)</span><b id="charsNo">0</b></div>
+          <div class="stat"><span>Sentences</span><b id="sentences">0</b></div>
+          <div class="stat"><span>Paragraphs</span><b id="paragraphs">0</b></div>
+          <p class="muted" style="margin-top:12px;">Tip: We count sentences by ., !, ? (simple heuristic).</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>FAQ</h2>
+        <details><summary>Does this upload my text?</summary><p>No. Everything runs in your browser.</p></details>
+        <details><summary>How are words counted?</summary><p>We split by whitespace and ignore empty tokens.</p></details>
+        <details><summary>Is sentence counting perfect?</summary><p>No — it’s a lightweight heuristic for speed.</p></details>
+      </div>
+    `;
+
+    mountLayout({
+      activeCategory: "text",
+      activeTool: "word-counter",
+      pageTitle: "Word Counter | Simple Web Tools",
+      pageDescription: "Count words, characters, sentences and paragraphs. Runs locally in your browser.",
+      mainHtml
+    });
+
+    const $ = (id) => document.getElementById(id);
+
+    function compute() {
+      const t = $("input").value || "";
+      const words = t.trim() ? t.trim().split(/\s+/).filter(Boolean) : [];
+      const charsWith = t.length;
+      const charsNo = t.replace(/\s+/g, "").length;
+
+      const sentences = (t.match(/[.!?]+/g) || []).length;
+      const paragraphs = t.trim() ? t.trim().split(/\n\s*\n/).filter(p => p.trim().length > 0).length : 0;
+
+      $("words").textContent = String(words.length);
+      $("charsWith").textContent = String(charsWith);
+      $("charsNo").textContent = String(charsNo);
+      $("sentences").textContent = String(sentences);
+      $("paragraphs").textContent = String(paragraphs);
+    }
+
+    $("input").addEventListener("input", compute);
+    $("clear").addEventListener("click", () => { $("input").value = ""; compute(); });
+    $("sample").addEventListener("click", () => {
+      $("input").value = "Hello world!\\n\\nThis is a sample text. It has two paragraphs.";
+      compute();
+    });
+
+    compute();
+  </script>
+</body>
+</html>

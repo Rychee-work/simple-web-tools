@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Password Generator | Simple Web Tools</title>
+  <meta name="description" content="Generate strong passwords locally with options for length and character sets." />
+  <link rel="canonical" href="/utility/password-generator/" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5493851170081090"
+    crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script type="module">
+    import { mountLayout } from "/assets/js/layout.js";
+
+    const mainHtml = `
+      <div class="tool-head">
+        <h1>Password Generator</h1>
+        <p class="muted">Generate secure passwords locally in your browser.</p>
+      </div>
+
+      <div class="card">
+        <div class="row wrap">
+          <label class="pill">Length:
+            <input id="len" type="number" min="6" max="128" value="16" style="width:90px;">
+          </label>
+          <label class="pill"><input id="lower" type="checkbox" checked> a-z</label>
+          <label class="pill"><input id="upper" type="checkbox" checked> A-Z</label>
+          <label class="pill"><input id="num" type="checkbox" checked> 0-9</label>
+          <label class="pill"><input id="sym" type="checkbox"> Symbols</label>
+          <label class="pill"><input id="noAmb" type="checkbox"> Avoid ambiguous</label>
+        </div>
+
+        <div class="row wrap">
+          <button class="btn" id="gen">Generate</button>
+          <button class="btn" id="copy">Copy</button>
+        </div>
+
+        <textarea id="out" class="textarea" rows="3" readonly></textarea>
+        <p class="muted">Tip: Use at least 12–16 characters for strong security.</p>
+      </div>
+    `;
+
+    mountLayout({
+      activeCategory: "utility",
+      activeTool: "password-generator",
+      pageTitle: "Password Generator | Simple Web Tools",
+      pageDescription: "Generate secure passwords locally with length and character set options.",
+      mainHtml
+    });
+
+    const $ = (id) => document.getElementById(id);
+
+    function pickRand(arr) {
+      const u = new Uint32Array(1);
+      crypto.getRandomValues(u);
+      return arr[u[0] % arr.length];
+    }
+
+    function gen() {
+      const length = Math.max(6, Math.min(128, Number($("len").value || 16)));
+      const sets = [];
+      if ($("lower").checked) sets.push("abcdefghijklmnopqrstuvwxyz");
+      if ($("upper").checked) sets.push("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+      if ($("num").checked) sets.push("0123456789");
+      if ($("sym").checked) sets.push("!@#$%^&*()-_=+[]{};:,.?/");
+
+      if (!sets.length) { $("out").value = ""; return; }
+
+      let chars = sets.join("");
+      if ($("noAmb").checked) chars = chars.replace(/[O0Il1]/g, "");
+
+      const out = [];
+      for (const s of sets) {
+        const filtered = $("noAmb").checked ? s.replace(/[O0Il1]/g, "") : s;
+        if (filtered.length) out.push(pickRand(filtered));
+      }
+      while (out.length < length) out.push(pickRand(chars));
+
+      for (let i=out.length-1;i>0;i--) {
+        const u = new Uint32Array(1); crypto.getRandomValues(u);
+        const j = u[0] % (i+1);
+        [out[i], out[j]] = [out[j], out[i]];
+      }
+
+      $("out").value = out.slice(0, length).join("");
+    }
+
+    $("gen").addEventListener("click", gen);
+    $("copy").addEventListener("click", async () => {
+      try { await navigator.clipboard.writeText($("out").value || ""); }
+      catch { $("out").select(); document.execCommand("copy"); }
+    });
+
+    gen();
+  </script>
+</body>
+</html>

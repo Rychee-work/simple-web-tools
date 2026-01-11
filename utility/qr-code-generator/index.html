@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>QR Code Generator | Simple Web Tools</title>
+  <meta name="description" content="Generate QR codes locally. Download as PNG." />
+  <link rel="canonical" href="/utility/qr-code-generator/" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5493851170081090"
+    crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="app"></div>
+
+  <!-- QR library -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+
+  <script type="module">
+    import { mountLayout } from "/assets/js/layout.js";
+
+    const mainHtml = `
+      <div class="tool-head">
+        <h1>QR Code Generator</h1>
+        <p class="muted">Create a QR code locally and download as PNG.</p>
+      </div>
+
+      <div class="tool-grid">
+        <div class="card">
+          <label class="label">Text / URL</label>
+          <textarea id="text" class="textarea" rows="6" placeholder="https://example.com"></textarea>
+
+          <div class="row wrap">
+            <label class="pill">Size:
+              <input id="size" type="number" min="128" max="1024" value="256" style="width:110px;">
+            </label>
+            <label class="pill">Error:
+              <select id="ec" class="input" style="width:140px;">
+                <option value="L">L</option>
+                <option value="M" selected>M</option>
+                <option value="Q">Q</option>
+                <option value="H">H</option>
+              </select>
+            </label>
+            <button class="btn" id="gen">Generate</button>
+            <button class="btn" id="download">Download PNG</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <label class="label">Preview</label>
+          <canvas id="canvas"></canvas>
+          <p class="muted" style="margin-top:10px;">No upload. Generated in your browser.</p>
+        </div>
+      </div>
+    `;
+
+    mountLayout({
+      activeCategory: "utility",
+      activeTool: "qr-code-generator",
+      pageTitle: "QR Code Generator | Simple Web Tools",
+      pageDescription: "Generate QR codes locally and download as PNG.",
+      mainHtml
+    });
+
+    const $ = (id) => document.getElementById(id);
+
+    async function generate() {
+      const text = ($("text").value || "").trim();
+      const size = Math.max(128, Math.min(1024, Number($("size").value || 256)));
+      const ec = $("ec").value;
+
+      if (!text) return;
+
+      await QRCode.toCanvas($("canvas"), text, {
+        width: size,
+        errorCorrectionLevel: ec,
+        margin: 2
+      });
+    }
+
+    $("gen").addEventListener("click", generate);
+    $("download").addEventListener("click", () => {
+      const c = $("canvas");
+      const a = document.createElement("a");
+      a.href = c.toDataURL("image/png");
+      a.download = "qr.png";
+      a.click();
+    });
+
+    $("text").value = "https://simple-web-tools.com/";
+    generate();
+  </script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Convert text casing: upper, lower, title, sentence, snake, kebab. Runs locally." />
+  <link rel="canonical" href="/text/case-converter/" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5493851170081090"
+    crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script type="module">
+    import { mountLayout } from "/assets/js/layout.js";
+
+    const mainHtml = `
+      <div class="tool-head">
+        <h1>Case Converter</h1>
+        <p class="muted">Uppercase, lowercase, title case, sentence case, snake_case, kebab-case.</p>
+      </div>
+
+      <div class="tool-grid">
+        <div class="card">
+          <label class="label">Input</label>
+          <textarea id="input" class="textarea" rows="10" placeholder="Paste text..."></textarea>
+          <div class="row wrap">
+            <button class="btn" data-act="upper">UPPER</button>
+            <button class="btn" data-act="lower">lower</button>
+            <button class="btn" data-act="title">Title</button>
+            <button class="btn" data-act="sentence">Sentence</button>
+            <button class="btn" data-act="snake">snake_case</button>
+            <button class="btn" data-act="kebab">kebab-case</button>
+            <button class="btn" id="swap">Swap</button>
+            <button class="btn" id="clear">Clear</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <label class="label">Output</label>
+          <textarea id="output" class="textarea" rows="10" readonly placeholder="Converted text..."></textarea>
+          <div class="row">
+            <button class="btn" id="copy">Copy</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>FAQ</h2>
+        <details><summary>Does it work for all languages?</summary><p>Basic casing is best for Latin alphabets. Other scripts may not have casing.</p></details>
+        <details><summary>Is my text uploaded?</summary><p>No.</p></details>
+        <details><summary>How is Title Case made?</summary><p>We capitalize the first letter of each word (simple rule).</p></details>
+      </div>
+    `;
+
+    mountLayout({
+      activeCategory: "text",
+      activeTool: "case-converter",
+      pageTitle: "Case Converter | Simple Web Tools",
+      pageDescription: "Convert text casing locally in your browser.",
+      mainHtml
+    });
+
+    const $ = (id) => document.getElementById(id);
+    const input = $("input");
+    const output = $("output");
+
+    function toTitle(s) {
+      return s.toLowerCase().replace(/\b([a-z])/g, (m, c) => c.toUpperCase());
+    }
+    function toSentence(s) {
+      const lower = s.toLowerCase();
+      return lower.replace(/(^\s*[a-z])|([.!?]\s*[a-z])/g, (m) => m.toUpperCase());
+    }
+    function toSlugLike(s, sep) {
+      return s
+        .trim()
+        .replace(/([a-z])([A-Z])/g, "$1 $2")
+        .replace(/[^a-zA-Z0-9]+/g, " ")
+        .trim()
+        .split(/\s+/)
+        .filter(Boolean)
+        .join(sep)
+        .toLowerCase();
+    }
+
+    function apply(act) {
+      const s = input.value || "";
+      let o = s;
+      if (act === "upper") o = s.toUpperCase();
+      if (act === "lower") o = s.toLowerCase();
+      if (act === "title") o = toTitle(s);
+      if (act === "sentence") o = toSentence(s);
+      if (act === "snake") o = toSlugLike(s, "_");
+      if (act === "kebab") o = toSlugLike(s, "-");
+      output.value = o;
+    }
+
+    document.querySelectorAll("button[data-act]").forEach(btn => {
+      btn.addEventListener("click", () => apply(btn.dataset.act));
+    });
+
+    $("swap").addEventListener("click", () => {
+      const tmp = input.value;
+      input.value = output.value;
+      output.value = tmp;
+    });
+
+    $("clear").addEventListener("click", () => { input.value = ""; output.value = ""; });
+
+    $("copy").addEventListener("click", async () => {
+      try { await navigator.clipboard.writeText(output.value || ""); }
+      catch { output.select(); document.execCommand("copy"); }
+    });
+  </script>
+</body>
+</html>

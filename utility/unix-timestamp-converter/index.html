@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Unix Timestamp Converter | Simple Web Tools</title>
+  <meta name="description" content="Convert Unix timestamps (seconds/milliseconds) to date-time and back." />
+  <link rel="canonical" href="/utility/unix-timestamp-converter/" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5493851170081090"
+    crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script type="module">
+    import { mountLayout } from "/assets/js/layout.js";
+
+    const mainHtml = `
+      <div class="tool-head">
+        <h1>Unix Timestamp Converter</h1>
+        <p class="muted">Unix timestamp ⇄ date-time. Local tool.</p>
+      </div>
+
+      <div class="tool-grid">
+        <div class="card">
+          <label class="label">Unix Timestamp</label>
+          <input id="ts" class="input" placeholder="e.g. 1700000000 or 1700000000000" />
+          <div class="row wrap">
+            <label class="pill"><input type="radio" name="unit" value="s" checked> seconds</label>
+            <label class="pill"><input type="radio" name="unit" value="ms"> milliseconds</label>
+            <button class="btn" id="toDate">To Date</button>
+            <button class="btn" id="now">Now</button>
+          </div>
+          <div class="stat"><span>Local</span><b id="local">-</b></div>
+          <div class="stat"><span>UTC</span><b id="utc">-</b></div>
+        </div>
+
+        <div class="card">
+          <label class="label">Date → Timestamp</label>
+          <input id="dt" class="input" type="datetime-local" />
+          <div class="row wrap">
+            <button class="btn" id="toTs">To Timestamp</button>
+            <button class="btn" id="copyTs">Copy</button>
+          </div>
+          <textarea id="out" class="textarea" rows="6" readonly></textarea>
+        </div>
+      </div>
+    `;
+
+    mountLayout({
+      activeCategory: "utility",
+      activeTool: "unix-timestamp-converter",
+      pageTitle: "Unix Timestamp Converter | Simple Web Tools",
+      pageDescription: "Convert Unix timestamps to date-time and back locally in your browser.",
+      mainHtml
+    });
+
+    const $ = (id) => document.getElementById(id);
+
+    function fmtLocal(d) { return d.toLocaleString(); }
+    function fmtUTC(d) { return d.toISOString().replace("T"," ").replace("Z"," UTC"); }
+
+    $("toDate").addEventListener("click", () => {
+      const raw = ($("ts").value || "").trim();
+      if (!raw) return;
+      const unit = document.querySelector('input[name="unit"]:checked').value;
+      const n = Number(raw);
+      if (!Number.isFinite(n)) return;
+
+      const ms = (unit === "s") ? Math.trunc(n * 1000) : Math.trunc(n);
+      const d = new Date(ms);
+      if (Number.isNaN(d.getTime())) return;
+
+      $("local").textContent = fmtLocal(d);
+      $("utc").textContent = fmtUTC(d);
+    });
+
+    $("now").addEventListener("click", () => {
+      const unit = document.querySelector('input[name="unit"]:checked').value;
+      const now = Date.now();
+      $("ts").value = String(unit === "s" ? Math.floor(now / 1000) : now);
+      $("toDate").click();
+    });
+
+    $("toTs").addEventListener("click", () => {
+      const v = $("dt").value;
+      if (!v) return;
+      const d = new Date(v);
+      const ms = d.getTime();
+      const s = Math.floor(ms / 1000);
+      $("out").value = `seconds: ${s}\nmilliseconds: ${ms}`;
+    });
+
+    $("copyTs").addEventListener("click", async () => {
+      try { await navigator.clipboard.writeText($("out").value || ""); }
+      catch { $("out").select(); document.execCommand("copy"); }
+    });
+
+    const now = new Date();
+    $("dt").value = new Date(now.getTime() - now.getTimezoneOffset()*60000).toISOString().slice(0,16);
+    $("now").click();
+  </script>
+</body>
+</html>
