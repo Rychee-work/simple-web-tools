@@ -1,43 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>http://www.sitemaps.org/</loc>
-    <lastmod>2026-01-10</lastmod>
-  </url>
-  <url>
-    <loc>http://www.sitemaps.org/pdf/</loc>
-    <lastmod>2026-01-10</lastmod>
-  </url>
-  <url>
-    <loc>http://www.sitemaps.org/pdf/merge/</loc>
-    <lastmod>2026-01-10</lastmod>
-  </url>
-  <url>
-    <loc>http://www.sitemaps.org/pdf/split/</loc>
-    <lastmod>2026-01-10</lastmod>
-  </url>
-  <url>
-    <loc>http://www.sitemaps.org/image/</loc>
-    <lastmod>2026-01-10</lastmod>
-  </url>
-  <url>
-    <loc>http://www.sitemaps.org/text/</loc>
-    <lastmod>2026-01-10</lastmod>
-  </url>
-  <url>
-    <loc>http://www.sitemaps.org/math/</loc>
-    <lastmod>2026-01-10</lastmod>
-  </url>
-  <url>
-    <loc>http://www.sitemaps.org/utility/</loc>
-    <lastmod>2026-01-10</lastmod>
-  </url>
-  <url>
-    <loc>http://www.sitemaps.org/developer/</loc>
-    <lastmod>2026-01-10</lastmod>
-  </url>
-  <url>
-    <loc>http://www.sitemaps.org/ai-fun/</loc>
-    <lastmod>2026-01-10</lastmod>
-  </url>
+  <url><loc>https://simple-web-tools.com/</loc><lastmod>2026-01-11</lastmod></url>
+
+  <url><loc>https://simple-web-tools.com/pdf/</loc><lastmod>2026-01-11</lastmod></url>
+  <url><loc>https://simple-web-tools.com/pdf/merge/</loc><lastmod>2026-01-11</lastmod></url>
+  <url><loc>https://simple-web-tools.com/pdf/split/</loc><lastmod>2026-01-11</lastmod></url>
+
+  <url><loc>https://simple-web-tools.com/image/</loc><lastmod>2026-01-11</lastmod></url>
+  <url><loc>https://simple-web-tools.com/text/</loc><lastmod>2026-01-11</lastmod></url>
+  <url><loc>https://simple-web-tools.com/text/word-counter/</loc><lastmod>2026-01-11</lastmod></url>
+  <url><loc>https://simple-web-tools.com/text/char-counter/</loc><lastmod>2026-01-11</lastmod></url>
+  <url><loc>https://simple-web-tools.com/text/case-converter/</loc><lastmod>2026-01-11</lastmod></url>
+  <url><loc>https://simple-web-tools.com/text/remove-line-breaks/</loc><lastmod>2026-01-11</lastmod></url>
+  <url><loc>https://simple-web-tools.com/text/text-sorter/</loc><lastmod>2026-01-11</lastmod></url>
+
+  <url><loc>https://simple-web-tools.com/math/</loc><lastmod>2026-01-11</lastmod></url>
+
+  <url><loc>https://simple-web-tools.com/utility/</loc><lastmod>2026-01-11</lastmod></url>
+  <url><loc>https://simple-web-tools.com/utility/uuid-generator/</loc><lastmod>2026-01-11</lastmod></url>
+  <url><loc>https://simple-web-tools.com/utility/unix-timestamp-converter/</loc><lastmod>2026-01-11</lastmod></url>
+  <url><loc>https://simple-web-tools.com/utility/password-generator/</loc><lastmod>2026-01-11</lastmod></url>
+  <url><loc>https://simple-web-tools.com/utility/qr-code-generator/</loc><lastmod>2026-01-11</lastmod></url>
+
+  <url><loc>https://simple-web-tools.com/developer/</loc><lastmod>2026-01-11</lastmod></url>
+  <url><loc>https://simple-web-tools.com/ai-fun/</loc><lastmod>2026-01-11</lastmod></url>
+
+  <url><loc>https://simple-web-tools.com/tools/merge-pdf/</loc><lastmod>2026-01-11</lastmod></url>
+  <url><loc>https://simple-web-tools.com/tools/split-pdf/</loc><lastmod>2026-01-11</lastmod></url>
 </urlset>
