@@ -80,7 +80,10 @@
   function ensureSupportCard(){
     const sidebar = document.querySelector('aside.sidebar');
     if(!sidebar) return;
-    if(sidebar.querySelector('.ad-slot')) return;
+
+    // 既に Support 見出し or ad-slot があれば追加しない（HTML手書きでもOK）
+    if (sidebar.querySelector('.ad-slot')) return;
+    if ([...sidebar.querySelectorAll('h2')].some(h => h.textContent.trim().toLowerCase() === 'support')) return;
 
     const card = el('div','card');
     card.style.marginTop = "14px";
@@ -201,23 +204,25 @@
     }
   }
 
-  /* ===== Mobile drawer (minimal JS) ===== */
+  /* ===== Mobile drawer (fix: bind to existing .menu-btn too) ===== */
   function injectMobileMenu(){
     const headerInner = document.querySelector('.header-inner');
     const sidebar = document.querySelector('aside.sidebar');
     if(!headerInner || !sidebar) return;
 
-    // overlay
-    if(!document.querySelector('.sidebar-overlay')){
-      const ov = document.createElement('div');
+    // overlay (必ず存在させる)
+    let ov = document.querySelector('.sidebar-overlay');
+    if(!ov){
+      ov = document.createElement('div');
       ov.className = 'sidebar-overlay';
-      ov.addEventListener('click', () => document.body.classList.remove('sidebar-open'));
       document.body.appendChild(ov);
     }
+    ov.addEventListener('click', () => document.body.classList.remove('sidebar-open'));
 
-    // button
-    if(!headerInner.querySelector('.menu-btn')){
-      const btn = document.createElement('button');
+    // button（既存があればそれを使う）
+    let btn = headerInner.querySelector('.menu-btn');
+    if(!btn){
+      btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'menu-btn';
       btn.setAttribute('aria-label', 'Open categories');
@@ -225,17 +230,25 @@
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>`;
-      btn.addEventListener('click', () => {
-        document.body.classList.toggle('sidebar-open');
-      });
       headerInner.appendChild(btn);
     }
 
+    // 重要：一度だけイベントを付ける（多重登録防止）
+    if(!btn.dataset.bound){
+      btn.addEventListener('click', () => {
+        document.body.classList.toggle('sidebar-open');
+      });
+      btn.dataset.bound = "1";
+    }
+
     // close when clicking a sidebar link (phone UX)
-    sidebar.addEventListener('click', (e) => {
-      const a = e.target.closest('a');
-      if(a) document.body.classList.remove('sidebar-open');
-    });
+    if(!sidebar.dataset.bound){
+      sidebar.addEventListener('click', (e) => {
+        const a = e.target.closest('a');
+        if(a) document.body.classList.remove('sidebar-open');
+      });
+      sidebar.dataset.bound = "1";
+    }
 
     // ESC
     window.addEventListener('keydown', (e) => {
