@@ -1,10 +1,3 @@
-/* tools-ui.js
-   Single source of UI truth:
-   - Sidebar categories + counts
-   - Home page sections (root)
-   - Category pages tool list
-   - Breadcrumbs for category & tool pages
-*/
 (function(){
   const CATEGORY_LABELS = [
     { key: "pdf",     label: "PDF" },
@@ -17,7 +10,6 @@
   ];
 
   function el(tag, cls){ const e=document.createElement(tag); if(cls) e.className=cls; return e; }
-
   function getPathParts(){
     const parts = location.pathname.replace(/\/+$/,'').split('/').filter(Boolean);
     return parts;
@@ -77,21 +69,6 @@
     }
   }
 
-  function ensureSupportCard(){
-    const sidebar = document.querySelector('aside.sidebar');
-    if(!sidebar) return;
-    if(sidebar.querySelector('.ad-slot')) return;
-
-    const card = el('div','card');
-    card.style.marginTop = "14px";
-    const h2 = el('h2'); h2.style.marginTop = "0"; h2.textContent = "Support";
-    const p = el('p'); p.style.color = "var(--muted)"; p.style.margin = "8px 0 0"; p.textContent = "This site is supported by ads.";
-    const ad = el('div','ad-slot'); ad.style.marginTop = "12px"; ad.textContent = "Ad space";
-
-    card.appendChild(h2); card.appendChild(p); card.appendChild(ad);
-    sidebar.appendChild(card);
-  }
-
   function renderToolRow(t){
     const row = el('div','tool');
 
@@ -119,7 +96,6 @@
   function renderHome(categoriesMap){
     const grid = document.getElementById('home-grid');
     if(!grid) return;
-
     grid.innerHTML = "";
 
     for(const c of CATEGORY_LABELS){
@@ -135,9 +111,7 @@
       st.appendChild(h2); st.appendChild(hint);
 
       const list = el('div','tool-list');
-      for(const t of tools){
-        list.appendChild(renderToolRow(t));
-      }
+      for(const t of tools) list.appendChild(renderToolRow(t));
 
       card.appendChild(st);
       card.appendChild(list);
@@ -145,63 +119,7 @@
     }
   }
 
-  function renderCategoryPage(categoriesMap){
-    const target = document.getElementById('category-tools');
-    if(!target) return;
-
-    const metaCat = document.querySelector('meta[name="page-category"]')?.getAttribute('content') || "";
-    const parts = getPathParts();
-    const cat = metaCat || parts[0] || "";
-
-    target.innerHTML = "";
-
-    const tools = categoriesMap.get(cat) || [];
-    if(tools.length === 0){
-      const empty = el('div','tool');
-      const left = el('div','left');
-      const name = el('p','name'); name.textContent = "No tools yet";
-      const desc = el('p','desc'); desc.textContent = "We’ll add more tools soon.";
-      left.appendChild(name); left.appendChild(desc);
-      const badge = el('span','btn disabled'); badge.textContent = "Soon";
-      empty.appendChild(left); empty.appendChild(badge);
-      target.appendChild(empty);
-      return;
-    }
-
-    for(const t of tools){
-      target.appendChild(renderToolRow(t));
-    }
-  }
-
-  function renderBreadcrumbs(categoriesMap){
-    const bc = document.getElementById('breadcrumbs');
-    if(!bc) return;
-
-    const parts = getPathParts();
-    bc.innerHTML = "";
-
-    const aHome = el('a'); aHome.href = "/"; aHome.textContent = "All tools";
-    bc.appendChild(aHome);
-
-    if(parts.length >= 1){
-      const cat = parts[0];
-      const catLabel = (CATEGORY_LABELS.find(x=>x.key===cat)?.label) || cat;
-      bc.appendChild(document.createTextNode("  ›  "));
-      const aCat = el('a'); aCat.href = `/${cat}/`; aCat.textContent = catLabel;
-      bc.appendChild(aCat);
-
-      if(parts.length >= 2){
-        const slug = parts[1];
-        const t = (categoriesMap.get(cat) || []).find(x=>x.slug===slug);
-        bc.appendChild(document.createTextNode("  ›  "));
-        const cur = el('span');
-        cur.textContent = (t && t.title) ? t.title : slug;
-        bc.appendChild(cur);
-      }
-    }
-  }
-
-  /* ===== Mobile drawer (minimal JS) ===== */
+  /* ===== Drawer logic (420px and below) ===== */
   function injectMobileMenu(){
     const headerInner = document.querySelector('.header-inner');
     const sidebar = document.querySelector('aside.sidebar');
@@ -242,13 +160,12 @@
       if(e.key === 'Escape') document.body.classList.remove('sidebar-open');
     });
 
-    // if leaving phone width, ensure closed
+    // IMPORTANT: if leaving drawer width, ensure closed so it never "sticks"
     window.addEventListener('resize', () => {
-      if(window.innerWidth > 560) document.body.classList.remove('sidebar-open');
+      if(window.innerWidth > 420) document.body.classList.remove('sidebar-open');
     });
   }
 
-  // Boot
   document.addEventListener('DOMContentLoaded', async () => {
     injectMobileMenu();
 
@@ -256,10 +173,6 @@
     const categoriesMap = groupByCategory(tools);
 
     renderSidebar(categoriesMap);
-    ensureSupportCard();
-    renderBreadcrumbs(categoriesMap);
-
     renderHome(categoriesMap);
-    renderCategoryPage(categoriesMap);
   });
 })();
