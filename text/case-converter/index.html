@@ -3,115 +3,181 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="Convert text casing: upper, lower, title, sentence, snake, kebab. Runs locally." />
+  <title>Case Converter | Simple Web Tools</title>
+  <meta name="description" content="Convert text case: upper, lower, title, sentence, camel, snake, kebab — locally." />
+  <meta name="page-type" content="tool" />
+  <meta name="page-category" content="text" />
   <link rel="canonical" href="/text/case-converter/" />
+
   <link rel="stylesheet" href="/assets/css/styles.css" />
+  <script defer src="/assets/js/tools-ui.js"></script>
+
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5493851170081090"
     crossorigin="anonymous"></script>
 </head>
+
 <body>
-  <div id="app"></div>
+  <header class="header">
+    <div class="header-inner">
+      <a class="brand" href="/">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 5h5v5H5V5Zm9 0h5v5h-5V5ZM5 14h5v5H5v-5Zm9 0h5v5h-5v-5Z" fill="currentColor"/>
+          </svg>
+        </div>
+        <div><div>Simple Web Tools <span class="badge">beta</span></div></div>
+      </a>
 
-  <script type="module">
-    import { mountLayout } from "/assets/js/layout.js";
+      <nav class="nav" aria-label="Legal">
+        <a href="/legal/privacy.html">Privacy</a>
+        <a href="/legal/terms.html">Terms</a>
+        <a href="/legal/contact.html">Contact</a>
+      </nav>
 
-    const mainHtml = `
-      <div class="tool-head">
-        <h1>Case Converter</h1>
-        <p class="muted">Uppercase, lowercase, title case, sentence case, snake_case, kebab-case.</p>
-      </div>
+      <button class="menu-btn" type="button" aria-label="Open categories" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </header>
 
-      <div class="tool-grid">
+  <main class="container">
+    <div class="layout">
+      <aside class="sidebar" aria-label="Categories">
         <div class="card">
-          <label class="label">Input</label>
-          <textarea id="input" class="textarea" rows="10" placeholder="Paste text..."></textarea>
-          <div class="row wrap">
-            <button class="btn" data-act="upper">UPPER</button>
-            <button class="btn" data-act="lower">lower</button>
-            <button class="btn" data-act="title">Title</button>
-            <button class="btn" data-act="sentence">Sentence</button>
-            <button class="btn" data-act="snake">snake_case</button>
-            <button class="btn" data-act="kebab">kebab-case</button>
-            <button class="btn" id="swap">Swap</button>
-            <button class="btn" id="clear">Clear</button>
+          <div class="section-title">
+            <h2>Categories</h2>
+            <a class="hint" href="/">All tools</a>
           </div>
+          <div class="cat-list" id="sidebar-categories"></div>
         </div>
 
-        <div class="card">
-          <label class="label">Output</label>
-          <textarea id="output" class="textarea" rows="10" readonly placeholder="Converted text..."></textarea>
-          <div class="row">
-            <button class="btn" id="copy">Copy</button>
-          </div>
+        <div class="card" style="margin-top:14px;">
+          <h2 style="margin-top:0;">Support</h2>
+          <p style="color:var(--muted);margin:8px 0 0;">This site is supported by ads.</p>
+          <div class="ad-slot" style="margin-top:12px;">Ad space</div>
         </div>
+      </aside>
+
+      <div class="main">
+        <section class="hero">
+          <div class="breadcrumbs" id="breadcrumbs"></div>
+          <h1>Case Converter</h1>
+          <p>Convert text to different cases — locally.</p>
+        </section>
+
+        <section class="grid" aria-label="Case Converter">
+          <div class="card">
+            <label class="label">Input</label>
+            <textarea id="in" class="textarea" rows="8" placeholder="Paste or type your text here..."></textarea>
+
+            <div class="row wrap" style="margin-top:12px;">
+              <button class="btn" data-case="upper">UPPER</button>
+              <button class="btn" data-case="lower">lower</button>
+              <button class="btn" data-case="title">Title</button>
+              <button class="btn" data-case="sentence">Sentence</button>
+              <button class="btn" data-case="camel">camelCase</button>
+              <button class="btn" data-case="snake">snake_case</button>
+              <button class="btn" data-case="kebab">kebab-case</button>
+            </div>
+
+            <div class="row wrap" style="margin-top:12px;">
+              <button class="btn" id="copyOut">Copy Output</button>
+              <button class="btn" id="swap">Swap</button>
+              <button class="btn" id="clear">Clear</button>
+            </div>
+
+            <label class="label" style="margin-top:14px;">Output</label>
+            <textarea id="out" class="textarea" rows="8" readonly></textarea>
+
+            <p class="muted" style="margin-top:12px;">No upload. Everything runs in your browser.</p>
+          </div>
+        </section>
       </div>
+    </div>
+  </main>
 
-      <div class="card">
-        <h2>FAQ</h2>
-        <details><summary>Does it work for all languages?</summary><p>Basic casing is best for Latin alphabets. Other scripts may not have casing.</p></details>
-        <details><summary>Is my text uploaded?</summary><p>No.</p></details>
-        <details><summary>How is Title Case made?</summary><p>We capitalize the first letter of each word (simple rule).</p></details>
-      </div>
-    `;
+  <div class="sidebar-overlay"></div>
 
-    mountLayout({
-      activeCategory: "text",
-      activeTool: "case-converter",
-      pageTitle: "Case Converter | Simple Web Tools",
-      pageDescription: "Convert text casing locally in your browser.",
-      mainHtml
-    });
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const $ = (id) => document.getElementById(id);
 
-    const $ = (id) => document.getElementById(id);
-    const input = $("input");
-    const output = $("output");
+      function wordsFrom(s) {
+        // Split by non-alphanumeric (keep unicode letters/numbers)
+        // Works reasonably across languages; for full CJK case conversion, upper/lower won't apply anyway.
+        const parts = (s || "").trim().split(/[^0-9A-Za-z\u00C0-\u024F\u0370-\u03FF\u0400-\u04FF]+/).filter(Boolean);
+        return parts;
+      }
 
-    function toTitle(s) {
-      return s.toLowerCase().replace(/\b([a-z])/g, (m, c) => c.toUpperCase());
-    }
-    function toSentence(s) {
-      const lower = s.toLowerCase();
-      return lower.replace(/(^\s*[a-z])|([.!?]\s*[a-z])/g, (m) => m.toUpperCase());
-    }
-    function toSlugLike(s, sep) {
-      return s
-        .trim()
-        .replace(/([a-z])([A-Z])/g, "$1 $2")
-        .replace(/[^a-zA-Z0-9]+/g, " ")
-        .trim()
-        .split(/\s+/)
-        .filter(Boolean)
-        .join(sep)
-        .toLowerCase();
-    }
+      function toTitle(s) {
+        return (s || "").toLowerCase().replace(/\b([a-z])/g, (m, c) => c.toUpperCase());
+      }
 
-    function apply(act) {
-      const s = input.value || "";
-      let o = s;
-      if (act === "upper") o = s.toUpperCase();
-      if (act === "lower") o = s.toLowerCase();
-      if (act === "title") o = toTitle(s);
-      if (act === "sentence") o = toSentence(s);
-      if (act === "snake") o = toSlugLike(s, "_");
-      if (act === "kebab") o = toSlugLike(s, "-");
-      output.value = o;
-    }
+      function toSentence(s) {
+        const t = (s || "").toLowerCase();
+        // Uppercase first letter after start or after punctuation/newline
+        return t.replace(/(^\s*[a-z])|([.!?]\s+[a-z])|(\n\s*[a-z])/g, (m) => m.toUpperCase());
+      }
 
-    document.querySelectorAll("button[data-act]").forEach(btn => {
-      btn.addEventListener("click", () => apply(btn.dataset.act));
-    });
+      function toCamel(s) {
+        const w = wordsFrom(s).map(x => x.toLowerCase());
+        if (!w.length) return "";
+        return w[0] + w.slice(1).map(x => x.charAt(0).toUpperCase() + x.slice(1)).join("");
+      }
 
-    $("swap").addEventListener("click", () => {
-      const tmp = input.value;
-      input.value = output.value;
-      output.value = tmp;
-    });
+      function toSnake(s) {
+        const w = wordsFrom(s).map(x => x.toLowerCase());
+        return w.join("_");
+      }
 
-    $("clear").addEventListener("click", () => { input.value = ""; output.value = ""; });
+      function toKebab(s) {
+        const w = wordsFrom(s).map(x => x.toLowerCase());
+        return w.join("-");
+      }
 
-    $("copy").addEventListener("click", async () => {
-      try { await navigator.clipboard.writeText(output.value || ""); }
-      catch { output.select(); document.execCommand("copy"); }
+      function convert(kind) {
+        const v = $("in").value || "";
+        let out = v;
+
+        switch (kind) {
+          case "upper": out = v.toUpperCase(); break;
+          case "lower": out = v.toLowerCase(); break;
+          case "title": out = toTitle(v); break;
+          case "sentence": out = toSentence(v); break;
+          case "camel": out = toCamel(v); break;
+          case "snake": out = toSnake(v); break;
+          case "kebab": out = toKebab(v); break;
+        }
+
+        $("out").value = out;
+      }
+
+      document.querySelectorAll("[data-case]").forEach(btn => {
+        btn.addEventListener("click", () => convert(btn.getAttribute("data-case")));
+      });
+
+      $("copyOut").addEventListener("click", async () => {
+        try { await navigator.clipboard.writeText($("out").value || ""); }
+        catch { $("out").focus(); $("out").select(); document.execCommand("copy"); }
+      });
+
+      $("swap").addEventListener("click", () => {
+        const a = $("in").value || "";
+        const b = $("out").value || "";
+        $("in").value = b;
+        $("out").value = a;
+      });
+
+      $("clear").addEventListener("click", () => {
+        $("in").value = "";
+        $("out").value = "";
+        $("in").focus();
+      });
+
+      // initial output
+      convert("upper");
     });
   </script>
 </body>

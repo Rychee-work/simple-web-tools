@@ -3,82 +3,129 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="Count characters with/without spaces, lines, bytes (UTF-8 estimate). Runs locally." />
+  <title>Character Counter | Simple Web Tools</title>
+  <meta name="description" content="Count characters, lines, and UTF-8 bytes locally in your browser." />
+  <meta name="page-type" content="tool" />
+  <meta name="page-category" content="text" />
   <link rel="canonical" href="/text/char-counter/" />
+
   <link rel="stylesheet" href="/assets/css/styles.css" />
+  <script defer src="/assets/js/tools-ui.js"></script>
+
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5493851170081090"
     crossorigin="anonymous"></script>
 </head>
+
 <body>
-  <div id="app"></div>
+  <header class="header">
+    <div class="header-inner">
+      <a class="brand" href="/">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 5h5v5H5V5Zm9 0h5v5h-5V5ZM5 14h5v5H5v-5Zm9 0h5v5h-5v-5Z" fill="currentColor"/>
+          </svg>
+        </div>
+        <div><div>Simple Web Tools <span class="badge">beta</span></div></div>
+      </a>
 
-  <script type="module">
-    import { mountLayout } from "/assets/js/layout.js";
+      <nav class="nav" aria-label="Legal">
+        <a href="/legal/privacy.html">Privacy</a>
+        <a href="/legal/terms.html">Terms</a>
+        <a href="/legal/contact.html">Contact</a>
+      </nav>
 
-    const mainHtml = `
-      <div class="tool-head">
-        <h1>Character Counter</h1>
-        <p class="muted">Count characters, lines, and estimated UTF-8 bytes.</p>
-      </div>
+      <button class="menu-btn" type="button" aria-label="Open categories" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </header>
 
-      <div class="tool-grid">
+  <main class="container">
+    <div class="layout">
+      <aside class="sidebar" aria-label="Categories">
         <div class="card">
-          <label class="label">Text</label>
-          <textarea id="input" class="textarea" rows="12" placeholder="Type or paste..."></textarea>
-          <div class="row">
-            <button class="btn" id="clear">Clear</button>
-            <button class="btn" id="copy">Copy</button>
+          <div class="section-title">
+            <h2>Categories</h2>
+            <a class="hint" href="/">All tools</a>
           </div>
+          <div class="cat-list" id="sidebar-categories"></div>
         </div>
 
-        <div class="card">
-          <div class="stat"><span>Characters</span><b id="chars">0</b></div>
-          <div class="stat"><span>Characters (no spaces)</span><b id="charsNo">0</b></div>
-          <div class="stat"><span>Lines</span><b id="lines">0</b></div>
-          <div class="stat"><span>UTF-8 bytes (estimate)</span><b id="bytes">0</b></div>
+        <div class="card" style="margin-top:14px;">
+          <h2 style="margin-top:0;">Support</h2>
+          <p style="color:var(--muted);margin:8px 0 0;">This site is supported by ads.</p>
+          <div class="ad-slot" style="margin-top:12px;">Ad space</div>
         </div>
+      </aside>
+
+      <div class="main">
+        <section class="hero">
+          <div class="breadcrumbs" id="breadcrumbs"></div>
+          <h1>Character Counter</h1>
+          <p>Count characters, lines, and bytes — locally.</p>
+        </section>
+
+        <section class="grid" aria-label="Character Counter">
+          <div class="card">
+            <label class="label">Text</label>
+            <textarea id="in" class="textarea" rows="10" placeholder="Paste or type your text here..."></textarea>
+
+            <div class="row wrap" style="margin-top:12px;">
+              <button class="btn" id="copy">Copy</button>
+              <button class="btn" id="clear">Clear</button>
+            </div>
+
+            <div style="margin-top:14px;">
+              <div class="stat"><span>Characters (with spaces)</span><b id="chars">0</b></div>
+              <div class="stat"><span>Characters (no spaces)</span><b id="charsNoSpace">0</b></div>
+              <div class="stat"><span>Lines</span><b id="lines">0</b></div>
+              <div class="stat"><span>UTF-8 bytes</span><b id="bytes">0</b></div>
+            </div>
+
+            <p class="muted" style="margin-top:12px;">Tip: “Bytes” is useful for API limits and SMS counting.</p>
+          </div>
+        </section>
       </div>
+    </div>
+  </main>
 
-      <div class="card">
-        <h2>FAQ</h2>
-        <details><summary>Is byte count exact?</summary><p>We use UTF-8 encoding via TextEncoder, so it’s accurate for modern browsers.</p></details>
-        <details><summary>Does it upload my text?</summary><p>No — local only.</p></details>
-        <details><summary>Why do lines show 0?</summary><p>Empty input is treated as 0 lines.</p></details>
-      </div>
-    `;
+  <div class="sidebar-overlay"></div>
 
-    mountLayout({
-      activeCategory: "text",
-      activeTool: "char-counter",
-      pageTitle: "Character Counter | Simple Web Tools",
-      pageDescription: "Count characters, lines, and UTF-8 bytes locally in your browser.",
-      mainHtml
-    });
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const $ = (id) => document.getElementById(id);
+      const enc = new TextEncoder();
 
-    const $ = (id) => document.getElementById(id);
-    const enc = new TextEncoder();
-
-    function compute() {
-      const t = $("input").value || "";
-      $("chars").textContent = String(t.length);
-      $("charsNo").textContent = String(t.replace(/\s+/g, "").length);
-      $("lines").textContent = String(t.length ? t.split(/\r\n|\r|\n/).length : 0);
-      $("bytes").textContent = String(enc.encode(t).length);
-    }
-
-    $("input").addEventListener("input", compute);
-    $("clear").addEventListener("click", () => { $("input").value = ""; compute(); });
-
-    $("copy").addEventListener("click", async () => {
-      try {
-        await navigator.clipboard.writeText($("input").value || "");
-      } catch {
-        $("input").select();
-        document.execCommand("copy");
+      function countLines(s) {
+        if (!s) return 0;
+        return s.split(/\r\n|\r|\n/).length;
       }
-    });
 
-    compute();
+      function update() {
+        const v = $("in").value || "";
+        $("chars").textContent = String(v.length);
+        $("charsNoSpace").textContent = String(v.replace(/\s/g, "").length);
+        $("lines").textContent = String(countLines(v));
+        $("bytes").textContent = String(enc.encode(v).length);
+      }
+
+      $("in").addEventListener("input", update);
+
+      $("copy").addEventListener("click", async () => {
+        try { await navigator.clipboard.writeText($("in").value || ""); }
+        catch { $("in").focus(); $("in").select(); document.execCommand("copy"); }
+      });
+
+      $("clear").addEventListener("click", () => {
+        $("in").value = "";
+        update();
+        $("in").focus();
+      });
+
+      update();
+    });
   </script>
 </body>
 </html>

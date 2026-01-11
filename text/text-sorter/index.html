@@ -3,108 +3,201 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="Sort lines of text: A→Z, Z→A, unique, numeric sort. Local tool." />
+  <title>Text Sorter | Simple Web Tools</title>
+  <meta name="description" content="Sort lines A→Z, Z→A, numeric, unique, trim — locally in your browser." />
+  <meta name="page-type" content="tool" />
+  <meta name="page-category" content="text" />
   <link rel="canonical" href="/text/text-sorter/" />
+
   <link rel="stylesheet" href="/assets/css/styles.css" />
+  <script defer src="/assets/js/tools-ui.js"></script>
+
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5493851170081090"
     crossorigin="anonymous"></script>
 </head>
+
 <body>
-  <div id="app"></div>
+  <header class="header">
+    <div class="header-inner">
+      <a class="brand" href="/">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 5h5v5H5V5Zm9 0h5v5h-5V5ZM5 14h5v5H5v-5Zm9 0h5v5h-5v-5Z" fill="currentColor"/>
+          </svg>
+        </div>
+        <div><div>Simple Web Tools <span class="badge">beta</span></div></div>
+      </a>
 
-  <script type="module">
-    import { mountLayout } from "/assets/js/layout.js";
+      <nav class="nav" aria-label="Legal">
+        <a href="/legal/privacy.html">Privacy</a>
+        <a href="/legal/terms.html">Terms</a>
+        <a href="/legal/contact.html">Contact</a>
+      </nav>
 
-    const mainHtml = `
-      <div class="tool-head">
-        <h1>Text Sorter</h1>
-        <p class="muted">Sort lines, remove duplicates, and sort numerically. Runs locally.</p>
-      </div>
+      <button class="menu-btn" type="button" aria-label="Open categories" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </header>
 
-      <div class="tool-grid">
+  <main class="container">
+    <div class="layout">
+      <aside class="sidebar" aria-label="Categories">
         <div class="card">
-          <label class="label">Input (one item per line)</label>
-          <textarea id="input" class="textarea" rows="12" placeholder="banana&#10;apple&#10;10&#10;2"></textarea>
-
-          <div class="row wrap">
-            <label class="pill"><input type="checkbox" id="trim" checked> Trim lines</label>
-            <label class="pill"><input type="checkbox" id="unique"> Unique</label>
-            <label class="pill"><input type="checkbox" id="numeric"> Numeric sort</label>
-            <label class="pill"><input type="checkbox" id="ignoreCase" checked> Ignore case</label>
+          <div class="section-title">
+            <h2>Categories</h2>
+            <a class="hint" href="/">All tools</a>
           </div>
-
-          <div class="row wrap">
-            <button class="btn" data-sort="az">Sort A → Z</button>
-            <button class="btn" data-sort="za">Sort Z → A</button>
-            <button class="btn" id="clear">Clear</button>
-          </div>
+          <div class="cat-list" id="sidebar-categories"></div>
         </div>
 
-        <div class="card">
-          <label class="label">Output</label>
-          <textarea id="output" class="textarea" rows="12" readonly></textarea>
-          <div class="row">
-            <button class="btn" id="copy">Copy</button>
-          </div>
+        <div class="card" style="margin-top:14px;">
+          <h2 style="margin-top:0;">Support</h2>
+          <p style="color:var(--muted);margin:8px 0 0;">This site is supported by ads.</p>
+          <div class="ad-slot" style="margin-top:12px;">Ad space</div>
         </div>
+      </aside>
+
+      <div class="main">
+        <section class="hero">
+          <div class="breadcrumbs" id="breadcrumbs"></div>
+          <h1>Text Sorter</h1>
+          <p>Sort lines and remove duplicates — locally.</p>
+        </section>
+
+        <section class="grid" aria-label="Text Sorter">
+          <div class="card">
+            <div class="tool-grid">
+              <div class="card">
+                <label class="label">Input (one item per line)</label>
+                <textarea id="in" class="textarea" rows="12" placeholder="banana&#10;apple&#10;orange"></textarea>
+              </div>
+
+              <div class="card">
+                <label class="label">Options</label>
+
+                <div class="row wrap">
+                  <label class="pill"><input type="radio" name="mode" value="az" checked> A → Z</label>
+                  <label class="pill"><input type="radio" name="mode" value="za"> Z → A</label>
+                  <label class="pill"><input type="radio" name="mode" value="num-asc"> Numeric ↑</label>
+                  <label class="pill"><input type="radio" name="mode" value="num-desc"> Numeric ↓</label>
+                </div>
+
+                <div class="row wrap" style="margin-top:10px;">
+                  <label class="pill"><input id="trim" type="checkbox" checked> Trim</label>
+                  <label class="pill"><input id="ignoreCase" type="checkbox"> Ignore case</label>
+                  <label class="pill"><input id="unique" type="checkbox"> Unique</label>
+                  <label class="pill"><input id="removeEmpty" type="checkbox" checked> Remove empty</label>
+                </div>
+
+                <div class="row wrap" style="margin-top:12px;">
+                  <button class="btn" id="run">Sort</button>
+                  <button class="btn" id="copy">Copy Output</button>
+                  <button class="btn" id="swap">Swap</button>
+                  <button class="btn" id="clear">Clear</button>
+                </div>
+
+                <div class="stat" style="margin-top:12px;"><span>Items</span><b id="count">0</b></div>
+              </div>
+            </div>
+
+            <label class="label" style="margin-top:14px;">Output</label>
+            <textarea id="out" class="textarea" rows="12" readonly></textarea>
+          </div>
+        </section>
       </div>
-    `;
+    </div>
+  </main>
 
-    mountLayout({
-      activeCategory: "text",
-      activeTool: "text-sorter",
-      pageTitle: "Text Sorter | Simple Web Tools",
-      pageDescription: "Sort lines of text locally: A→Z, Z→A, unique, numeric sort.",
-      mainHtml
-    });
+  <div class="sidebar-overlay"></div>
 
-    const $ = (id) => document.getElementById(id);
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const $ = (id) => document.getElementById(id);
 
-    function getLines() {
-      const raw = ($("input").value || "").split(/\r\n|\r|\n/);
-      const trim = $("trim").checked;
-      let lines = raw.map(s => trim ? s.trim() : s);
-      lines = lines.filter(s => s.length > 0);
-      if ($("unique").checked) {
-        const seen = new Set();
-        lines = lines.filter(s => {
-          const k = $("ignoreCase").checked ? s.toLowerCase() : s;
-          if (seen.has(k)) return false;
-          seen.add(k);
-          return true;
-        });
+      function getMode() {
+        return document.querySelector('input[name="mode"]:checked')?.value || "az";
       }
-      return lines;
-    }
 
-    function sortLines(dir) {
-      const lines = getLines();
-      const numeric = $("numeric").checked;
-      const ignoreCase = $("ignoreCase").checked;
+      function sortLines() {
+        const raw = $("in").value || "";
+        let lines = raw.replace(/\r\n/g, "\n").replace(/\r/g, "\n").split("\n");
 
-      lines.sort((a,b) => {
-        if (numeric) {
-          const na = Number(a), nb = Number(b);
-          if (!Number.isNaN(na) && !Number.isNaN(nb)) return na - nb;
+        if ($("trim").checked) lines = lines.map(s => s.trim());
+        if ($("removeEmpty").checked) lines = lines.filter(s => s.length > 0);
+
+        const ignoreCase = $("ignoreCase").checked;
+        const unique = $("unique").checked;
+        const mode = getMode();
+
+        if (unique) {
+          const seen = new Set();
+          const out = [];
+          for (const s of lines) {
+            const k = ignoreCase ? s.toLowerCase() : s;
+            if (seen.has(k)) continue;
+            seen.add(k);
+            out.push(s);
+          }
+          lines = out;
         }
-        const aa = ignoreCase ? a.toLowerCase() : a;
-        const bb = ignoreCase ? b.toLowerCase() : b;
-        return aa.localeCompare(bb);
+
+        const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: ignoreCase ? "base" : "variant" });
+
+        function asNumber(s) {
+          const n = Number(String(s).replace(/,/g, ""));
+          return Number.isFinite(n) ? n : null;
+        }
+
+        if (mode === "az") {
+          lines.sort((a,b) => collator.compare(a,b));
+        } else if (mode === "za") {
+          lines.sort((a,b) => collator.compare(b,a));
+        } else if (mode === "num-asc" || mode === "num-desc") {
+          const dir = (mode === "num-asc") ? 1 : -1;
+          lines.sort((a,b) => {
+            const na = asNumber(a), nb = asNumber(b);
+            if (na !== null && nb !== null) return dir * (na - nb);
+            if (na !== null && nb === null) return -1;
+            if (na === null && nb !== null) return 1;
+            return dir * collator.compare(a,b);
+          });
+        }
+
+        $("out").value = lines.join("\n");
+        $("count").textContent = String(lines.length);
+      }
+
+      $("run").addEventListener("click", sortLines);
+      $("in").addEventListener("input", sortLines);
+
+      document.querySelectorAll('input[name="mode"], #trim, #ignoreCase, #unique, #removeEmpty')
+        .forEach(el => el.addEventListener("change", sortLines));
+
+      $("copy").addEventListener("click", async () => {
+        try { await navigator.clipboard.writeText($("out").value || ""); }
+        catch { $("out").focus(); $("out").select(); document.execCommand("copy"); }
       });
 
-      if (dir === "za") lines.reverse();
-      $("output").value = lines.join("\\n");
-    }
+      $("swap").addEventListener("click", () => {
+        const a = $("in").value || "";
+        const b = $("out").value || "";
+        $("in").value = b;
+        $("out").value = a;
+        sortLines();
+      });
 
-    document.querySelectorAll("button[data-sort]").forEach(btn => {
-      btn.addEventListener("click", () => sortLines(btn.dataset.sort));
-    });
+      $("clear").addEventListener("click", () => {
+        $("in").value = "";
+        $("out").value = "";
+        $("count").textContent = "0";
+        $("in").focus();
+      });
 
-    $("clear").addEventListener("click", () => { $("input").value = ""; $("output").value = ""; });
-
-    $("copy").addEventListener("click", async () => {
-      try { await navigator.clipboard.writeText($("output").value || ""); }
-      catch { $("output").select(); document.execCommand("copy"); }
+      $("in").value = "banana\napple\norange\nbanana\n42\n7\n10";
+      sortLines();
     });
   </script>
 </body>
