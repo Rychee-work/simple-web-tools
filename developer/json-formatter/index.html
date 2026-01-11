@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>JSON Formatter | Simple Web Tools</title>
+  <meta name="description" content="Format, minify, and validate JSON locally in your browser." />
+  <meta name="page-type" content="tool" />
+  <meta name="page-category" content="developer" />
+  <link rel="canonical" href="/developer/json-formatter/" />
+
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+  <script defer src="/assets/js/tools-ui.js"></script>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5493851170081090"
+    crossorigin="anonymous"></script>
+
+  <style>
+    /* small tool-only tweaks without touching global CSS */
+    .kv { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .kv .pill { display:flex; align-items:center; gap:8px; }
+    .msg-ok { color: #0f766e; font-weight: 600; }
+    .msg-err { color: #b91c1c; font-weight: 600; white-space: pre-wrap; }
+  </style>
+</head>
+
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a class="brand" href="/">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 5h5v5H5V5Zm9 0h5v5h-5V5ZM5 14h5v5H5v-5Zm9 0h5v5h-5v-5Z" fill="currentColor"/>
+          </svg>
+        </div>
+        <div><div>Simple Web Tools <span class="badge">beta</span></div></div>
+      </a>
+
+      <nav class="nav" aria-label="Legal">
+        <a href="/legal/privacy.html">Privacy</a>
+        <a href="/legal/terms.html">Terms</a>
+        <a href="/legal/contact.html">Contact</a>
+      </nav>
+
+      <button class="menu-btn" type="button" aria-label="Open categories" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="layout">
+      <aside class="sidebar" aria-label="Categories">
+        <div class="card">
+          <div class="section-title">
+            <h2>Categories</h2>
+            <a class="hint" href="/">All tools</a>
+          </div>
+          <div class="cat-list" id="sidebar-categories"></div>
+        </div>
+
+        <div class="card" style="margin-top:14px;">
+          <h2 style="margin-top:0;">Support</h2>
+          <p style="color:var(--muted);margin:8px 0 0;">This site is supported by ads.</p>
+          <div class="ad-slot" style="margin-top:12px;">Ad space</div>
+        </div>
+      </aside>
+
+      <div class="main">
+        <section class="hero">
+          <div class="breadcrumbs" id="breadcrumbs"></div>
+          <h1>JSON Formatter</h1>
+          <p>Format, minify, and validate JSON — locally.</p>
+        </section>
+
+        <section class="grid" aria-label="JSON Formatter">
+          <div class="card">
+            <label class="label">Input JSON</label>
+            <textarea id="in" class="textarea" rows="12" placeholder='{"hello":"world"}'></textarea>
+
+            <div class="row wrap" style="margin-top:12px;">
+              <label class="pill">Indent:
+                <input id="indent" type="number" min="0" max="8" value="2" style="width:80px;">
+              </label>
+              <label class="pill"><input id="sortKeys" type="checkbox"> Sort keys</label>
+              <label class="pill"><input id="keepUnicode" type="checkbox" checked> Keep Unicode</label>
+            </div>
+
+            <div class="row wrap" style="margin-top:12px;">
+              <button class="btn" id="format">Format</button>
+              <button class="btn" id="minify">Minify</button>
+              <button class="btn" id="validate">Validate</button>
+              <button class="btn" id="copy">Copy</button>
+              <button class="btn" id="clear">Clear</button>
+            </div>
+
+            <div class="row wrap" style="margin-top:12px;">
+              <div class="stat"><span>Status</span><b id="status">-</b></div>
+              <div class="stat"><span>Size (chars)</span><b id="size">0</b></div>
+            </div>
+
+            <label class="label" style="margin-top:14px;">Output</label>
+            <textarea id="out" class="textarea" rows="12" readonly></textarea>
+
+            <p class="muted" style="margin-top:12px;">No upload. JSON is processed in your browser.</p>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <div class="sidebar-overlay"></div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const $ = (id) => document.getElementById(id);
+
+      function updateMeta(text, ok, msg) {
+        $("size").textContent = String((text || "").length);
+        $("status").textContent = msg || (ok ? "OK" : "Error");
+        $("status").className = ok ? "msg-ok" : "msg-err";
+      }
+
+      function stableSort(obj) {
+        if (Array.isArray(obj)) return obj.map(stableSort);
+        if (obj && typeof obj === "object") {
+          const out = {};
+          Object.keys(obj).sort().forEach(k => { out[k] = stableSort(obj[k]); });
+          return out;
+        }
+        return obj;
+      }
+
+      function parseJSON() {
+        const raw = $("in").value || "";
+        try {
+          const v = JSON.parse(raw);
+          return { ok: true, value: v, error: "" };
+        } catch (e) {
+          return { ok: false, value: null, error: String(e && e.message ? e.message : e) };
+        }
+      }
+
+      function stringify(value, indent) {
+        // keepUnicode: if unchecked, escape non-ascii
+        let s = JSON.stringify(value, null, indent);
+        if (!$("keepUnicode").checked) {
+          s = s.replace(/[^\x00-\x7F]/g, (c) => "\\u" + c.charCodeAt(0).toString(16).padStart(4, "0"));
+        }
+        return s;
+      }
+
+      function doFormat() {
+        const { ok, value, error } = parseJSON();
+        if (!ok) {
+          $("out").value = "";
+          updateMeta("", false, error);
+          return;
+        }
+        const indent = Math.max(0, Math.min(8, Number($("indent").value || 2)));
+        const v2 = $("sortKeys").checked ? stableSort(value) : value;
+        const out = stringify(v2, indent);
+        $("out").value = out;
+        updateMeta(out, true, "OK");
+      }
+
+      function doMinify() {
+        const { ok, value, error } = parseJSON();
+        if (!ok) {
+          $("out").value = "";
+          updateMeta("", false, error);
+          return;
+        }
+        const v2 = $("sortKeys").checked ? stableSort(value) : value;
+        const out = stringify(v2, 0);
+        $("out").value = out;
+        updateMeta(out, true, "OK");
+      }
+
+      function doValidate() {
+        const { ok, error } = parseJSON();
+        if (ok) {
+          updateMeta($("in").value || "", true, "Valid JSON");
+        } else {
+          updateMeta($("in").value || "", false, error);
+        }
+      }
+
+      $("format").addEventListener("click", doFormat);
+      $("minify").addEventListener("click", doMinify);
+      $("validate").addEventListener("click", doValidate);
+
+      $("copy").addEventListener("click", async () => {
+        const text = $("out").value || "";
+        try { await navigator.clipboard.writeText(text); }
+        catch { $("out").focus(); $("out").select(); document.execCommand("copy"); }
+      });
+
+      $("clear").addEventListener("click", () => {
+        $("in").value = "";
+        $("out").value = "";
+        updateMeta("", true, "-");
+        $("in").focus();
+      });
+
+      $("in").addEventListener("input", () => {
+        $("size").textContent = String(($("in").value || "").length);
+        $("status").textContent = "-";
+        $("status").className = "";
+      });
+
+      $("in").value = '{"name":"Simple Web Tools","features":["fast","local","private"],"meta":{"version":1}}';
+      doFormat();
+    });
+  </script>
+</body>
+</html>

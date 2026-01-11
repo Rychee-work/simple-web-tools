@@ -66,5 +66,29 @@
     "slug": "text-sorter",
     "title": "Text Sorter",
     "description": "Sort lines A→Z / Z→A, unique, numeric sort — locally."
+  },
+  {
+    "category": "developer",
+    "slug": "json-formatter",
+    "title": "JSON Formatter",
+    "description": "Format, minify, and validate JSON locally in your browser."
+  },
+  {
+    "category": "developer",
+    "slug": "base64-encoder-decoder",
+    "title": "Base64 Encode / Decode",
+    "description": "Encode or decode Base64 locally in your browser (UTF-8 safe)."
+  },
+  {
+    "category": "developer",
+    "slug": "url-encoder-decoder",
+    "title": "URL Encoder / Decoder",
+    "description": "Encode or decode URL components locally in your browser."
+  },
+  {
+    "category": "developer",
+    "slug": "hash-generator",
+    "title": "Hash Generator",
+    "description": "Generate hashes locally (SHA family via Web Crypto). MD5 via lightweight JS."
   }
 ]

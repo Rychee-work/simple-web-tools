@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>URL Encoder / Decoder | Simple Web Tools</title>
+  <meta name="description" content="Encode or decode URL components locally in your browser." />
+  <meta name="page-type" content="tool" />
+  <meta name="page-category" content="developer" />
+  <link rel="canonical" href="/developer/url-encoder-decoder/" />
+
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+  <script defer src="/assets/js/tools-ui.js"></script>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5493851170081090"
+    crossorigin="anonymous"></script>
+
+  <style>
+    .msg-ok { color:#0f766e; font-weight:600; }
+    .msg-err { color:#b91c1c; font-weight:600; white-space:pre-wrap; }
+  </style>
+</head>
+
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a class="brand" href="/">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 5h5v5H5V5Zm9 0h5v5h-5V5ZM5 14h5v5H5v-5Zm9 0h5v5h-5v-5Z" fill="currentColor"/>
+          </svg>
+        </div>
+        <div><div>Simple Web Tools <span class="badge">beta</span></div></div>
+      </a>
+
+      <nav class="nav" aria-label="Legal">
+        <a href="/legal/privacy.html">Privacy</a>
+        <a href="/legal/terms.html">Terms</a>
+        <a href="/legal/contact.html">Contact</a>
+      </nav>
+
+      <button class="menu-btn" type="button" aria-label="Open categories" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="layout">
+      <aside class="sidebar" aria-label="Categories">
+        <div class="card">
+          <div class="section-title">
+            <h2>Categories</h2>
+            <a class="hint" href="/">All tools</a>
+          </div>
+          <div class="cat-list" id="sidebar-categories"></div>
+        </div>
+
+        <div class="card" style="margin-top:14px;">
+          <h2 style="margin-top:0;">Support</h2>
+          <p style="color:var(--muted);margin:8px 0 0;">This site is supported by ads.</p>
+          <div class="ad-slot" style="margin-top:12px;">Ad space</div>
+        </div>
+      </aside>
+
+      <div class="main">
+        <section class="hero">
+          <div class="breadcrumbs" id="breadcrumbs"></div>
+          <h1>URL Encoder / Decoder</h1>
+          <p>Encode or decode URL components — locally.</p>
+        </section>
+
+        <section class="grid" aria-label="URL Encoder Decoder">
+          <div class="card">
+            <label class="label">Mode</label>
+            <div class="row wrap">
+              <label class="pill"><input type="radio" name="mode" value="component" checked> encodeURIComponent</label>
+              <label class="pill"><input type="radio" name="mode" value="uri"> encodeURI</label>
+            </div>
+
+            <div class="tool-grid" style="margin-top:12px;">
+              <div class="card">
+                <label class="label">Input</label>
+                <textarea id="in" class="textarea" rows="9" placeholder="e.g. hello world?x=1&y=2"></textarea>
+
+                <div class="row wrap" style="margin-top:12px;">
+                  <button class="btn" id="encode">Encode →</button>
+                  <button class="btn" id="decode">Decode →</button>
+                  <button class="btn" id="swap">Swap</button>
+                  <button class="btn" id="clear">Clear</button>
+                </div>
+
+                <div class="stat" style="margin-top:12px;"><span>Status</span><b id="status">-</b></div>
+              </div>
+
+              <div class="card">
+                <label class="label">Output</label>
+                <textarea id="out" class="textarea" rows="9" readonly></textarea>
+                <div class="row wrap" style="margin-top:12px;">
+                  <button class="btn" id="copyOut">Copy Output</button>
+                </div>
+              </div>
+            </div>
+
+            <p class="muted" style="margin-top:12px;">Use “encodeURIComponent” for query values, and “encodeURI” for full URLs.</p>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <div class="sidebar-overlay"></div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const $ = (id) => document.getElementById(id);
+
+      function setStatus(ok, msg) {
+        $("status").textContent = msg;
+        $("status").className = ok ? "msg-ok" : "msg-err";
+      }
+
+      function mode() {
+        return document.querySelector('input[name="mode"]:checked')?.value || "component";
+      }
+
+      $("encode").addEventListener("click", () => {
+        try {
+          const v = $("in").value || "";
+          const out = (mode() === "uri") ? encodeURI(v) : encodeURIComponent(v);
+          $("out").value = out;
+          setStatus(true, "OK (encoded)");
+        } catch (e) {
+          $("out").value = "";
+          setStatus(false, String(e && e.message ? e.message : e));
+        }
+      });
+
+      $("decode").addEventListener("click", () => {
+        try {
+          const v = $("in").value || "";
+          // decode based on mode choice
+          const out = (mode() === "uri") ? decodeURI(v) : decodeURIComponent(v);
+          $("out").value = out;
+          setStatus(true, "OK (decoded)");
+        } catch (e) {
+          $("out").value = "";
+          setStatus(false, "Invalid encoding for selected mode.");
+        }
+      });
+
+      $("swap").addEventListener("click", () => {
+        const a = $("in").value || "";
+        const b = $("out").value || "";
+        $("in").value = b;
+        $("out").value = a;
+        setStatus(true, "-");
+      });
+
+      $("clear").addEventListener("click", () => {
+        $("in").value = "";
+        $("out").value = "";
+        setStatus(true, "-");
+        $("in").focus();
+      });
+
+      $("copyOut").addEventListener("click", async () => {
+        try { await navigator.clipboard.writeText($("out").value || ""); }
+        catch { $("out").focus(); $("out").select(); document.execCommand("copy"); }
+      });
+
+      $("in").value = "hello world?x=1&y=2";
+      $("encode").click();
+    });
+  </script>
+</body>
+</html>
