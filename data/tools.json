@@ -10,5 +10,61 @@
     "slug": "split",
     "title": "Split PDF",
     "description": "Split a PDF into pages or page ranges — in your browser."
+  },
+
+  {
+    "category": "utility",
+    "slug": "uuid-generator",
+    "title": "UUID Generator",
+    "description": "Generate UUID v4 locally in your browser."
+  },
+  {
+    "category": "utility",
+    "slug": "unix-timestamp-converter",
+    "title": "Unix Timestamp Converter",
+    "description": "Convert Unix timestamps (seconds/milliseconds) to date-time and back."
+  },
+  {
+    "category": "utility",
+    "slug": "password-generator",
+    "title": "Password Generator",
+    "description": "Generate strong passwords with options for length and character sets."
+  },
+  {
+    "category": "utility",
+    "slug": "qr-code-generator",
+    "title": "QR Code Generator",
+    "description": "Generate QR codes locally and download as PNG."
+  },
+
+  {
+    "category": "text",
+    "slug": "word-counter",
+    "title": "Word Counter",
+    "description": "Count words, characters, sentences and paragraphs — locally."
+  },
+  {
+    "category": "text",
+    "slug": "char-counter",
+    "title": "Character Counter",
+    "description": "Count characters, lines, and UTF-8 bytes — locally."
+  },
+  {
+    "category": "text",
+    "slug": "case-converter",
+    "title": "Case Converter",
+    "description": "Convert text case: upper, lower, title, sentence, snake, kebab."
+  },
+  {
+    "category": "text",
+    "slug": "remove-line-breaks",
+    "title": "Remove Line Breaks",
+    "description": "Remove line breaks and flatten text — locally in your browser."
+  },
+  {
+    "category": "text",
+    "slug": "text-sorter",
+    "title": "Text Sorter",
+    "description": "Sort lines A→Z / Z→A, unique, numeric sort — locally."
   }
 ]
