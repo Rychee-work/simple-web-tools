@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Simple Web Tools — Fast, simple, private</title>
+  <meta name="description"
+        content="Free online tools. Many tools run locally in your browser — we don't upload your files to a server." />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+
+  <!-- AdSense (keep) -->
+  <script async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5493851170081090"
+          crossorigin="anonymous"></script>
+
+  <!-- UI JS -->
+  <script defer src="/assets/js/tools-ui.js"></script>
+</head>
+
+<body>
+
+<!-- ===== Header ===== -->
+<header class="header">
+  <div class="header-inner">
+    <a class="brand" href="/">
+      <div class="logo">FT</div>
+      <div>
+        <div>
+          Simple Web Tools <span class="badge">beta</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- PC nav -->
+    <nav class="nav" aria-label="Legal">
+      <a href="/legal/privacy.html">Privacy</a>
+      <a href="/legal/terms.html">Terms</a>
+      <a href="/legal/contact.html">Contact</a>
+    </nav>
+
+    <!-- Mobile menu button (JSで有効化) -->
+    <button class="menu-btn" aria-label="Open menu" aria-expanded="false">
+      ☰
+    </button>
+  </div>
+</header>
+
+<!-- ===== Main ===== -->
+<main class="container">
+  <div class="layout">
+
+    <!-- ===== Sidebar ===== -->
+    <aside class="sidebar" aria-label="Categories">
+
+      <!-- Categories -->
+      <div class="card">
+        <div class="section-title">
+          <h2>Categories</h2>
+          <a class="hint" href="/">All tools</a>
+        </div>
+
+        <div class="cat-list" id="sidebar-categories">
+          <!-- JSで挿入 -->
+        </div>
+      </div>
+
+      <!-- Support -->
+      <div class="card" style="margin-top:14px;">
+        <h2 style="margin-top:0;">Support</h2>
+        <p style="color:var(--muted);margin:8px 0 0;">
+          This site is supported by ads.
+        </p>
+        <div class="ad-slot" style="margin-top:12px;">
+          Ad space
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- ===== Main content ===== -->
+    <div class="main">
+
+      <!-- Hero -->
+      <section class="hero">
+        <h1>Free Online Tools</h1>
+        <p>
+          Simple utilities that feel safe to use.
+          Many tools process files <strong>locally in your browser</strong> —
+          we don’t upload your files to a server.
+        </p>
+        <div class="note">
+          Tip: Bookmark this page — more tools will be added regularly.
+        </div>
+      </section>
+
+      <!-- Tools grid -->
+      <section class="grid" aria-label="Tools" id="home-grid">
+        <!-- JSで挿入 -->
+      </section>
+
+    </div>
+  </div>
+</main>
+
+<!-- Drawer overlay (420px以下で使用) -->
+<div class="sidebar-overlay" hidden></div>
+
+<!-- ===== Footer ===== -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div>© 2026 Simple Web Tools</div>
+    <div>
+      <a href="/legal/privacy.html">Privacy</a> ·
+      <a href="/legal/terms.html">Terms</a> ·
+      <a href="/legal/contact.html">Contact</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

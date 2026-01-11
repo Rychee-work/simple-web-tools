@@ -244,7 +244,7 @@
 
     // if leaving phone width, ensure closed
     window.addEventListener('resize', () => {
-      if(window.innerWidth > 560) document.body.classList.remove('sidebar-open');
+      if(window.innerWidth > 420) document.body.classList.remove('sidebar-open');
     });
   }
 
