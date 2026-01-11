@@ -1,79 +1,312 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Simple Web Tools — Fast, simple, private</title>
-  <meta name="description" content="Free online tools. Many tools run locally in your browser — we don't upload your files to a server." />
-  <link rel="stylesheet" href="/assets/css/styles.css" />
+:root{
+  --bg:#f6f7fb;
+  --card:#ffffff;
+  --text:#111827;
+  --muted:#6b7280;
+  --border:#e5e7eb;
+  --accent:#2563eb;
+  --radius:14px;
+  --shadow:0 10px 28px rgba(0,0,0,.06);
+}
 
-  <!-- AdSense (keep this) -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5493851170081090"
-    crossorigin="anonymous"></script>
-  <script defer src="/assets/js/tools-ui.js"></script>
-</head>
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
 
-<body>
-  <header class="header">
-    <div class="header-inner">
-      <a class="brand" href="/">
-        <div class="logo">FT</div>
-        <div>
-          <div>Simple Web Tools <span class="badge">beta</span></div>
-        </div>
-      </a>
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
 
-      <nav class="nav" aria-label="Legal">
-        <a href="/legal/privacy.html">Privacy</a>
-        <a href="/legal/terms.html">Terms</a>
-        <a href="/legal/contact.html">Contact</a>
-      </nav>
-    </div>
-  </header>
+.container{
+  max-width:1100px;
+  margin:0 auto;
+  padding:18px 18px 46px;
+}
 
-  <main class="container">
-    <div class="layout">
-      <aside class="sidebar">
-        <div class="card">
-          <div class="section-title">
-            <h2>Categories</h2>
-            <a class="hint" href="/">All tools</a>
-          </div>
-          <div class="cat-list" id="sidebar-categories"></div>
-        </div>
+/* Header */
+.header{
+  position:sticky;
+  top:0;
+  z-index:50;
+  background:rgba(246,247,251,.86);
+  backdrop-filter:saturate(1.2) blur(10px);
+  border-bottom:1px solid rgba(229,231,235,.7);
+}
+.header-inner{
+  max-width:1100px;
+  margin:0 auto;
+  padding:14px 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-width:190px;
+}
+.logo{
+  width:34px;height:34px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  font-weight:800;
+  color:#fff;
+  background:var(--text);
+}
+.badge{
+  display:inline-block;
+  margin-left:8px;
+  font-size:12px;
+  padding:2px 8px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  color:var(--muted);
+  background:#fff;
+}
+.nav{
+  display:flex;
+  gap:14px;
+  align-items:center;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+.nav a{
+  color:var(--muted);
+  font-weight:600;
+  text-decoration:none;
+}
+.nav a:hover{color:var(--text)}
 
-        <div class="card" style="margin-top:14px;">
-          <h2 style="margin-top:0;">Support</h2>
-          <p style="color:var(--muted);margin:8px 0 0;">This site is supported by ads.</p>
-          <div class="ad-slot" style="margin-top:12px;">Ad space</div>
-        </div>
-      </aside>
+/* Mobile menu button (JS inserts) */
+.menu-btn{
+  display:none;
+  align-items:center;
+  justify-content:center;
+  width:40px;
+  height:40px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:#fff;
+  color:var(--text);
+  cursor:pointer;
+}
+.menu-btn svg{width:18px;height:18px}
 
-      <div class="main">
-        <section class="hero">
-          <h1>Free Online Tools</h1>
-          <p>
-            Simple utilities that feel safe to use.
-            Many tools process files <strong>locally in your browser</strong> — we don’t upload your files to a server.
-          </p>
-          <div class="note">Tip: Bookmark this page — more tools will be added regularly.</div>
-        </section>
+/* Layout: Sidebar + Main */
+.layout{
+  display:grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap:16px;
+  align-items:start;
+}
+@media (max-width: 900px){
+  .layout{grid-template-columns:220px minmax(0,1fr); gap:12px;}
+}
+@media (max-width: 720px){
+  .layout{grid-template-columns:200px minmax(0,1fr); gap:10px;}
+}
 
-        <section class="grid" aria-label="Tools" id="home-grid"></section>
-      </div>
-    </div>
-  </main>
+/* Sidebar (desktop/tablet) */
+.sidebar{
+  position: sticky;
+  top: 88px;
+  max-height: calc(100vh - 88px - 18px);
+  overflow: auto;
+}
+.main{min-width:0}
 
-  <footer class="footer">
-    <div class="footer-inner">
-      <div>© 2026 Simple Web Tools</div>
-      <div>
-        <a href="/legal/privacy.html">Privacy</a> ·
-        <a href="/legal/terms.html">Terms</a> ·
-        <a href="/legal/contact.html">Contact</a>
-      </div>
-    </div>
-  </footer>
+/* ===== Drawer (420px and below) ===== */
+@media (max-width: 420px){
+  .nav{display:none}
+  .menu-btn{display:inline-flex}
 
-</body>
-</html>
+  .layout{grid-template-columns: 1fr;}
+
+  /* hidden by default, shown only when body.sidebar-open */
+  .sidebar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: min(88vw, 360px);
+    max-height: none;
+    overflow: auto;
+    transform: translateX(-110%);
+    transition: transform .18s ease;
+    z-index: 200;
+    padding: 14px;
+    background: var(--bg);
+    box-shadow: var(--shadow);
+  }
+  body.sidebar-open .sidebar{
+    transform: translateX(0);
+  }
+
+  /* overlay */
+  .sidebar-overlay{
+    position: fixed;
+    inset: 0;
+    background: rgba(17,24,39,.42);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .18s ease;
+    z-index: 150;
+  }
+  body.sidebar-open .sidebar-overlay{
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  body.sidebar-open{ overflow: hidden; }
+}
+
+.cat-list{
+  display:grid;
+  gap:10px;
+  margin-top:10px;
+}
+.cat{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px 12px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:#fff;
+  font-weight:800;
+  color:var(--text);
+}
+.cat:hover{background:#f9fafb;text-decoration:none}
+.cat small{
+  color:var(--muted);
+  font-weight:700;
+}
+
+.card{
+  background:var(--card);
+  border:1px solid rgba(229,231,235,.85);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:18px;
+}
+.hero{
+  padding:26px;
+  border-radius:18px;
+  border:1px solid rgba(229,231,235,.8);
+  background:linear-gradient(180deg,#ffffff 0%, #fbfbfe 100%);
+  box-shadow:var(--shadow);
+}
+.hero h1{
+  font-size:44px;
+  letter-spacing:-.02em;
+  margin:0 0 8px;
+}
+.hero p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.6;
+  max-width:62ch;
+}
+.note{
+  margin-top:14px;
+  padding:10px 12px;
+  border-radius:12px;
+  border:1px dashed rgba(229,231,235,.9);
+  color:var(--muted);
+  background:#fff;
+}
+
+.section-title{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:12px;
+}
+.section-title h2{
+  margin:0;
+  font-size:20px;
+  letter-spacing:-.01em;
+}
+.hint{
+  color:var(--muted);
+  font-weight:700;
+  font-size:13px;
+}
+
+.grid{
+  margin-top:16px;
+  display:grid;
+  gap:16px;
+}
+.tool-list{display:grid; gap:12px;}
+.tool{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:14px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background:#fff;
+}
+.tool .left{min-width:0}
+.name{margin:0; font-weight:900;}
+.desc{margin:6px 0 0; color:var(--muted); line-height:1.4;}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--text);
+  text-decoration:none;
+  font-weight:800;
+  padding:10px 14px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background:#fff;
+  white-space:nowrap;
+}
+.btn:hover{text-decoration:none}
+.btn.primary{
+  background:var(--accent);
+  color:#fff;
+  border-color:transparent;
+}
+.btn.primary:hover{filter:brightness(.98)}
+.btn.disabled{opacity:.6; pointer-events:none;}
+
+.ad-slot{
+  border:1px dashed rgba(229,231,235,.9);
+  border-radius:14px;
+  padding:18px;
+  color:var(--muted);
+  background:#fff;
+}
+
+/* Footer */
+.footer{
+  border-top:1px solid rgba(229,231,235,.8);
+  margin-top:30px;
+  background:transparent;
+}
+.footer-inner{
+  max-width:1100px;
+  margin:0 auto;
+  padding:18px 18px 26px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  color:var(--muted);
+  flex-wrap:wrap;
+}
+.footer a{color:var(--muted);font-weight:700}
+.footer a:hover{color:var(--text)}
