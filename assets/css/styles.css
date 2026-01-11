@@ -84,38 +84,91 @@ a:hover{text-decoration:underline}
 }
 .nav a:hover{color:var(--text)}
 
+/* Mobile: header menu button (injected by JS) */
+.menu-btn{
+  display:none;
+  align-items:center;
+  justify-content:center;
+  width:40px;
+  height:40px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:#fff;
+  color:var(--text);
+  cursor:pointer;
+}
+.menu-btn:hover{filter:brightness(.99)}
+.menu-btn svg{width:18px;height:18px}
+
 /* Layout: Sidebar + Main (100 tools ready) */
 .layout{
   display:grid;
-  grid-template-columns: 260px 1fr;
+  grid-template-columns: 260px minmax(0, 1fr);
   gap:16px;
   align-items:start;
 }
 
-/* ★変更：狭い画面でも「サイドバー + メイン」の2カラムを維持 */
+/* Tablet: keep sidebar layout, just shrink it */
 @media (max-width: 900px){
-  .layout{
-    grid-template-columns: 220px 1fr;
-    gap:12px;
-  }
+  .layout{grid-template-columns: 220px minmax(0, 1fr); gap:12px;}
 }
 @media (max-width: 720px){
-  .layout{
-    grid-template-columns: 200px 1fr;
-    gap:10px;
-  }
+  .layout{grid-template-columns: 200px minmax(0, 1fr); gap:10px;}
 }
 
-/* ★変更：stickyは維持しつつ、sidebar内だけスクロールできるようにする */
 .sidebar{
   position: sticky;
   top: 88px; /* header height */
 
+  /* When the list is long, scroll inside the sidebar (desktop/tablet) */
   max-height: calc(100vh - 88px - 18px);
   overflow: auto;
 }
-
 .main{min-width:0}
+
+/* ===== Phone UI (drawer) =====
+   On phones, a fixed left sidebar wastes too much width.
+   We keep the "sidebar" concept, but it becomes an off-canvas drawer.
+*/
+@media (max-width: 560px){
+  .header-inner{gap:10px}
+  .brand{min-width:auto}
+  .nav{display:none}
+  .menu-btn{display:inline-flex}
+
+  .layout{grid-template-columns: 1fr;}
+
+  .sidebar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: min(88vw, 360px);
+    max-height: none;
+    overflow: auto;
+    transform: translateX(-110%);
+    transition: transform .18s ease;
+    z-index: 200;
+    padding: 14px;
+    background: var(--bg);
+  }
+
+  body.sidebar-open .sidebar{transform: translateX(0)}
+
+  .sidebar-overlay{
+    position: fixed;
+    inset: 0;
+    background: rgba(17,24,39,.42);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .18s ease;
+    z-index: 150;
+  }
+  body.sidebar-open .sidebar-overlay{
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
 
 .cat-list{
   display:grid;

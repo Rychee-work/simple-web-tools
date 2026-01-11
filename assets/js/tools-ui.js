@@ -211,8 +211,52 @@
     }
   }
 
+  // ===== Mobile sidebar drawer (minimal JS) =====
+  function injectMobileMenu(){
+    const headerInner = document.querySelector('.header-inner');
+    const sidebar = document.querySelector('aside.sidebar');
+    if(!headerInner || !sidebar) return;
+
+    // Overlay (for closing)
+    if(!document.querySelector('.sidebar-overlay')){
+      const ov = document.createElement('div');
+      ov.className = 'sidebar-overlay';
+      ov.addEventListener('click', () => document.body.classList.remove('sidebar-open'));
+      document.body.appendChild(ov);
+    }
+
+    // Button (only visible via CSS on small screens)
+    if(!headerInner.querySelector('.menu-btn')){
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'menu-btn';
+      btn.setAttribute('aria-label', 'Open categories');
+      btn.innerHTML = `
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>`;
+      btn.addEventListener('click', () => {
+        document.body.classList.toggle('sidebar-open');
+      });
+
+      // Put it to the right side of header (after nav). If nav is hidden on mobile, it's still fine.
+      headerInner.appendChild(btn);
+    }
+
+    // Close drawer on Escape
+    window.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape') document.body.classList.remove('sidebar-open');
+    });
+
+    // Close drawer when leaving phone breakpoint
+    window.addEventListener('resize', () => {
+      if(window.innerWidth > 560) document.body.classList.remove('sidebar-open');
+    });
+  }
+
   // Boot
   document.addEventListener('DOMContentLoaded', async () => {
+    injectMobileMenu();
     const tools = await loadTools();
     const categoriesMap = groupByCategory(tools);
 
