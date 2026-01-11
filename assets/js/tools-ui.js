@@ -16,11 +16,9 @@
     { key: "ai-fun",  label: "AI / Fun" },
   ];
 
-  function $(sel){ return document.querySelector(sel); }
   function el(tag, cls){ const e=document.createElement(tag); if(cls) e.className=cls; return e; }
 
   function getPathParts(){
-    // "/pdf/merge/" -> ["pdf","merge"]
     const parts = location.pathname.replace(/\/+$/,'').split('/').filter(Boolean);
     return parts;
   }
@@ -45,7 +43,6 @@
       if(!m.has(t.category)) m.set(t.category, []);
       m.get(t.category).push(t);
     }
-    // stable order by title
     for(const [k,arr] of m.entries()){
       arr.sort((a,b)=>String(a.title||"").localeCompare(String(b.title||""), undefined, { sensitivity: "base" }));
     }
@@ -81,7 +78,6 @@
   }
 
   function ensureSupportCard(){
-    // If a page forgot to include it, inject it (safety net)
     const sidebar = document.querySelector('aside.sidebar');
     if(!sidebar) return;
     if(sidebar.querySelector('.ad-slot')) return;
@@ -128,8 +124,6 @@
 
     for(const c of CATEGORY_LABELS){
       const tools = categoriesMap.get(c.key) || [];
-
-      // Skip empty categories on home to keep it clean
       if(tools.length === 0) continue;
 
       const card = el('div','card');
@@ -192,18 +186,14 @@
     if(parts.length >= 1){
       const cat = parts[0];
       const catLabel = (CATEGORY_LABELS.find(x=>x.key===cat)?.label) || cat;
-      const sep1 = document.createTextNode("  ›  ");
-      bc.appendChild(sep1);
-
+      bc.appendChild(document.createTextNode("  ›  "));
       const aCat = el('a'); aCat.href = `/${cat}/`; aCat.textContent = catLabel;
       bc.appendChild(aCat);
 
       if(parts.length >= 2){
         const slug = parts[1];
         const t = (categoriesMap.get(cat) || []).find(x=>x.slug===slug);
-        const sep2 = document.createTextNode("  ›  ");
-        bc.appendChild(sep2);
-
+        bc.appendChild(document.createTextNode("  ›  "));
         const cur = el('span');
         cur.textContent = (t && t.title) ? t.title : slug;
         bc.appendChild(cur);
@@ -211,13 +201,13 @@
     }
   }
 
-  // ===== Mobile sidebar drawer (minimal JS) =====
+  /* ===== Mobile drawer (minimal JS) ===== */
   function injectMobileMenu(){
     const headerInner = document.querySelector('.header-inner');
     const sidebar = document.querySelector('aside.sidebar');
     if(!headerInner || !sidebar) return;
 
-    // Overlay (for closing)
+    // overlay
     if(!document.querySelector('.sidebar-overlay')){
       const ov = document.createElement('div');
       ov.className = 'sidebar-overlay';
@@ -225,7 +215,7 @@
       document.body.appendChild(ov);
     }
 
-    // Button (only visible via CSS on small screens)
+    // button
     if(!headerInner.querySelector('.menu-btn')){
       const btn = document.createElement('button');
       btn.type = 'button';
@@ -238,17 +228,21 @@
       btn.addEventListener('click', () => {
         document.body.classList.toggle('sidebar-open');
       });
-
-      // Put it to the right side of header (after nav). If nav is hidden on mobile, it's still fine.
       headerInner.appendChild(btn);
     }
 
-    // Close drawer on Escape
+    // close when clicking a sidebar link (phone UX)
+    sidebar.addEventListener('click', (e) => {
+      const a = e.target.closest('a');
+      if(a) document.body.classList.remove('sidebar-open');
+    });
+
+    // ESC
     window.addEventListener('keydown', (e) => {
       if(e.key === 'Escape') document.body.classList.remove('sidebar-open');
     });
 
-    // Close drawer when leaving phone breakpoint
+    // if leaving phone width, ensure closed
     window.addEventListener('resize', () => {
       if(window.innerWidth > 560) document.body.classList.remove('sidebar-open');
     });
@@ -257,6 +251,7 @@
   // Boot
   document.addEventListener('DOMContentLoaded', async () => {
     injectMobileMenu();
+
     const tools = await loadTools();
     const categoriesMap = groupByCategory(tools);
 
