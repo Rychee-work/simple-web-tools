@@ -306,3 +306,15 @@ a:hover{text-decoration:underline}
   color:var(--muted);
   background:#fff;
 }
+
+/* ========== Tool layouts ========== */
+/* Two-column tool layout (Input/Output). */
+.tool-grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:16px;
+  align-items:start;
+}
+@media (max-width: 900px){
+  .tool-grid{ grid-template-columns: 1fr; }
+}
