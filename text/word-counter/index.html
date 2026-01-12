@@ -3,8 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+
   <title>Word Counter | Simple Web Tools</title>
-  <meta name="description" content="Count words, characters, sentences, paragraphs, and bytes locally in your browser." />
+  <meta name="description" content="Count words, characters, sentences, and paragraphs locally in your browser." />
   <meta name="page-type" content="tool" />
   <meta name="page-category" content="text" />
   <link rel="canonical" href="/text/word-counter/" />
@@ -14,6 +15,52 @@
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5493851170081090"
     crossorigin="anonymous"></script>
+
+  <style>
+    .textarea{
+      width:100%;
+      min-height:220px;
+      resize:vertical;
+      padding:14px;
+      border-radius:14px;
+      border:1px solid rgba(229,231,235,.95);
+      background:#fff;
+      outline:none;
+      font: inherit;
+      line-height:1.6;
+    }
+    .textarea:focus{
+      box-shadow: 0 0 0 3px rgba(37,99,235,.12);
+      border-color: rgba(37,99,235,.35);
+    }
+
+    .stats{
+      display:grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap:12px;
+      margin-top:12px;
+    }
+    @media (max-width: 900px){
+      .stats{grid-template-columns: repeat(2, minmax(0,1fr));}
+    }
+    .stat-card{
+      border:1px solid rgba(229,231,235,.9);
+      border-radius:14px;
+      padding:12px;
+      background:#fff;
+    }
+    .stat-card .label{color:var(--muted); font-weight:700; font-size:13px;}
+    .stat-card .value{font-size:22px; font-weight:900; margin-top:4px;}
+    .muted{color:var(--muted);}
+
+    .tool-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:14px;
+      align-items:center;
+    }
+  </style>
 </head>
 
 <body>
@@ -55,7 +102,7 @@
 
         <div class="card" style="margin-top:14px;">
           <h2 style="margin-top:0;">Support</h2>
-          <p style="color:var(--muted);margin:8px 0 0;">This site is supported by ads.</p>
+          <p class="muted" style="margin:8px 0 0;">This site is supported by ads.</p>
           <div class="ad-slot" style="margin-top:12px;">Ad space</div>
         </div>
       </aside>
@@ -64,32 +111,44 @@
         <section class="hero">
           <div class="breadcrumbs" id="breadcrumbs"></div>
           <h1>Word Counter</h1>
-          <p>Count words, characters, sentences, paragraphs — locally.</p>
-        </section>
+          <p>Count words, characters, sentences, and paragraphs — locally in your browser.</p>
+          <div class="note">Tip: Paste your text below. Nothing is uploaded.</div>
 
-        <section class="grid" aria-label="Word Counter">
-          <div class="card">
-            <label class="label">Text</label>
-            <textarea id="in" class="textarea" rows="10" placeholder="Paste or type your text here..."></textarea>
-
-            <div class="row wrap" style="margin-top:12px;">
-              <button class="btn" id="copy">Copy</button>
-              <button class="btn" id="clear">Clear</button>
-            </div>
-
-            <div style="margin-top:14px;">
-              <div class="stat"><span>Words</span><b id="words">0</b></div>
-              <div class="stat"><span>Characters (with spaces)</span><b id="chars">0</b></div>
-              <div class="stat"><span>Characters (no spaces)</span><b id="charsNoSpace">0</b></div>
-              <div class="stat"><span>Sentences</span><b id="sentences">0</b></div>
-              <div class="stat"><span>Paragraphs</span><b id="paragraphs">0</b></div>
-              <div class="stat"><span>Lines</span><b id="lines">0</b></div>
-              <div class="stat"><span>UTF-8 bytes</span><b id="bytes">0</b></div>
-            </div>
-
-            <p class="muted" style="margin-top:12px;">No upload. Everything runs in your browser.</p>
+          <div class="card" style="margin-top:14px;">
+            <div class="ad-slot">Ad space (after AdSense approval)</div>
           </div>
         </section>
+
+        <section class="grid" aria-label="Word Counter Tool">
+          <div class="card">
+            <h2 style="margin-top:0;">1) Input</h2>
+            <textarea id="in" class="textarea" placeholder="Paste or type your text here..."></textarea>
+
+            <div class="tool-actions">
+              <button class="btn primary action" id="countBtn">Count</button>
+              <button class="btn action" id="clearBtn">Clear</button>
+              <button class="btn action" id="copyBtn">Copy</button>
+            </div>
+
+            <p class="muted" style="margin-top:12px;">Counts update instantly when you type (or use Count).</p>
+          </div>
+
+          <div class="card">
+            <h2 style="margin-top:0;">2) Results</h2>
+
+            <div class="stats" role="status" aria-live="polite">
+              <div class="stat-card"><div class="label">Words</div><div class="value" id="words">0</div></div>
+              <div class="stat-card"><div class="label">Characters</div><div class="value" id="chars">0</div></div>
+              <div class="stat-card"><div class="label">Sentences</div><div class="value" id="sentences">0</div></div>
+              <div class="stat-card"><div class="label">Paragraphs</div><div class="value" id="paragraphs">0</div></div>
+            </div>
+
+            <div class="note" style="margin-top:12px;">
+              Word counting uses whitespace separation. Sentence/paragraph counts are approximate.
+            </div>
+          </div>
+        </section>
+
       </div>
     </div>
   </main>
@@ -99,59 +158,41 @@
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const $ = (id) => document.getElementById(id);
-      const enc = new TextEncoder();
+      const input = $("in");
 
-      function countWords(s) {
-        const trimmed = s.trim();
-        if (!trimmed) return 0;
-        // split by whitespace (works for most languages using spaces)
-        return trimmed.split(/\s+/).filter(Boolean).length;
+      function countAll(text){
+        const trimmed = (text || "").trim();
+
+        const words = trimmed ? trimmed.split(/\s+/).filter(Boolean).length : 0;
+        const chars = (text || "").length;
+
+        // Simple heuristics
+        const sentences = trimmed ? (trimmed.match(/[^.!?]+[.!?]+(\s|$)/g)?.length || 1) : 0;
+        const paragraphs = trimmed ? trimmed.split(/\n\s*\n/).filter(p => p.trim().length).length : 0;
+
+        $("words").textContent = String(words);
+        $("chars").textContent = String(chars);
+        $("sentences").textContent = String(sentences);
+        $("paragraphs").textContent = String(paragraphs);
       }
 
-      function countSentences(s) {
-        const t = s.trim();
-        if (!t) return 0;
-        // rough sentence count by punctuation + newline boundaries
-        const parts = t.split(/[.!?。！？]+(?:\s+|$)|\n+/).filter(p => p.trim().length > 0);
-        return parts.length;
+      function doCopy(){
+        const v = input.value || "";
+        if (!v) return;
+        navigator.clipboard?.writeText(v).catch(() => {
+          input.focus();
+          input.select();
+          document.execCommand("copy");
+        });
       }
 
-      function countParagraphs(s) {
-        const t = s.trim();
-        if (!t) return 0;
-        return t.split(/\n\s*\n+/).filter(p => p.trim().length > 0).length;
-      }
+      $("countBtn").addEventListener("click", () => countAll(input.value));
+      $("clearBtn").addEventListener("click", () => { input.value = ""; countAll(""); input.focus(); });
+      $("copyBtn").addEventListener("click", doCopy);
 
-      function countLines(s) {
-        if (!s) return 0;
-        return s.split(/\r\n|\r|\n/).length;
-      }
+      input.addEventListener("input", () => countAll(input.value));
 
-      function update() {
-        const v = $("in").value || "";
-        $("words").textContent = String(countWords(v));
-        $("chars").textContent = String(v.length);
-        $("charsNoSpace").textContent = String(v.replace(/\s/g, "").length);
-        $("sentences").textContent = String(countSentences(v));
-        $("paragraphs").textContent = String(countParagraphs(v));
-        $("lines").textContent = String(countLines(v));
-        $("bytes").textContent = String(enc.encode(v).length);
-      }
-
-      $("in").addEventListener("input", update);
-
-      $("copy").addEventListener("click", async () => {
-        try { await navigator.clipboard.writeText($("in").value || ""); }
-        catch { $("in").focus(); $("in").select(); document.execCommand("copy"); }
-      });
-
-      $("clear").addEventListener("click", () => {
-        $("in").value = "";
-        update();
-        $("in").focus();
-      });
-
-      update();
+      countAll("");
     });
   </script>
 </body>

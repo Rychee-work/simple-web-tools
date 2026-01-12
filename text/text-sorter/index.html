@@ -3,8 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+
   <title>Text Sorter | Simple Web Tools</title>
-  <meta name="description" content="Sort lines A→Z, Z→A, numeric, unique, trim — locally in your browser." />
+  <meta name="description" content="Sort lines alphabetically, reverse, unique, and trim — locally in your browser." />
   <meta name="page-type" content="tool" />
   <meta name="page-category" content="text" />
   <link rel="canonical" href="/text/text-sorter/" />
@@ -14,6 +15,51 @@
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5493851170081090"
     crossorigin="anonymous"></script>
+
+  <style>
+    .textarea{
+      width:100%;
+      min-height:220px;
+      resize:vertical;
+      padding:14px;
+      border-radius:14px;
+      border:1px solid rgba(229,231,235,.95);
+      background:#fff;
+      outline:none;
+      font: inherit;
+      line-height:1.6;
+    }
+    .textarea:focus{
+      box-shadow: 0 0 0 3px rgba(37,99,235,.12);
+      border-color: rgba(37,99,235,.35);
+    }
+    .muted{color:var(--muted);}
+    .tool-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:14px;
+      align-items:center;
+    }
+    .result-box{
+      border:1px solid rgba(229,231,235,.9);
+      border-radius:16px;
+      padding:14px;
+      background:#fff;
+      min-height:220px;
+      white-space:pre-wrap;
+      word-break:break-word;
+      line-height:1.6;
+    }
+    .opt-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:12px;
+      align-items:center;
+    }
+    .small-note{ color:var(--muted); font-weight:700; font-size:13px; }
+  </style>
 </head>
 
 <body>
@@ -55,7 +101,7 @@
 
         <div class="card" style="margin-top:14px;">
           <h2 style="margin-top:0;">Support</h2>
-          <p style="color:var(--muted);margin:8px 0 0;">This site is supported by ads.</p>
+          <p class="muted" style="margin:8px 0 0;">This site is supported by ads.</p>
           <div class="ad-slot" style="margin-top:12px;">Ad space</div>
         </div>
       </aside>
@@ -64,49 +110,46 @@
         <section class="hero">
           <div class="breadcrumbs" id="breadcrumbs"></div>
           <h1>Text Sorter</h1>
-          <p>Sort lines and remove duplicates — locally.</p>
-        </section>
+          <p>Sort lines alphabetically, reverse, unique, and trim — locally in your browser.</p>
+          <div class="note">Tip: Paste a list (one item per line), choose options, then Sort.</div>
 
-        <section class="grid" aria-label="Text Sorter">
-          <div class="card">
-            <div class="tool-grid">
-              <div class="card">
-                <label class="label">Input (one item per line)</label>
-                <textarea id="in" class="textarea" rows="12" placeholder="banana&#10;apple&#10;orange"></textarea>
-              </div>
-
-              <div class="card">
-                <label class="label">Options</label>
-
-                <div class="row wrap">
-                  <label class="pill"><input type="radio" name="mode" value="az" checked> A → Z</label>
-                  <label class="pill"><input type="radio" name="mode" value="za"> Z → A</label>
-                  <label class="pill"><input type="radio" name="mode" value="num-asc"> Numeric ↑</label>
-                  <label class="pill"><input type="radio" name="mode" value="num-desc"> Numeric ↓</label>
-                </div>
-
-                <div class="row wrap" style="margin-top:10px;">
-                  <label class="pill"><input id="trim" type="checkbox" checked> Trim</label>
-                  <label class="pill"><input id="ignoreCase" type="checkbox"> Ignore case</label>
-                  <label class="pill"><input id="unique" type="checkbox"> Unique</label>
-                  <label class="pill"><input id="removeEmpty" type="checkbox" checked> Remove empty</label>
-                </div>
-
-                <div class="row wrap" style="margin-top:12px;">
-                  <button class="btn" id="run">Sort</button>
-                  <button class="btn" id="copy">Copy Output</button>
-                  <button class="btn" id="swap">Swap</button>
-                  <button class="btn" id="clear">Clear</button>
-                </div>
-
-                <div class="stat" style="margin-top:12px;"><span>Items</span><b id="count">0</b></div>
-              </div>
-            </div>
-
-            <label class="label" style="margin-top:14px;">Output</label>
-            <textarea id="out" class="textarea" rows="12" readonly></textarea>
+          <div class="card" style="margin-top:14px;">
+            <div class="ad-slot">Ad space (after AdSense approval)</div>
           </div>
         </section>
+
+        <section class="grid" aria-label="Text Sorter Tool">
+          <div class="card">
+            <h2 style="margin-top:0;">1) Input</h2>
+            <textarea id="in" class="textarea" placeholder="One item per line..."></textarea>
+
+            <div class="opt-row">
+              <label class="pill switch"><input id="trim" type="checkbox" checked> Trim lines</label>
+              <label class="pill switch"><input id="unique" type="checkbox"> Remove duplicates</label>
+              <label class="pill switch"><input id="reverse" type="checkbox"> Reverse order</label>
+              <span class="small-note">Sorting is case-insensitive.</span>
+            </div>
+
+            <div class="tool-actions">
+              <button class="btn primary action" id="sortBtn">Sort</button>
+              <button class="btn action" id="clearBtn">Clear</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2 style="margin-top:0;">2) Output</h2>
+            <div class="result-box" id="out">—</div>
+
+            <div class="tool-actions">
+              <button class="btn primary action" id="copyBtn">Copy</button>
+            </div>
+
+            <div class="note" style="margin-top:12px;">
+              Everything runs locally. No upload.
+            </div>
+          </div>
+        </section>
+
       </div>
     </div>
   </main>
@@ -117,86 +160,65 @@
     document.addEventListener("DOMContentLoaded", () => {
       const $ = (id) => document.getElementById(id);
 
-      function getMode() {
-        return document.querySelector('input[name="mode"]:checked')?.value || "az";
-      }
+      function sortLines(){
+        const raw = ($("in").value || "").replace(/\r\n/g, "\n");
+        const lines = raw.split("\n");
 
-      function sortLines() {
-        const raw = $("in").value || "";
-        let lines = raw.replace(/\r\n/g, "\n").replace(/\r/g, "\n").split("\n");
+        let arr = lines;
 
-        if ($("trim").checked) lines = lines.map(s => s.trim());
-        if ($("removeEmpty").checked) lines = lines.filter(s => s.length > 0);
+        if ($("trim").checked) {
+          arr = arr.map(s => s.trim());
+        }
 
-        const ignoreCase = $("ignoreCase").checked;
-        const unique = $("unique").checked;
-        const mode = getMode();
+        // remove empty lines
+        arr = arr.filter(s => s.length > 0);
 
-        if (unique) {
+        // sort case-insensitive
+        arr.sort((a,b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
+
+        if ($("unique").checked) {
           const seen = new Set();
-          const out = [];
-          for (const s of lines) {
-            const k = ignoreCase ? s.toLowerCase() : s;
-            if (seen.has(k)) continue;
+          arr = arr.filter(x => {
+            const k = x.toLowerCase();
+            if (seen.has(k)) return false;
             seen.add(k);
-            out.push(s);
-          }
-          lines = out;
-        }
-
-        const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: ignoreCase ? "base" : "variant" });
-
-        function asNumber(s) {
-          const n = Number(String(s).replace(/,/g, ""));
-          return Number.isFinite(n) ? n : null;
-        }
-
-        if (mode === "az") {
-          lines.sort((a,b) => collator.compare(a,b));
-        } else if (mode === "za") {
-          lines.sort((a,b) => collator.compare(b,a));
-        } else if (mode === "num-asc" || mode === "num-desc") {
-          const dir = (mode === "num-asc") ? 1 : -1;
-          lines.sort((a,b) => {
-            const na = asNumber(a), nb = asNumber(b);
-            if (na !== null && nb !== null) return dir * (na - nb);
-            if (na !== null && nb === null) return -1;
-            if (na === null && nb !== null) return 1;
-            return dir * collator.compare(a,b);
+            return true;
           });
         }
 
-        $("out").value = lines.join("\n");
-        $("count").textContent = String(lines.length);
+        if ($("reverse").checked) arr.reverse();
+
+        $("out").textContent = arr.length ? arr.join("\n") : "—";
       }
 
-      $("run").addEventListener("click", sortLines);
-      $("in").addEventListener("input", sortLines);
+      function clearAll(){
+        $("in").value = "";
+        $("out").textContent = "—";
+        $("in").focus();
+      }
 
-      document.querySelectorAll('input[name="mode"], #trim, #ignoreCase, #unique, #removeEmpty')
-        .forEach(el => el.addEventListener("change", sortLines));
+      $("sortBtn").addEventListener("click", sortLines);
+      $("clearBtn").addEventListener("click", clearAll);
 
-      $("copy").addEventListener("click", async () => {
-        try { await navigator.clipboard.writeText($("out").value || ""); }
-        catch { $("out").focus(); $("out").select(); document.execCommand("copy"); }
-      });
-
-      $("swap").addEventListener("click", () => {
-        const a = $("in").value || "";
-        const b = $("out").value || "";
-        $("in").value = b;
-        $("out").value = a;
+      ["trim","unique","reverse"].forEach(id => $(id).addEventListener("change", sortLines));
+      $("in").addEventListener("input", () => {
+        // lightweight auto-update for better UX
         sortLines();
       });
 
-      $("clear").addEventListener("click", () => {
-        $("in").value = "";
-        $("out").value = "";
-        $("count").textContent = "0";
-        $("in").focus();
+      $("copyBtn").addEventListener("click", async () => {
+        const v = $("out").textContent === "—" ? "" : $("out").textContent;
+        try { await navigator.clipboard.writeText(v); }
+        catch{
+          const t = document.createElement("textarea");
+          t.value = v;
+          document.body.appendChild(t);
+          t.select();
+          document.execCommand("copy");
+          t.remove();
+        }
       });
 
-      $("in").value = "banana\napple\norange\nbanana\n42\n7\n10";
       sortLines();
     });
   </script>

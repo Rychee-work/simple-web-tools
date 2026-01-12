@@ -3,8 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+
   <title>JSON Formatter | Simple Web Tools</title>
-  <meta name="description" content="Format, minify, and validate JSON locally in your browser." />
+  <meta name="description" content="Format and validate JSON locally in your browser. Pretty print, minify, and copy. No upload." />
   <meta name="page-type" content="tool" />
   <meta name="page-category" content="developer" />
   <link rel="canonical" href="/developer/json-formatter/" />
@@ -16,11 +17,66 @@
     crossorigin="anonymous"></script>
 
   <style>
-    /* small tool-only tweaks without touching global CSS */
-    .kv { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
-    .kv .pill { display:flex; align-items:center; gap:8px; }
-    .msg-ok { color: #0f766e; font-weight: 600; }
-    .msg-err { color: #b91c1c; font-weight: 600; white-space: pre-wrap; }
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
+
+    .textarea{
+      width:100%;
+      min-height:320px;
+      resize:vertical;
+      padding:14px;
+      border-radius:14px;
+      border:1px solid rgba(229,231,235,.95);
+      background:#fff;
+      outline:none;
+      font: 14px/1.6 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      tab-size: 2;
+    }
+    .textarea:focus{
+      box-shadow: 0 0 0 3px rgba(37,99,235,.12);
+      border-color: rgba(37,99,235,.35);
+    }
+
+    .tool-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:14px;
+      align-items:center;
+    }
+
+    .status{
+      margin-top:12px;
+      color:var(--muted);
+      font-weight:800;
+      font-size:13px;
+    }
+    .status.ok{ color:#065f46; }
+    .status.bad{ color:#991b1b; }
+
+    .result-box{
+      border:1px solid rgba(229,231,235,.9);
+      border-radius:16px;
+      padding:14px;
+      background:#fff;
+      min-height:140px;
+      word-break:break-word;
+      white-space:pre-wrap;
+    }
+
+    .stack{ display:grid; gap:16px; margin-top:12px; }
+
+    .row-lite{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-top:10px;
+    }
+    .small-note{ color:var(--muted); font-weight:700; font-size:13px; }
+
+    .pill.switch{
+      user-select:none;
+    }
   </style>
 </head>
 
@@ -63,7 +119,7 @@
 
         <div class="card" style="margin-top:14px;">
           <h2 style="margin-top:0;">Support</h2>
-          <p style="color:var(--muted);margin:8px 0 0;">This site is supported by ads.</p>
+          <p class="muted" style="margin:8px 0 0;">This site is supported by ads.</p>
           <div class="ad-slot" style="margin-top:12px;">Ad space</div>
         </div>
       </aside>
@@ -72,41 +128,58 @@
         <section class="hero">
           <div class="breadcrumbs" id="breadcrumbs"></div>
           <h1>JSON Formatter</h1>
-          <p>Format, minify, and validate JSON — locally.</p>
-        </section>
+          <p>Format, validate, and minify JSON — locally in your browser.</p>
+          <div class="note">Tip: Use <b>Pretty</b> for readability, <b>Minify</b> for compact output.</div>
 
-        <section class="grid" aria-label="JSON Formatter">
-          <div class="card">
-            <label class="label">Input JSON</label>
-            <textarea id="in" class="textarea" rows="12" placeholder='{"hello":"world"}'></textarea>
-
-            <div class="row wrap" style="margin-top:12px;">
-              <label class="pill">Indent:
-                <input id="indent" type="number" min="0" max="8" value="2" style="width:80px;">
-              </label>
-              <label class="pill"><input id="sortKeys" type="checkbox"> Sort keys</label>
-              <label class="pill"><input id="keepUnicode" type="checkbox" checked> Keep Unicode</label>
-            </div>
-
-            <div class="row wrap" style="margin-top:12px;">
-              <button class="btn" id="format">Format</button>
-              <button class="btn" id="minify">Minify</button>
-              <button class="btn" id="validate">Validate</button>
-              <button class="btn" id="copy">Copy</button>
-              <button class="btn" id="clear">Clear</button>
-            </div>
-
-            <div class="row wrap" style="margin-top:12px;">
-              <div class="stat"><span>Status</span><b id="status">-</b></div>
-              <div class="stat"><span>Size (chars)</span><b id="size">0</b></div>
-            </div>
-
-            <label class="label" style="margin-top:14px;">Output</label>
-            <textarea id="out" class="textarea" rows="12" readonly></textarea>
-
-            <p class="muted" style="margin-top:12px;">No upload. JSON is processed in your browser.</p>
+          <div class="card" style="margin-top:14px;">
+            <div class="ad-slot">Ad space (after AdSense approval)</div>
           </div>
         </section>
+
+        <section class="grid" aria-label="JSON Formatter Tool">
+          <div class="card">
+            <div class="row-lite">
+              <label class="pill switch"><input id="sortKeys" type="checkbox"> Sort keys</label>
+              <label class="pill switch"><input id="useTabs" type="checkbox"> Indent with tabs</label>
+              <span class="small-note">Pretty uses 2 spaces by default.</span>
+            </div>
+
+            <div class="stack">
+              <!-- 1) Input -->
+              <div>
+                <h2 style="margin:0;">1) Input</h2>
+                <p class="small-note" style="margin:6px 0 10px;">Paste JSON. We never upload it.</p>
+
+                <textarea id="in" class="textarea" placeholder='{"hello":"world"}'></textarea>
+
+                <div class="tool-actions">
+                  <button class="btn primary action" id="prettyBtn">Pretty</button>
+                  <button class="btn action" id="minifyBtn">Minify</button>
+                  <button class="btn action" id="clearBtn">Clear</button>
+                </div>
+              </div>
+
+              <!-- 2) Output -->
+              <div>
+                <h2 style="margin:0;">2) Output</h2>
+                <p class="small-note" style="margin:6px 0 10px;">Formatted result or error message.</p>
+
+                <div id="out" class="result-box mono">—</div>
+
+                <div class="tool-actions">
+                  <button class="btn primary action" id="copyBtn">Copy</button>
+                </div>
+              </div>
+            </div>
+
+            <div id="status" class="status" aria-live="polite">Ready.</div>
+
+            <div class="card" style="margin-top:16px;">
+              <div class="ad-slot">Ad space (below tool)</div>
+            </div>
+          </div>
+        </section>
+
       </div>
     </div>
   </main>
@@ -116,103 +189,104 @@
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const $ = (id) => document.getElementById(id);
+      const status = $("status");
+      const out = $("out");
 
-      function updateMeta(text, ok, msg) {
-        $("size").textContent = String((text || "").length);
-        $("status").textContent = msg || (ok ? "OK" : "Error");
-        $("status").className = ok ? "msg-ok" : "msg-err";
+      function setStatus(text, kind){
+        status.textContent = text;
+        status.classList.remove("ok","bad");
+        if (kind) status.classList.add(kind);
       }
 
-      function stableSort(obj) {
-        if (Array.isArray(obj)) return obj.map(stableSort);
-        if (obj && typeof obj === "object") {
-          const out = {};
-          Object.keys(obj).sort().forEach(k => { out[k] = stableSort(obj[k]); });
-          return out;
+      function safeParse(text){
+        return JSON.parse(text);
+      }
+
+      function maybeSort(value){
+        if (!$("sortKeys").checked) return value;
+        return sortObjectDeep(value);
+      }
+
+      function sortObjectDeep(v){
+        if (Array.isArray(v)) return v.map(sortObjectDeep);
+        if (v && typeof v === "object"){
+          const keys = Object.keys(v).sort((a,b)=>a.localeCompare(b));
+          const o = {};
+          for (const k of keys) o[k] = sortObjectDeep(v[k]);
+          return o;
         }
-        return obj;
+        return v;
       }
 
-      function parseJSON() {
-        const raw = $("in").value || "";
-        try {
-          const v = JSON.parse(raw);
-          return { ok: true, value: v, error: "" };
-        } catch (e) {
-          return { ok: false, value: null, error: String(e && e.message ? e.message : e) };
-        }
+      function indent(){
+        if ($("useTabs").checked) return "\t";
+        return 2;
       }
 
-      function stringify(value, indent) {
-        // keepUnicode: if unchecked, escape non-ascii
-        let s = JSON.stringify(value, null, indent);
-        if (!$("keepUnicode").checked) {
-          s = s.replace(/[^\x00-\x7F]/g, (c) => "\\u" + c.charCodeAt(0).toString(16).padStart(4, "0"));
-        }
-        return s;
+      function setOut(text){
+        out.textContent = text || "—";
       }
 
-      function doFormat() {
-        const { ok, value, error } = parseJSON();
-        if (!ok) {
-          $("out").value = "";
-          updateMeta("", false, error);
+      function pretty(){
+        const txt = ($("in").value || "").trim();
+        if (!txt){
+          setOut("");
+          setStatus("Paste JSON to format.", "");
           return;
         }
-        const indent = Math.max(0, Math.min(8, Number($("indent").value || 2)));
-        const v2 = $("sortKeys").checked ? stableSort(value) : value;
-        const out = stringify(v2, indent);
-        $("out").value = out;
-        updateMeta(out, true, "OK");
+        try{
+          const obj = maybeSort(safeParse(txt));
+          const formatted = JSON.stringify(obj, null, indent());
+          setOut(formatted);
+          setStatus("Valid JSON. Pretty printed.", "ok");
+        }catch(e){
+          setOut(String(e && e.message ? e.message : e));
+          setStatus("Invalid JSON.", "bad");
+        }
       }
 
-      function doMinify() {
-        const { ok, value, error } = parseJSON();
-        if (!ok) {
-          $("out").value = "";
-          updateMeta("", false, error);
+      function minify(){
+        const txt = ($("in").value || "").trim();
+        if (!txt){
+          setOut("");
+          setStatus("Paste JSON to minify.", "");
           return;
         }
-        const v2 = $("sortKeys").checked ? stableSort(value) : value;
-        const out = stringify(v2, 0);
-        $("out").value = out;
-        updateMeta(out, true, "OK");
-      }
-
-      function doValidate() {
-        const { ok, error } = parseJSON();
-        if (ok) {
-          updateMeta($("in").value || "", true, "Valid JSON");
-        } else {
-          updateMeta($("in").value || "", false, error);
+        try{
+          const obj = maybeSort(safeParse(txt));
+          const formatted = JSON.stringify(obj);
+          setOut(formatted);
+          setStatus("Valid JSON. Minified.", "ok");
+        }catch(e){
+          setOut(String(e && e.message ? e.message : e));
+          setStatus("Invalid JSON.", "bad");
         }
       }
 
-      $("format").addEventListener("click", doFormat);
-      $("minify").addEventListener("click", doMinify);
-      $("validate").addEventListener("click", doValidate);
+      $("prettyBtn").addEventListener("click", pretty);
+      $("minifyBtn").addEventListener("click", minify);
 
-      $("copy").addEventListener("click", async () => {
-        const text = $("out").value || "";
-        try { await navigator.clipboard.writeText(text); }
-        catch { $("out").focus(); $("out").select(); document.execCommand("copy"); }
-      });
-
-      $("clear").addEventListener("click", () => {
+      $("clearBtn").addEventListener("click", () => {
         $("in").value = "";
-        $("out").value = "";
-        updateMeta("", true, "-");
+        setOut("");
+        setStatus("Cleared.", "");
         $("in").focus();
       });
 
-      $("in").addEventListener("input", () => {
-        $("size").textContent = String(($("in").value || "").length);
-        $("status").textContent = "-";
-        $("status").className = "";
+      $("copyBtn").addEventListener("click", async () => {
+        const v = out.textContent === "—" ? "" : out.textContent;
+        if (!v) return;
+        try { await navigator.clipboard.writeText(v); setStatus("Copied.", "ok"); }
+        catch{
+          const t = document.createElement("textarea");
+          t.value = v;
+          document.body.appendChild(t);
+          t.select();
+          document.execCommand("copy");
+          t.remove();
+          setStatus("Copied.", "ok");
+        }
       });
-
-      $("in").value = '{"name":"Simple Web Tools","features":["fast","local","private"],"meta":{"version":1}}';
-      doFormat();
     });
   </script>
 </body>

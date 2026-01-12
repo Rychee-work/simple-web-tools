@@ -3,8 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+
   <title>Remove Line Breaks | Simple Web Tools</title>
-  <meta name="description" content="Remove line breaks and normalize whitespace locally in your browser." />
+  <meta name="description" content="Remove line breaks from text locally in your browser. Join lines with a space or nothing." />
   <meta name="page-type" content="tool" />
   <meta name="page-category" content="text" />
   <link rel="canonical" href="/text/remove-line-breaks/" />
@@ -14,6 +15,51 @@
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5493851170081090"
     crossorigin="anonymous"></script>
+
+  <style>
+    .textarea{
+      width:100%;
+      min-height:220px;
+      resize:vertical;
+      padding:14px;
+      border-radius:14px;
+      border:1px solid rgba(229,231,235,.95);
+      background:#fff;
+      outline:none;
+      font: inherit;
+      line-height:1.6;
+    }
+    .textarea:focus{
+      box-shadow: 0 0 0 3px rgba(37,99,235,.12);
+      border-color: rgba(37,99,235,.35);
+    }
+    .muted{color:var(--muted);}
+    .tool-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:14px;
+      align-items:center;
+    }
+    .result-box{
+      border:1px solid rgba(229,231,235,.9);
+      border-radius:16px;
+      padding:14px;
+      background:#fff;
+      min-height:140px;
+      white-space:pre-wrap;
+      word-break:break-word;
+      line-height:1.6;
+    }
+    .toggle-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:12px;
+      align-items:center;
+    }
+    .small-note{ color:var(--muted); font-weight:700; font-size:13px; }
+  </style>
 </head>
 
 <body>
@@ -55,7 +101,7 @@
 
         <div class="card" style="margin-top:14px;">
           <h2 style="margin-top:0;">Support</h2>
-          <p style="color:var(--muted);margin:8px 0 0;">This site is supported by ads.</p>
+          <p class="muted" style="margin:8px 0 0;">This site is supported by ads.</p>
           <div class="ad-slot" style="margin-top:12px;">Ad space</div>
         </div>
       </aside>
@@ -64,33 +110,44 @@
         <section class="hero">
           <div class="breadcrumbs" id="breadcrumbs"></div>
           <h1>Remove Line Breaks</h1>
-          <p>Flatten text and normalize whitespace — locally.</p>
-        </section>
+          <p>Join lines into a single paragraph — locally in your browser.</p>
+          <div class="note">Tip: Choose whether to join lines with a space (recommended) or remove breaks completely.</div>
 
-        <section class="grid" aria-label="Remove Line Breaks">
-          <div class="card">
-            <label class="label">Input</label>
-            <textarea id="in" class="textarea" rows="8" placeholder="Paste text with line breaks..."></textarea>
-
-            <div class="row wrap" style="margin-top:12px;">
-              <label class="pill"><input id="keepParagraphs" type="checkbox" checked> Keep paragraphs</label>
-              <label class="pill"><input id="collapseSpaces" type="checkbox" checked> Collapse spaces</label>
-              <label class="pill"><input id="trimLines" type="checkbox" checked> Trim lines</label>
-            </div>
-
-            <div class="row wrap" style="margin-top:12px;">
-              <button class="btn" id="run">Convert</button>
-              <button class="btn" id="copy">Copy Output</button>
-              <button class="btn" id="swap">Swap</button>
-              <button class="btn" id="clear">Clear</button>
-            </div>
-
-            <label class="label" style="margin-top:14px;">Output</label>
-            <textarea id="out" class="textarea" rows="8" readonly></textarea>
-
-            <p class="muted" style="margin-top:12px;">“Keep paragraphs” turns blank lines into a paragraph break.</p>
+          <div class="card" style="margin-top:14px;">
+            <div class="ad-slot">Ad space (after AdSense approval)</div>
           </div>
         </section>
+
+        <section class="grid" aria-label="Remove Line Breaks Tool">
+          <div class="card">
+            <h2 style="margin-top:0;">1) Input</h2>
+            <textarea id="in" class="textarea" placeholder="Paste text with line breaks..."></textarea>
+
+            <div class="toggle-row">
+              <label class="pill switch"><input id="joinWithSpace" type="checkbox" checked> Join with spaces</label>
+              <span class="small-note">If off, line breaks are removed without spaces.</span>
+            </div>
+
+            <div class="tool-actions">
+              <button class="btn primary action" id="runBtn">Convert</button>
+              <button class="btn action" id="clearBtn">Clear</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2 style="margin-top:0;">2) Output</h2>
+            <div class="result-box" id="out">—</div>
+
+            <div class="tool-actions">
+              <button class="btn primary action" id="copyBtn">Copy</button>
+            </div>
+
+            <div class="note" style="margin-top:12px;">
+              Everything runs locally. No upload.
+            </div>
+          </div>
+        </section>
+
       </div>
     </div>
   </main>
@@ -101,58 +158,40 @@
     document.addEventListener("DOMContentLoaded", () => {
       const $ = (id) => document.getElementById(id);
 
-      function convert() {
-        let v = $("in").value || "";
+      function convert(){
+        const v = $("in").value || "";
+        const joinWithSpace = $("joinWithSpace").checked;
 
-        // Normalize newlines
-        v = v.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+        let out = v.replace(/\r\n/g, "\n");
+        // Replace line breaks (including multiple) with either a space or nothing
+        out = out.replace(/\n+/g, joinWithSpace ? " " : "");
+        // Normalize spaces
+        if (joinWithSpace) out = out.replace(/\s+/g, " ").trim();
 
-        const keepParagraphs = $("keepParagraphs").checked;
-        const collapseSpaces = $("collapseSpaces").checked;
-        const trimLines = $("trimLines").checked;
-
-        if (keepParagraphs) {
-          // Split paragraphs by blank lines
-          const paras = v.split(/\n\s*\n+/).map(p => {
-            let lines = p.split("\n");
-            if (trimLines) lines = lines.map(x => x.trim());
-            let joined = lines.join(" ");
-            if (collapseSpaces) joined = joined.replace(/\s+/g, " ").trim();
-            return joined;
-          }).filter(p => p.length > 0);
-
-          $("out").value = paras.join("\n\n");
-          return;
-        }
-
-        // Flatten all line breaks into spaces
-        let lines = v.split("\n");
-        if (trimLines) lines = lines.map(x => x.trim());
-        let out = lines.join(" ");
-        if (collapseSpaces) out = out.replace(/\s+/g, " ").trim();
-        $("out").value = out;
+        $("out").textContent = out || "—";
       }
 
-      $("run").addEventListener("click", convert);
+      $("runBtn").addEventListener("click", convert);
       $("in").addEventListener("input", convert);
+      $("joinWithSpace").addEventListener("change", convert);
 
-      $("copy").addEventListener("click", async () => {
-        try { await navigator.clipboard.writeText($("out").value || ""); }
-        catch { $("out").focus(); $("out").select(); document.execCommand("copy"); }
-      });
-
-      $("swap").addEventListener("click", () => {
-        const a = $("in").value || "";
-        const b = $("out").value || "";
-        $("in").value = b;
-        $("out").value = a;
-        convert();
-      });
-
-      $("clear").addEventListener("click", () => {
+      $("clearBtn").addEventListener("click", () => {
         $("in").value = "";
-        $("out").value = "";
+        $("out").textContent = "—";
         $("in").focus();
+      });
+
+      $("copyBtn").addEventListener("click", async () => {
+        const v = $("out").textContent === "—" ? "" : $("out").textContent;
+        try { await navigator.clipboard.writeText(v); }
+        catch{
+          const t = document.createElement("textarea");
+          t.value = v;
+          document.body.appendChild(t);
+          t.select();
+          document.execCommand("copy");
+          t.remove();
+        }
       });
 
       convert();

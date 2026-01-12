@@ -3,8 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+
   <title>Character Counter | Simple Web Tools</title>
-  <meta name="description" content="Count characters, lines, and UTF-8 bytes locally in your browser." />
+  <meta name="description" content="Count characters with and without spaces locally in your browser." />
   <meta name="page-type" content="tool" />
   <meta name="page-category" content="text" />
   <link rel="canonical" href="/text/char-counter/" />
@@ -14,6 +15,47 @@
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5493851170081090"
     crossorigin="anonymous"></script>
+
+  <style>
+    .textarea{
+      width:100%;
+      min-height:220px;
+      resize:vertical;
+      padding:14px;
+      border-radius:14px;
+      border:1px solid rgba(229,231,235,.95);
+      background:#fff;
+      outline:none;
+      font: inherit;
+      line-height:1.6;
+    }
+    .textarea:focus{
+      box-shadow: 0 0 0 3px rgba(37,99,235,.12);
+      border-color: rgba(37,99,235,.35);
+    }
+    .stats{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap:12px;
+      margin-top:12px;
+    }
+    .stat-card{
+      border:1px solid rgba(229,231,235,.9);
+      border-radius:14px;
+      padding:12px;
+      background:#fff;
+    }
+    .stat-card .label{color:var(--muted); font-weight:700; font-size:13px;}
+    .stat-card .value{font-size:22px; font-weight:900; margin-top:4px;}
+    .muted{color:var(--muted);}
+    .tool-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:14px;
+      align-items:center;
+    }
+  </style>
 </head>
 
 <body>
@@ -55,7 +97,7 @@
 
         <div class="card" style="margin-top:14px;">
           <h2 style="margin-top:0;">Support</h2>
-          <p style="color:var(--muted);margin:8px 0 0;">This site is supported by ads.</p>
+          <p class="muted" style="margin:8px 0 0;">This site is supported by ads.</p>
           <div class="ad-slot" style="margin-top:12px;">Ad space</div>
         </div>
       </aside>
@@ -64,29 +106,42 @@
         <section class="hero">
           <div class="breadcrumbs" id="breadcrumbs"></div>
           <h1>Character Counter</h1>
-          <p>Count characters, lines, and bytes — locally.</p>
-        </section>
+          <p>Count characters with/without spaces — locally in your browser.</p>
+          <div class="note">Tip: Useful for Twitter/X, SEO metas, and form limits.</div>
 
-        <section class="grid" aria-label="Character Counter">
-          <div class="card">
-            <label class="label">Text</label>
-            <textarea id="in" class="textarea" rows="10" placeholder="Paste or type your text here..."></textarea>
-
-            <div class="row wrap" style="margin-top:12px;">
-              <button class="btn" id="copy">Copy</button>
-              <button class="btn" id="clear">Clear</button>
-            </div>
-
-            <div style="margin-top:14px;">
-              <div class="stat"><span>Characters (with spaces)</span><b id="chars">0</b></div>
-              <div class="stat"><span>Characters (no spaces)</span><b id="charsNoSpace">0</b></div>
-              <div class="stat"><span>Lines</span><b id="lines">0</b></div>
-              <div class="stat"><span>UTF-8 bytes</span><b id="bytes">0</b></div>
-            </div>
-
-            <p class="muted" style="margin-top:12px;">Tip: “Bytes” is useful for API limits and SMS counting.</p>
+          <div class="card" style="margin-top:14px;">
+            <div class="ad-slot">Ad space (after AdSense approval)</div>
           </div>
         </section>
+
+        <section class="grid" aria-label="Character Counter Tool">
+          <div class="card">
+            <h2 style="margin-top:0;">1) Input</h2>
+            <textarea id="in" class="textarea" placeholder="Type or paste text here..."></textarea>
+
+            <div class="tool-actions">
+              <button class="btn primary action" id="countBtn">Count</button>
+              <button class="btn action" id="clearBtn">Clear</button>
+              <button class="btn action" id="copyBtn">Copy</button>
+            </div>
+
+            <p class="muted" style="margin-top:12px;">Counts update instantly when you type.</p>
+          </div>
+
+          <div class="card">
+            <h2 style="margin-top:0;">2) Results</h2>
+
+            <div class="stats" role="status" aria-live="polite">
+              <div class="stat-card"><div class="label">Characters (with spaces)</div><div class="value" id="withSpaces">0</div></div>
+              <div class="stat-card"><div class="label">Characters (no spaces)</div><div class="value" id="noSpaces">0</div></div>
+            </div>
+
+            <div class="note" style="margin-top:12px;">
+              “No spaces” removes all whitespace characters (spaces, tabs, and line breaks).
+            </div>
+          </div>
+        </section>
+
       </div>
     </div>
   </main>
@@ -96,35 +151,31 @@
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const $ = (id) => document.getElementById(id);
-      const enc = new TextEncoder();
+      const input = $("in");
 
-      function countLines(s) {
-        if (!s) return 0;
-        return s.split(/\r\n|\r|\n/).length;
+      function countChars(text){
+        const t = text || "";
+        $("withSpaces").textContent = String(t.length);
+        $("noSpaces").textContent = String(t.replace(/\s/g, "").length);
       }
 
-      function update() {
-        const v = $("in").value || "";
-        $("chars").textContent = String(v.length);
-        $("charsNoSpace").textContent = String(v.replace(/\s/g, "").length);
-        $("lines").textContent = String(countLines(v));
-        $("bytes").textContent = String(enc.encode(v).length);
+      function doCopy(){
+        const v = input.value || "";
+        if (!v) return;
+        navigator.clipboard?.writeText(v).catch(() => {
+          input.focus();
+          input.select();
+          document.execCommand("copy");
+        });
       }
 
-      $("in").addEventListener("input", update);
+      $("countBtn").addEventListener("click", () => countChars(input.value));
+      $("clearBtn").addEventListener("click", () => { input.value = ""; countChars(""); input.focus(); });
+      $("copyBtn").addEventListener("click", doCopy);
 
-      $("copy").addEventListener("click", async () => {
-        try { await navigator.clipboard.writeText($("in").value || ""); }
-        catch { $("in").focus(); $("in").select(); document.execCommand("copy"); }
-      });
+      input.addEventListener("input", () => countChars(input.value));
 
-      $("clear").addEventListener("click", () => {
-        $("in").value = "";
-        update();
-        $("in").focus();
-      });
-
-      update();
+      countChars("");
     });
   </script>
 </body>

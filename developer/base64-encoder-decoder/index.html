@@ -3,11 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+
   <title>Base64 Encode / Decode | Simple Web Tools</title>
-  <meta name="description" content="Encode or decode Base64 locally in your browser (UTF-8 safe)." />
+  <meta name="description" content="Encode text to Base64 or decode Base64 back to text locally in your browser. No upload." />
   <meta name="page-type" content="tool" />
   <meta name="page-category" content="developer" />
-  <link rel="canonical" href="/developer/base64-encoder-decoder/" />
+  <link rel="canonical" href="/developer/base64-encode-decode/" />
 
   <link rel="stylesheet" href="/assets/css/styles.css" />
   <script defer src="/assets/js/tools-ui.js"></script>
@@ -16,8 +17,49 @@
     crossorigin="anonymous"></script>
 
   <style>
-    .msg-ok { color:#0f766e; font-weight:600; }
-    .msg-err { color:#b91c1c; font-weight:600; white-space:pre-wrap; }
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
+    .textarea{
+      width:100%;
+      min-height:260px;
+      resize:vertical;
+      padding:14px;
+      border-radius:14px;
+      border:1px solid rgba(229,231,235,.95);
+      background:#fff;
+      outline:none;
+      font: 14px/1.6 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+    }
+    .textarea:focus{
+      box-shadow: 0 0 0 3px rgba(37,99,235,.12);
+      border-color: rgba(37,99,235,.35);
+    }
+    .tool-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:14px;
+      align-items:center;
+    }
+    .status{
+      margin-top:12px;
+      color:var(--muted);
+      font-weight:800;
+      font-size:13px;
+    }
+    .status.ok{ color:#065f46; }
+    .status.bad{ color:#991b1b; }
+    .stack{ display:grid; gap:16px; margin-top:12px; }
+    .small-note{ color:var(--muted); font-weight:700; font-size:13px; }
+
+    .result-box{
+      border:1px solid rgba(229,231,235,.9);
+      border-radius:16px;
+      padding:14px;
+      background:#fff;
+      min-height:120px;
+      white-space:pre-wrap;
+      word-break:break-word;
+    }
   </style>
 </head>
 
@@ -60,7 +102,7 @@
 
         <div class="card" style="margin-top:14px;">
           <h2 style="margin-top:0;">Support</h2>
-          <p style="color:var(--muted);margin:8px 0 0;">This site is supported by ads.</p>
+          <p class="muted" style="margin:8px 0 0;">This site is supported by ads.</p>
           <div class="ad-slot" style="margin-top:12px;">Ad space</div>
         </div>
       </aside>
@@ -69,39 +111,52 @@
         <section class="hero">
           <div class="breadcrumbs" id="breadcrumbs"></div>
           <h1>Base64 Encode / Decode</h1>
-          <p>Encode or decode Base64 (UTF-8 safe) — locally.</p>
+          <p>Encode and decode Base64 locally in your browser.</p>
+          <div class="note">Tip: This tool is for text. For binary files, use a file-based Base64 tool later.</div>
+
+          <div class="card" style="margin-top:14px;">
+            <div class="ad-slot">Ad space (after AdSense approval)</div>
+          </div>
         </section>
 
-        <section class="grid" aria-label="Base64 Encode Decode">
+        <section class="grid" aria-label="Base64 Tool">
           <div class="card">
-            <div class="tool-grid">
-              <div class="card">
-                <label class="label">Input</label>
-                <textarea id="in" class="textarea" rows="10" placeholder="Type text or paste Base64..."></textarea>
 
-                <div class="row wrap" style="margin-top:12px;">
-                  <button class="btn" id="encode">Encode →</button>
-                  <button class="btn" id="decode">Decode →</button>
-                  <button class="btn" id="swap">Swap</button>
-                  <button class="btn" id="clear">Clear</button>
+            <div class="stack">
+              <div>
+                <h2 style="margin:0;">1) Input</h2>
+                <p class="small-note" style="margin:6px 0 10px;">Paste text or Base64 and pick an action.</p>
+
+                <textarea id="in" class="textarea" placeholder="Paste text or Base64 here..."></textarea>
+
+                <div class="tool-actions">
+                  <button class="btn primary action" id="encBtn">Encode → Base64</button>
+                  <button class="btn primary action" id="decBtn">Decode → Text</button>
+                  <button class="btn action" id="clearBtn">Clear</button>
                 </div>
-
-                <div class="stat" style="margin-top:12px;"><span>Status</span><b id="status">-</b></div>
               </div>
 
-              <div class="card">
-                <label class="label">Output</label>
-                <textarea id="out" class="textarea" rows="10" readonly></textarea>
+              <div>
+                <h2 style="margin:0;">2) Output</h2>
+                <p class="small-note" style="margin:6px 0 10px;">Copy the result.</p>
 
-                <div class="row wrap" style="margin-top:12px;">
-                  <button class="btn" id="copyOut">Copy Output</button>
+                <div id="out" class="result-box mono">—</div>
+
+                <div class="tool-actions">
+                  <button class="btn primary action" id="copyBtn">Copy</button>
                 </div>
               </div>
             </div>
 
-            <p class="muted" style="margin-top:12px;">Tip: Decoder accepts Base64 with whitespace/newlines.</p>
+            <div id="status" class="status" aria-live="polite">Ready.</div>
+
+            <div class="card" style="margin-top:16px;">
+              <div class="ad-slot">Ad space (below tool)</div>
+            </div>
+
           </div>
         </section>
+
       </div>
     </div>
   </main>
@@ -111,74 +166,77 @@
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const $ = (id) => document.getElementById(id);
+      const status = $("status");
+      const out = $("out");
 
-      function setStatus(ok, msg) {
-        $("status").textContent = msg;
-        $("status").className = ok ? "msg-ok" : "msg-err";
+      function setStatus(text, kind){
+        status.textContent = text;
+        status.classList.remove("ok","bad");
+        if (kind) status.classList.add(kind);
       }
 
-      // UTF-8 safe Base64
-      function toBase64Utf8(str) {
+      function encodeUtf8ToB64(str){
         const bytes = new TextEncoder().encode(str);
         let bin = "";
-        for (const b of bytes) bin += String.fromCharCode(b);
+        bytes.forEach(b => bin += String.fromCharCode(b));
         return btoa(bin);
       }
 
-      function fromBase64Utf8(b64) {
-        const clean = (b64 || "").replace(/\s+/g, "");
-        const bin = atob(clean);
-        const bytes = new Uint8Array(bin.length);
-        for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      function decodeB64ToUtf8(b64){
+        const bin = atob(b64.replace(/\s+/g,""));
+        const bytes = new Uint8Array([...bin].map(ch => ch.charCodeAt(0)));
         return new TextDecoder().decode(bytes);
       }
 
-      $("encode").addEventListener("click", () => {
-        try {
-          const v = $("in").value || "";
-          const out = toBase64Utf8(v);
-          $("out").value = out;
-          setStatus(true, "OK (encoded)");
-        } catch (e) {
-          $("out").value = "";
-          setStatus(false, String(e && e.message ? e.message : e));
+      function setOut(v){
+        out.textContent = v ? v : "—";
+      }
+
+      $("encBtn").addEventListener("click", () => {
+        const v = $("in").value || "";
+        if (!v.trim()){ setOut(""); setStatus("Paste text first.", ""); return; }
+        try{
+          setOut(encodeUtf8ToB64(v));
+          setStatus("Encoded.", "ok");
+        }catch(e){
+          setOut("");
+          setStatus("Encode failed.", "bad");
         }
       });
 
-      $("decode").addEventListener("click", () => {
-        try {
-          const v = $("in").value || "";
-          const out = fromBase64Utf8(v);
-          $("out").value = out;
-          setStatus(true, "OK (decoded)");
-        } catch (e) {
-          $("out").value = "";
-          setStatus(false, "Invalid Base64 or unsupported data.");
+      $("decBtn").addEventListener("click", () => {
+        const v = $("in").value || "";
+        if (!v.trim()){ setOut(""); setStatus("Paste Base64 first.", ""); return; }
+        try{
+          setOut(decodeB64ToUtf8(v));
+          setStatus("Decoded.", "ok");
+        }catch(e){
+          setOut("");
+          setStatus("Invalid Base64 or decode failed.", "bad");
         }
       });
 
-      $("swap").addEventListener("click", () => {
-        const a = $("in").value || "";
-        const b = $("out").value || "";
-        $("in").value = b;
-        $("out").value = a;
-        setStatus(true, "-");
-      });
-
-      $("clear").addEventListener("click", () => {
+      $("clearBtn").addEventListener("click", () => {
         $("in").value = "";
-        $("out").value = "";
-        setStatus(true, "-");
+        setOut("");
+        setStatus("Cleared.", "");
         $("in").focus();
       });
 
-      $("copyOut").addEventListener("click", async () => {
-        try { await navigator.clipboard.writeText($("out").value || ""); }
-        catch { $("out").focus(); $("out").select(); document.execCommand("copy"); }
+      $("copyBtn").addEventListener("click", async () => {
+        const v = out.textContent === "—" ? "" : out.textContent;
+        if (!v) return;
+        try { await navigator.clipboard.writeText(v); setStatus("Copied.", "ok"); }
+        catch{
+          const t = document.createElement("textarea");
+          t.value = v;
+          document.body.appendChild(t);
+          t.select();
+          document.execCommand("copy");
+          t.remove();
+          setStatus("Copied.", "ok");
+        }
       });
-
-      $("in").value = "Hello 👋 Base64";
-      $("encode").click();
     });
   </script>
 </body>

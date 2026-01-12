@@ -265,30 +265,6 @@ a:hover{text-decoration:underline}
 .tool .left{min-width:0}
 .name{margin:0; font-weight:800}
 .desc{margin:6px 0 0; color:var(--muted)}
-.btn{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  min-width:74px;
-  padding:10px 16px;
-  border-radius:999px;
-  border:1px solid var(--border);
-  font-weight:800;
-  text-decoration:none !important;
-  color:var(--text);
-  background:#fff;
-}
-.btn.primary{
-  background:var(--accent);
-  color:#fff;
-  border-color:transparent;
-}
-.btn.disabled{
-  color:var(--muted);
-  background:#f3f4f6;
-  border-color:#e5e7eb;
-  cursor:not-allowed;
-}
 
 .breadcrumbs{
   color:var(--muted);
@@ -317,4 +293,158 @@ a:hover{text-decoration:underline}
 }
 @media (max-width: 900px){
   .tool-grid{ grid-template-columns: 1fr; }
+}
+
+/* ===== Buttons (global default) ===== */
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  min-width:84px;
+  min-height:48px;
+  padding:12px 22px;
+
+  border-radius:999px;
+  border:1px solid rgba(229,231,235,.95);
+  background:#fff;
+  color:var(--text);
+
+  font-weight:600;
+  font-size:14px;
+  text-decoration:none !important;
+  cursor:pointer;
+
+  box-shadow: 0 4px 12px rgba(17,24,39,.08);
+  transition: transform .05s ease, box-shadow .12s ease, filter .12s ease, background .12s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn:hover{
+  background: rgba(255,255,255,.92);
+  box-shadow: 0 8px 20px rgba(17,24,39,.12);
+  filter: brightness(.99);
+}
+.btn:active{
+  transform: translateY(1px);
+  box-shadow: 0 4px 10px rgba(17,24,39,.12);
+}
+
+.btn.primary{
+  border-color:transparent;
+  background:var(--accent);
+  color:#fff;
+  box-shadow: 0 12px 26px rgba(37,99,235,.28);
+}
+.btn.primary:hover{
+  filter: brightness(.98);
+  box-shadow: 0 16px 34px rgba(37,99,235,.32);
+}
+.btn.primary:active{
+  transform: translateY(1px);
+  box-shadow: 0 10px 22px rgba(37,99,235,.26);
+}
+
+.btn.disabled{
+  color:var(--muted);
+  background:#f3f4f6;
+  border-color:#e5e7eb;
+  cursor:not-allowed;
+  box-shadow:none;
+}
+
+.btn:focus-visible{
+  outline:none;
+  box-shadow: 0 0 0 3px rgba(37,99,235,.20), 0 10px 20px rgba(17,24,39,.06);
+}
+
+/* Buttons in tool rows: add spacing so they don't feel cramped */
+.row.wrap .btn{
+  margin-right: 8px;
+  margin-bottom: 8px;
+}
+
+/* ===== Action buttons (Generate / Copy / Clear / Regenerate) ===== */
+/* NOTE: Add class="action" to those 4 buttons in HTML */
+.btn.action{
+  min-height:56px;
+  padding:16px 28px;
+  font-size:16px;
+  font-weight:700;
+}
+
+/* Primary action gets a bit stronger */
+.btn.primary.action{
+  box-shadow: 0 16px 34px rgba(37,99,235,.32);
+}
+.btn.primary.action:hover{
+  box-shadow: 0 22px 42px rgba(37,99,235,.36);
+}
+.btn.primary.action:active{
+  box-shadow: 0 14px 28px rgba(37,99,235,.30);
+}
+
+/* Secondary action (Clear / Regenerate) still looks like action */
+.btn.action:not(.primary){
+  box-shadow: 0 10px 22px rgba(17,24,39,.12);
+}
+.btn.action:not(.primary):hover{
+  box-shadow: 0 14px 28px rgba(17,24,39,.16);
+}
+.btn.action:not(.primary):active{
+  box-shadow: 0 10px 20px rgba(17,24,39,.14);
+}
+
+/* ===== Toggle pills (a-z / A-Z / 0-9 etc.) ===== */
+/* Settings should be visually lighter than action buttons */
+.pill.switch{
+  min-height:42px;                 /* action(56)より小さく */
+  padding:0 14px;
+  border-radius:999px;
+  border:1px solid rgba(229,231,235,.95);
+  background:#fff;
+  font-weight:600;
+  font-size:14px;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  transition: background .15s ease, box-shadow .15s ease, transform .06s ease, border-color .15s ease;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow:none;
+}
+
+/* Checkbox is not tiny but not "main CTA" */
+.pill.switch input{
+  appearance:none;
+  width:16px;
+  height:16px;
+  border-radius:4px;
+  border:2px solid rgba(156,163,175,.9);
+  display:grid;
+  place-items:center;
+  background:#fff;
+}
+.pill.switch input:checked{
+  background:var(--accent);
+  border-color:var(--accent);
+}
+.pill.switch input:checked::after{
+  content:"✓";
+  color:#fff;
+  font-size:12px;
+  font-weight:900;
+  line-height:1;
+}
+
+/* Checked pill: ON感は出すが、影は控えめ */
+.pill.switch:has(input:checked){
+  background: rgba(37,99,235,.10);
+  border-color: rgba(37,99,235,.35);
+  box-shadow:none;
+}
+.pill.switch:hover{
+  box-shadow: 0 6px 16px rgba(17,24,39,.08);
+}
+.pill.switch:active{
+  transform: translateY(1px);
 }

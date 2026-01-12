@@ -3,8 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+
   <title>Password Generator | Simple Web Tools</title>
-  <meta name="description" content="Generate strong passwords locally with options for length and character sets." />
+  <meta name="description" content="Generate secure passwords locally in your browser. No upload." />
   <meta name="page-type" content="tool" />
   <meta name="page-category" content="utility" />
   <link rel="canonical" href="/utility/password-generator/" />
@@ -14,6 +15,51 @@
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5493851170081090"
     crossorigin="anonymous"></script>
+
+  <style>
+    /* NOTE:
+      - Button styling should be handled by /assets/css/styles.css
+      - Avoid overriding .btn/.btn.primary here to keep global consistency
+    */
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
+    .range { width: 240px; }
+    .kpi { display:flex; gap:12px; flex-wrap:wrap; margin-top:12px; }
+    .kpi .stat { flex:1; min-width: 210px; }
+    .bar { height:10px; border-radius:999px; background:rgba(229,231,235,.9); overflow:hidden; border:1px solid rgba(229,231,235,.9); }
+    .bar > div { height:100%; width:0%; background: var(--accent); }
+    .muted-small { color: var(--muted); font-weight:700; font-size:13px; }
+
+    /* Result: make output look "premium" */
+    .result-box{
+      border:1px solid rgba(229,231,235,.9);
+      border-radius:16px;
+      padding:14px 14px;
+      background:#fff;
+      min-height:64px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .result-text{
+      flex:1;
+      font-size:16px;
+      font-weight:900;
+      line-height:1.35;
+      word-break:break-all;
+      white-space:pre-wrap;
+    }
+    .result-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:flex-end;
+    }
+
+    /* Make the result area breathe */
+    .result-block{ display:grid; gap:12px; }
+  </style>
 </head>
 
 <body>
@@ -55,7 +101,7 @@
 
         <div class="card" style="margin-top:14px;">
           <h2 style="margin-top:0;">Support</h2>
-          <p style="color:var(--muted);margin:8px 0 0;">This site is supported by ads.</p>
+          <p class="muted" style="margin:8px 0 0;">This site is supported by ads.</p>
           <div class="ad-slot" style="margin-top:12px;">Ad space</div>
         </div>
       </aside>
@@ -65,30 +111,90 @@
           <div class="breadcrumbs" id="breadcrumbs"></div>
           <h1>Password Generator</h1>
           <p>Generate secure passwords locally in your browser.</p>
+
+          <div class="note">Tip: Use at least <b>12–16</b> characters. Enable “Avoid ambiguous” when sharing passwords verbally.</div>
+
+          <div class="card" style="margin-top:14px;">
+            <div class="ad-slot">Ad space (after AdSense approval)</div>
+          </div>
         </section>
 
         <section class="grid" aria-label="Password Generator">
+          <!-- 1) Options -->
           <div class="card">
-            <div class="row wrap">
+            <h2 style="margin-top:0;">1) Options</h2>
+
+            <div class="row wrap" style="margin-top:10px;">
               <label class="pill">Length:
-                <input id="len" type="number" min="6" max="128" value="16" style="width:90px;">
+                <input id="len" type="number" min="4" max="128" value="16" style="width:90px;">
               </label>
-              <label class="pill"><input id="lower" type="checkbox" checked> a-z</label>
-              <label class="pill"><input id="upper" type="checkbox" checked> A-Z</label>
-              <label class="pill"><input id="num" type="checkbox" checked> 0-9</label>
-              <label class="pill"><input id="sym" type="checkbox"> Symbols</label>
-              <label class="pill"><input id="noAmb" type="checkbox"> Avoid ambiguous</label>
+              <input id="lenRange" class="range" type="range" min="4" max="128" value="16" />
             </div>
 
-            <div class="row wrap">
-              <button class="btn" id="gen">Generate</button>
-              <button class="btn" id="copy">Copy</button>
+            <div class="row wrap" style="margin-top:12px;">
+              <label class="pill switch"><input id="az" type="checkbox" checked> a-z</label>
+              <label class="pill switch"><input id="AZ" type="checkbox" checked> A-Z</label>
+              <label class="pill switch"><input id="num" type="checkbox" checked> 0-9</label>
+              <label class="pill switch"><input id="sym" type="checkbox"> Symbols</label>
+              <label class="pill switch"><input id="amb" type="checkbox" checked> Avoid ambiguous</label>
             </div>
 
-            <textarea id="out" class="textarea" rows="3" readonly></textarea>
-            <p class="muted">Tip: Use at least 12–16 characters for strong security.</p>
+            <div class="kpi">
+              <div class="stat">
+                <span>Strength</span>
+                <b id="strengthLabel">—</b>
+              </div>
+              <div class="stat">
+                <span>Estimated entropy</span>
+                <b id="entropyBits">—</b>
+              </div>
+            </div>
+
+            <div style="margin-top:10px;">
+              <div class="bar"><div id="barFill"></div></div>
+              <div class="muted-small" id="strengthHint" style="margin-top:8px;">Adjust length and character sets.</div>
+            </div>
+
+            <!-- ACTION BUTTONS (big, same size) -->
+            <div class="row wrap" style="margin-top:14px;">
+              <button class="btn primary action" id="gen">Generate</button>
+              <button class="btn action" id="clear">Clear</button>
+            </div>
+
+            <p class="muted" style="margin-top:12px;">No upload. Everything runs in your browser.</p>
+          </div>
+
+          <!-- 2) Result -->
+          <div class="card">
+            <h2 style="margin-top:0;">2) Result</h2>
+
+            <div class="result-block">
+              <div>
+                <div class="muted-small" style="margin-bottom:8px;font-weight:900;">Generated password</div>
+
+                <div class="result-box">
+                  <div id="out" class="result-text mono">—</div>
+
+                  <!-- ACTION BUTTONS (big, same size) -->
+                  <div class="result-actions">
+                    <button class="btn primary action" id="copy">Copy</button>
+                    <button class="btn action" id="regen">Regenerate</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="stat">
+                <span>Status</span>
+                <b id="status">Ready.</b>
+              </div>
+
+              <div class="note">
+                If you use this for accounts, prefer a password manager. Don’t reuse passwords.
+              </div>
+            </div>
           </div>
         </section>
+
       </div>
     </div>
   </main>
@@ -99,48 +205,119 @@
     document.addEventListener("DOMContentLoaded", () => {
       const $ = (id) => document.getElementById(id);
 
-      function pickRand(str) {
-        const u = new Uint32Array(1);
-        crypto.getRandomValues(u);
-        return str[u[0] % str.length];
+      const LOWER = "abcdefghijklmnopqrstuvwxyz";
+      const UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      const NUMS  = "0123456789";
+      const SYMS  = "!@#$%^&*()-_=+[]{};:,.?/<>|~";
+      const AMBIG = new Set(["0","O","o","1","l","I","|"]);
+
+      function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
+
+      function getPool() {
+        let pool = "";
+        if ($("az").checked) pool += LOWER;
+        if ($("AZ").checked) pool += UPPER;
+        if ($("num").checked) pool += NUMS;
+        if ($("sym").checked) pool += SYMS;
+
+        if ($("amb").checked) {
+          pool = [...pool].filter(ch => !AMBIG.has(ch)).join("");
+        }
+        return pool;
       }
 
-      function gen() {
-        const length = Math.max(6, Math.min(128, Number($("len").value || 16)));
-        const sets = [];
-        if ($("lower").checked) sets.push("abcdefghijklmnopqrstuvwxyz");
-        if ($("upper").checked) sets.push("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-        if ($("num").checked) sets.push("0123456789");
-        if ($("sym").checked) sets.push("!@#$%^&*()-_=+[]{};:,.?/");
-
-        if (!sets.length) { $("out").value = ""; return; }
-
-        let chars = sets.join("");
-        if ($("noAmb").checked) chars = chars.replace(/[O0Il1]/g, "");
-
-        const out = [];
-        for (const s0 of sets) {
-          const s = $("noAmb").checked ? s0.replace(/[O0Il1]/g, "") : s0;
-          if (s.length) out.push(pickRand(s));
-        }
-        while (out.length < length) out.push(pickRand(chars));
-
-        for (let i=out.length-1;i>0;i--) {
-          const u = new Uint32Array(1); crypto.getRandomValues(u);
-          const j = u[0] % (i+1);
-          [out[i], out[j]] = [out[j], out[i]];
-        }
-
-        $("out").value = out.slice(0, length).join("");
+      function securePick(pool) {
+        const bytes = new Uint32Array(1);
+        crypto.getRandomValues(bytes);
+        return pool[bytes[0] % pool.length];
       }
 
-      $("gen").addEventListener("click", gen);
-      $("copy").addEventListener("click", async () => {
-        try { await navigator.clipboard.writeText($("out").value || ""); }
-        catch { $("out").select(); document.execCommand("copy"); }
+      function estimateEntropyBits(length, poolSize) {
+        if (poolSize <= 1) return 0;
+        return length * (Math.log(poolSize) / Math.log(2));
+      }
+
+      function strengthFromEntropy(bits) {
+        if (bits >= 90) return { label:"Very Strong", pct:100, hint:"Excellent for most uses." };
+        if (bits >= 70) return { label:"Strong", pct:85, hint:"Good default for accounts." };
+        if (bits >= 50) return { label:"Medium", pct:65, hint:"Consider longer length (16+)." };
+        if (bits >= 30) return { label:"Weak", pct:40, hint:"Increase length or add sets." };
+        return { label:"Very Weak", pct:20, hint:"Not recommended." };
+      }
+
+      function updateStrength() {
+        const len = clamp(Number($("len").value || 16), 4, 128);
+        const pool = getPool();
+        const bits = estimateEntropyBits(len, pool.length);
+        const s = strengthFromEntropy(bits);
+
+        $("entropyBits").textContent = bits ? `${bits.toFixed(1)} bits` : "—";
+        $("strengthLabel").textContent = pool.length ? s.label : "—";
+        $("strengthHint").textContent = pool.length ? s.hint : "Select at least one character set.";
+        $("barFill").style.width = pool.length ? `${s.pct}%` : "0%";
+      }
+
+      function setOut(text){
+        $("out").textContent = text || "—";
+      }
+
+      function generate() {
+        const len = clamp(Number($("len").value || 16), 4, 128);
+        $("len").value = String(len);
+        $("lenRange").value = String(len);
+
+        const pool = getPool();
+        if (!pool.length) {
+          $("status").textContent = "Select at least one set.";
+          setOut("");
+          updateStrength();
+          return;
+        }
+
+        let out = "";
+        for (let i = 0; i < len; i++) out += securePick(pool);
+
+        setOut(out);
+        $("status").textContent = "Generated.";
+        updateStrength();
+      }
+
+      $("len").addEventListener("input", () => {
+        const len = clamp(Number($("len").value || 16), 4, 128);
+        $("lenRange").value = String(len);
+        updateStrength();
+      });
+      $("lenRange").addEventListener("input", () => {
+        $("len").value = $("lenRange").value;
+        updateStrength();
       });
 
-      gen();
+      ["az","AZ","num","sym","amb"].forEach(id => $(id).addEventListener("change", updateStrength));
+
+      $("gen").addEventListener("click", generate);
+      $("regen").addEventListener("click", generate);
+
+      $("copy").addEventListener("click", async () => {
+        const v = $("out").textContent || "";
+        try { await navigator.clipboard.writeText(v === "—" ? "" : v); }
+        catch {
+          const t = document.createElement("textarea");
+          t.value = (v === "—") ? "" : v;
+          document.body.appendChild(t);
+          t.select();
+          document.execCommand("copy");
+          t.remove();
+        }
+        $("status").textContent = "Copied.";
+      });
+
+      $("clear").addEventListener("click", () => {
+        setOut("");
+        $("status").textContent = "Cleared.";
+      });
+
+      updateStrength();
+      generate();
     });
   </script>
 </body>
