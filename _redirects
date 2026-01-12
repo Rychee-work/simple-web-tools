@@ -1,1 +1,7 @@
 https://easy-web-tools.pages.dev/*  https://simple-web-tools.com/:splat  301!
+/pdf/merge/  /pdf/merge-pdf/  301
+/pdf/split/  /pdf/split-pdf/  301
+/developer/base64-encoder-decoder/  /developer/base64-encode-decode/  301
+/developer/url-encoder-decoder/  /developer/url-encode-decode/  301
+/tools/merge-pdf/  /pdf/merge-pdf/  301
+/tools/split-pdf/  /pdf/split-pdf/  301

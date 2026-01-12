@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Split PDF | Simple Web Tools</title>
+  <meta name="description" content="Split a PDF into pages. Processing happens locally in your browser — we don&#x27;t upload your files to a server." />
+  <meta name="page-type" content="tool" />
+  <meta name="page-category" content="pdf" />
+  <link rel="canonical" href="/pdf/split-pdf/" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+  <script defer src="/assets/js/tools-ui.js"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5493851170081090"
+    crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+</head>
+
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a class="brand" href="/">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 5h5v5H5V5Zm9 0h5v5h-5V5ZM5 14h5v5H5v-5Zm9 0h5v5h-5v-5Z" fill="currentColor"/>
+          </svg>
+        </div>
+        <div><div>Simple Web Tools <span class="badge">beta</span></div></div>
+      </a>
+
+      <nav class="nav" aria-label="Legal">
+        <a href="/legal/privacy.html">Privacy</a>
+        <a href="/legal/terms.html">Terms</a>
+        <a href="/legal/contact.html">Contact</a>
+      </nav>
+
+      <button class="menu-btn" type="button" aria-label="Open categories" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="layout">
+      <aside class="sidebar" aria-label="Categories">
+        <div class="card">
+          <div class="section-title">
+            <h2>Categories</h2>
+            <a class="hint" href="/">All tools</a>
+          </div>
+          <div class="cat-list" id="sidebar-categories"></div>
+        </div>
+      </aside>
+
+      <div class="main">
+        <section class="hero">
+          <div class="breadcrumbs" id="breadcrumbs"></div>
+          <h1>Split PDF</h1>
+          <p>Split a PDF into pages. Processing happens locally in your browser — we don&#x27;t upload your files to a server.</p>
+          <div class="note">Tip: Explanations come first. The tool is below. Ads are placed last.</div>
+        </section>
+
+        <section class="grid" aria-label="About Split PDF">
+          <div class="card">
+            <h2 style="margin-top:0;">Overview</h2>
+            <p style="color:var(--muted);line-height:1.8;">Split a PDF into individual pages or specific page ranges directly in your browser. This is useful when you need to extract one page from a long document, share only a section, or separate scanned multi-page PDFs.<br/>The split process runs locally for speed and privacy — your PDF stays on your device. Choose pages or ranges, then export the result.</p>
+
+            <h2>How to use</h2>
+            <ol style="color:var(--muted);line-height:1.8;margin-top:8px;">
+              <li>Read the notes above so you know what the tool will do.</li>
+              <li>Enter your input and click the main action button.</li>
+              <li>Copy or download the result when you’re done.</li>
+            </ol>
+
+            <h2>Privacy</h2>
+            <p style="color:var(--muted);line-height:1.8;">
+              This page is designed for fast, local processing in your browser. We don’t ask you to create an account, and we avoid uploading inputs to our server whenever possible.
+            </p>
+          </div>
+        </section>
+
+        <section class="grid" aria-label="Advertisement">
+          <div class="ad-slot">Ad space</div>
+        </section>
+
+<section class="grid" style="margin-top:16px;">
+<div class="card">
+<div class="ad-slot">Ad space (after AdSense approval)</div>
+</div>
+<div class="grid" style="grid-template-columns: 1fr 1fr; gap:16px;">
+<div class="card">
+<div class="section-title">
+<h2>1) Choose a PDF</h2>
+<div class="hint">Upload</div>
+</div>
+<div class="drop">
+<div class="kv">
+<div style="font-weight:900;">Select a PDF file</div>
+<div style="color:var(--muted);">We will export each page as a separate PDF.</div>
+<div class="row" style="margin-top:8px;">
+<input accept="application/pdf" id="splitInput" type="file"/>
+</div>
+</div>
+</div>
+</div>
+<div class="card">
+<div class="section-title">
+<h2>2) Split</h2>
+<div class="hint">Download</div>
+</div>
+<button class="btn primary action" id="splitBtn" type="button">Split &amp; Download</button>
+<div aria-label="Progress" class="progress">
+<div id="bar"></div>
+</div>
+<p id="statusText" style="margin:10px 0 0;color:var(--muted);font-weight:700;">Ready.</p>
+<div style="margin-top:12px;">
+<div style="font-weight:900;margin-bottom:8px;">Downloads</div>
+<div id="outLinks" style="display:grid;gap:10px;"></div>
+</div>
+</div>
+</div>
+</section>
+
+        <section class="grid" aria-label="FAQ">
+          <div class="card">
+            <h2 style="margin-top:0;">FAQ</h2>
+            <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
+              <strong>Does this tool upload my data?</strong><br/>
+              Most tools run locally in your browser. If a tool ever needs a network request (for example, to load a library), it will be mentioned on the page.
+            </p>
+            <p style="color:var(--muted);line-height:1.8;margin:0;">
+              <strong>Why does the output look different from another site?</strong><br/>
+              Different tools can use different defaults (timezones, whitespace rules, encoding behavior). Check the options and try a small sample first.
+            </p>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <div class="sidebar-overlay"></div>
+
+  <script>
+const fileInput = document.getElementById('fileInput');
+const chooseBtn = document.getElementById('chooseBtn');
+const clearBtn  = document.getElementById('clearBtn');
+const splitBtn  = document.getElementById('splitBtn');
+const fileName  = document.getElementById('fileName');
+const rangeInput= document.getElementById('rangeInput');
+const statusText= document.getElementById('statusText');
+
+let file = null;
+
+chooseBtn.onclick = e => { e.preventDefault(); fileInput.click(); };
+clearBtn.onclick  = e => { e.preventDefault(); file=null; fileName.textContent=''; statusText.textContent='Ready.'; };
+
+fileInput.onchange = e => {
+  file = e.target.files[0] || null;
+  fileName.textContent = file ? file.name : '';
+};
+
+function parseRanges(text, max){
+  const pages = new Set();
+  text.split(',').forEach(part=>{
+    if(part.includes('-')){
+      const [a,b] = part.split('-').map(x=>parseInt(x,10));
+      for(let i=a;i<=b;i++) if(i>=1 && i<=max) pages.add(i-1);
+    }else{
+      const n = parseInt(part,10);
+      if(n>=1 && n<=max) pages.add(n-1);
+    }
+  });
+  return [...pages].sort((a,b)=>a-b);
+}
+
+splitBtn.onclick = async e => {
+  e.preventDefault();
+  if(!file){ alert('Choose a PDF first'); return; }
+
+  try{
+    statusText.textContent='Processing...';
+    const bytes = await file.arrayBuffer();
+    const pdf = await PDFLib.PDFDocument.load(bytes);
+    const max = pdf.getPageCount();
+
+    const indices = parseRanges(rangeInput.value || '1-'+max, max);
+    const out = await PDFLib.PDFDocument.create();
+    const pages = await out.copyPages(pdf, indices);
+    pages.forEach(p=>out.addPage(p));
+
+    const outBytes = await out.save();
+    const blob = new Blob([outBytes], {type:'application/pdf'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'split.pdf';
+    a.click();
+    URL.revokeObjectURL(url);
+
+    statusText.textContent='Done.';
+  }catch(err){
+    console.error(err);
+    statusText.textContent='Error.';
+  }
+};
+</script>
+</body>
+</html>

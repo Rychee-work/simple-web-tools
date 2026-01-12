@@ -3,63 +3,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-
   <title>Remove Line Breaks | Simple Web Tools</title>
   <meta name="description" content="Remove line breaks from text locally in your browser. Join lines with a space or nothing." />
   <meta name="page-type" content="tool" />
   <meta name="page-category" content="text" />
   <link rel="canonical" href="/text/remove-line-breaks/" />
-
   <link rel="stylesheet" href="/assets/css/styles.css" />
   <script defer src="/assets/js/tools-ui.js"></script>
-
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5493851170081090"
     crossorigin="anonymous"></script>
-
-  <style>
-    .textarea{
-      width:100%;
-      min-height:220px;
-      resize:vertical;
-      padding:14px;
-      border-radius:14px;
-      border:1px solid rgba(229,231,235,.95);
-      background:#fff;
-      outline:none;
-      font: inherit;
-      line-height:1.6;
-    }
-    .textarea:focus{
-      box-shadow: 0 0 0 3px rgba(37,99,235,.12);
-      border-color: rgba(37,99,235,.35);
-    }
-    .muted{color:var(--muted);}
-    .tool-actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:14px;
-      align-items:center;
-    }
-    .result-box{
-      border:1px solid rgba(229,231,235,.9);
-      border-radius:16px;
-      padding:14px;
-      background:#fff;
-      min-height:140px;
-      white-space:pre-wrap;
-      word-break:break-word;
-      line-height:1.6;
-    }
-    .toggle-row{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:12px;
-      align-items:center;
-    }
-    .small-note{ color:var(--muted); font-weight:700; font-size:13px; }
-  </style>
 </head>
 
 <body>
@@ -98,53 +50,75 @@
           </div>
           <div class="cat-list" id="sidebar-categories"></div>
         </div>
-
-        <div class="card" style="margin-top:14px;">
-          <h2 style="margin-top:0;">Support</h2>
-          <p class="muted" style="margin:8px 0 0;">This site is supported by ads.</p>
-          <div class="ad-slot" style="margin-top:12px;">Ad space</div>
-        </div>
       </aside>
 
       <div class="main">
         <section class="hero">
           <div class="breadcrumbs" id="breadcrumbs"></div>
           <h1>Remove Line Breaks</h1>
-          <p>Join lines into a single paragraph — locally in your browser.</p>
-          <div class="note">Tip: Choose whether to join lines with a space (recommended) or remove breaks completely.</div>
+          <p>Remove line breaks from text locally in your browser. Join lines with a space or nothing.</p>
+          <div class="note">Tip: Explanations come first. The tool is below. Ads are placed last.</div>
+        </section>
 
-          <div class="card" style="margin-top:14px;">
-            <div class="ad-slot">Ad space (after AdSense approval)</div>
+        <section class="grid" aria-label="About Remove Line Breaks">
+          <div class="card">
+            <h2 style="margin-top:0;">Overview</h2>
+            <p style="color:var(--muted);line-height:1.8;">Remove line breaks and normalize whitespace when you need a single clean paragraph. This is handy for fixing PDFs copied to text, email drafts, chat logs, or wrapped lines from terminals.<br/>Paste your text, choose whether to replace breaks with spaces or nothing, and copy the cleaned result — all locally.</p>
+
+            <h2>How to use</h2>
+            <ol style="color:var(--muted);line-height:1.8;margin-top:8px;">
+              <li>Read the notes above so you know what the tool will do.</li>
+              <li>Enter your input and click the main action button.</li>
+              <li>Copy or download the result when you’re done.</li>
+            </ol>
+
+            <h2>Privacy</h2>
+            <p style="color:var(--muted);line-height:1.8;">
+              This page is designed for fast, local processing in your browser. We don’t ask you to create an account, and we avoid uploading inputs to our server whenever possible.
+            </p>
           </div>
         </section>
 
-        <section class="grid" aria-label="Remove Line Breaks Tool">
-          <div class="card">
-            <h2 style="margin-top:0;">1) Input</h2>
-            <textarea id="in" class="textarea" placeholder="Paste text with line breaks..."></textarea>
+        <section class="grid" aria-label="Advertisement">
+          <div class="ad-slot">Ad space</div>
+        </section>
 
-            <div class="toggle-row">
-              <label class="pill switch"><input id="joinWithSpace" type="checkbox" checked> Join with spaces</label>
-              <span class="small-note">If off, line breaks are removed without spaces.</span>
-            </div>
-
-            <div class="tool-actions">
-              <button class="btn primary action" id="runBtn">Convert</button>
-              <button class="btn action" id="clearBtn">Clear</button>
-            </div>
-          </div>
-
-          <div class="card">
-            <h2 style="margin-top:0;">2) Output</h2>
-            <div class="result-box" id="out">—</div>
-
-            <div class="tool-actions">
-              <button class="btn primary action" id="copyBtn">Copy</button>
-            </div>
-
-            <div class="note" style="margin-top:12px;">
+<section aria-label="Remove Line Breaks Tool" class="grid">
+<div class="card">
+<h2 style="margin-top:0;">1) Input</h2>
+<textarea class="textarea" id="in" placeholder="Paste text with line breaks..."></textarea>
+<div class="toggle-row">
+<label class="pill switch"><input checked="" id="joinWithSpace" type="checkbox"/> Join with spaces</label>
+<span class="small-note">If off, line breaks are removed without spaces.</span>
+</div>
+<div class="tool-actions">
+<button class="btn primary action" id="runBtn">Convert</button>
+<button class="btn action" id="clearBtn">Clear</button>
+</div>
+</div>
+<div class="card">
+<h2 style="margin-top:0;">2) Output</h2>
+<div class="result-box" id="out">—</div>
+<div class="tool-actions">
+<button class="btn primary action" id="copyBtn">Copy</button>
+</div>
+<div class="note" style="margin-top:12px;">
               Everything runs locally. No upload.
             </div>
+</div>
+</section>
+
+        <section class="grid" aria-label="FAQ">
+          <div class="card">
+            <h2 style="margin-top:0;">FAQ</h2>
+            <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
+              <strong>Does this tool upload my data?</strong><br/>
+              Most tools run locally in your browser. If a tool ever needs a network request (for example, to load a library), it will be mentioned on the page.
+            </p>
+            <p style="color:var(--muted);line-height:1.8;margin:0;">
+              <strong>Why does the output look different from another site?</strong><br/>
+              Different tools can use different defaults (timezones, whitespace rules, encoding behavior). Check the options and try a small sample first.
+            </p>
           </div>
         </section>
 

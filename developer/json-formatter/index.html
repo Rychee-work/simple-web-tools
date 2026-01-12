@@ -3,81 +3,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-
   <title>JSON Formatter | Simple Web Tools</title>
   <meta name="description" content="Format and validate JSON locally in your browser. Pretty print, minify, and copy. No upload." />
   <meta name="page-type" content="tool" />
   <meta name="page-category" content="developer" />
   <link rel="canonical" href="/developer/json-formatter/" />
-
   <link rel="stylesheet" href="/assets/css/styles.css" />
   <script defer src="/assets/js/tools-ui.js"></script>
-
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5493851170081090"
     crossorigin="anonymous"></script>
-
-  <style>
-    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
-
-    .textarea{
-      width:100%;
-      min-height:320px;
-      resize:vertical;
-      padding:14px;
-      border-radius:14px;
-      border:1px solid rgba(229,231,235,.95);
-      background:#fff;
-      outline:none;
-      font: 14px/1.6 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
-      tab-size: 2;
-    }
-    .textarea:focus{
-      box-shadow: 0 0 0 3px rgba(37,99,235,.12);
-      border-color: rgba(37,99,235,.35);
-    }
-
-    .tool-actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:14px;
-      align-items:center;
-    }
-
-    .status{
-      margin-top:12px;
-      color:var(--muted);
-      font-weight:800;
-      font-size:13px;
-    }
-    .status.ok{ color:#065f46; }
-    .status.bad{ color:#991b1b; }
-
-    .result-box{
-      border:1px solid rgba(229,231,235,.9);
-      border-radius:16px;
-      padding:14px;
-      background:#fff;
-      min-height:140px;
-      word-break:break-word;
-      white-space:pre-wrap;
-    }
-
-    .stack{ display:grid; gap:16px; margin-top:12px; }
-
-    .row-lite{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-      margin-top:10px;
-    }
-    .small-note{ color:var(--muted); font-weight:700; font-size:13px; }
-
-    .pill.switch{
-      user-select:none;
-    }
-  </style>
 </head>
 
 <body>
@@ -116,67 +50,86 @@
           </div>
           <div class="cat-list" id="sidebar-categories"></div>
         </div>
-
-        <div class="card" style="margin-top:14px;">
-          <h2 style="margin-top:0;">Support</h2>
-          <p class="muted" style="margin:8px 0 0;">This site is supported by ads.</p>
-          <div class="ad-slot" style="margin-top:12px;">Ad space</div>
-        </div>
       </aside>
 
       <div class="main">
         <section class="hero">
           <div class="breadcrumbs" id="breadcrumbs"></div>
           <h1>JSON Formatter</h1>
-          <p>Format, validate, and minify JSON — locally in your browser.</p>
-          <div class="note">Tip: Use <b>Pretty</b> for readability, <b>Minify</b> for compact output.</div>
+          <p>Format and validate JSON locally in your browser. Pretty print, minify, and copy. No upload.</p>
+          <div class="note">Tip: Explanations come first. The tool is below. Ads are placed last.</div>
+        </section>
 
-          <div class="card" style="margin-top:14px;">
-            <div class="ad-slot">Ad space (after AdSense approval)</div>
+        <section class="grid" aria-label="About JSON Formatter">
+          <div class="card">
+            <h2 style="margin-top:0;">Overview</h2>
+            <p style="color:var(--muted);line-height:1.8;">Format, validate, and minify JSON safely in your browser. JSON is easy for machines but hard for humans when it’s unformatted. This tool helps you pretty‑print JSON with indentation, validate syntax, and compress it when needed.<br/>Paste JSON, choose Format or Minify, and copy the result. Processing happens locally for privacy.</p>
+
+            <h2>How to use</h2>
+            <ol style="color:var(--muted);line-height:1.8;margin-top:8px;">
+              <li>Read the notes above so you know what the tool will do.</li>
+              <li>Enter your input and click the main action button.</li>
+              <li>Copy or download the result when you’re done.</li>
+            </ol>
+
+            <h2>Privacy</h2>
+            <p style="color:var(--muted);line-height:1.8;">
+              This page is designed for fast, local processing in your browser. We don’t ask you to create an account, and we avoid uploading inputs to our server whenever possible.
+            </p>
           </div>
         </section>
 
-        <section class="grid" aria-label="JSON Formatter Tool">
+        <section class="grid" aria-label="Advertisement">
+          <div class="ad-slot">Ad space</div>
+        </section>
+
+<section aria-label="JSON Formatter Tool" class="grid">
+<div class="card">
+<div class="row-lite">
+<label class="pill switch"><input id="sortKeys" type="checkbox"/> Sort keys</label>
+<label class="pill switch"><input id="useTabs" type="checkbox"/> Indent with tabs</label>
+<span class="small-note">Pretty uses 2 spaces by default.</span>
+</div>
+<div class="stack">
+<!-- 1) Input -->
+<div>
+<h2 style="margin:0;">1) Input</h2>
+<p class="small-note" style="margin:6px 0 10px;">Paste JSON. We never upload it.</p>
+<textarea class="textarea" id="in" placeholder='{"hello":"world"}'></textarea>
+<div class="tool-actions">
+<button class="btn primary action" id="prettyBtn">Pretty</button>
+<button class="btn action" id="minifyBtn">Minify</button>
+<button class="btn action" id="clearBtn">Clear</button>
+</div>
+</div>
+<!-- 2) Output -->
+<div>
+<h2 style="margin:0;">2) Output</h2>
+<p class="small-note" style="margin:6px 0 10px;">Formatted result or error message.</p>
+<div class="result-box mono" id="out">—</div>
+<div class="tool-actions">
+<button class="btn primary action" id="copyBtn">Copy</button>
+</div>
+</div>
+</div>
+<div aria-live="polite" class="status" id="status">Ready.</div>
+<div class="card" style="margin-top:16px;">
+<div class="ad-slot">Ad space (below tool)</div>
+</div>
+</div>
+</section>
+
+        <section class="grid" aria-label="FAQ">
           <div class="card">
-            <div class="row-lite">
-              <label class="pill switch"><input id="sortKeys" type="checkbox"> Sort keys</label>
-              <label class="pill switch"><input id="useTabs" type="checkbox"> Indent with tabs</label>
-              <span class="small-note">Pretty uses 2 spaces by default.</span>
-            </div>
-
-            <div class="stack">
-              <!-- 1) Input -->
-              <div>
-                <h2 style="margin:0;">1) Input</h2>
-                <p class="small-note" style="margin:6px 0 10px;">Paste JSON. We never upload it.</p>
-
-                <textarea id="in" class="textarea" placeholder='{"hello":"world"}'></textarea>
-
-                <div class="tool-actions">
-                  <button class="btn primary action" id="prettyBtn">Pretty</button>
-                  <button class="btn action" id="minifyBtn">Minify</button>
-                  <button class="btn action" id="clearBtn">Clear</button>
-                </div>
-              </div>
-
-              <!-- 2) Output -->
-              <div>
-                <h2 style="margin:0;">2) Output</h2>
-                <p class="small-note" style="margin:6px 0 10px;">Formatted result or error message.</p>
-
-                <div id="out" class="result-box mono">—</div>
-
-                <div class="tool-actions">
-                  <button class="btn primary action" id="copyBtn">Copy</button>
-                </div>
-              </div>
-            </div>
-
-            <div id="status" class="status" aria-live="polite">Ready.</div>
-
-            <div class="card" style="margin-top:16px;">
-              <div class="ad-slot">Ad space (below tool)</div>
-            </div>
+            <h2 style="margin-top:0;">FAQ</h2>
+            <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
+              <strong>Does this tool upload my data?</strong><br/>
+              Most tools run locally in your browser. If a tool ever needs a network request (for example, to load a library), it will be mentioned on the page.
+            </p>
+            <p style="color:var(--muted);line-height:1.8;margin:0;">
+              <strong>Why does the output look different from another site?</strong><br/>
+              Different tools can use different defaults (timezones, whitespace rules, encoding behavior). Check the options and try a small sample first.
+            </p>
           </div>
         </section>
 

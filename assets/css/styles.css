@@ -1,3 +1,4 @@
+/* /assets/css/styles.css (FULL) */
 :root{
   --bg:#f6f7fb;
   --card:#ffffff;
@@ -295,6 +296,66 @@ a:hover{text-decoration:underline}
   .tool-grid{ grid-template-columns: 1fr; }
 }
 
+/* ===== Tool common UI (RESTORED) ===== */
+.mono{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+}
+
+.textarea{
+  width:100%;
+  min-height:160px;            /* ← しょぼくならない最低ライン */
+  resize:vertical;
+  padding:14px;
+  border-radius:14px;
+  border:1px solid rgba(229,231,235,.95);
+  background:#fff;
+  outline:none;
+  font: 14px/1.6 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+}
+.textarea:focus{
+  box-shadow: 0 0 0 3px rgba(37,99,235,.12);
+  border-color: rgba(37,99,235,.35);
+}
+
+.tool-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:14px;
+  align-items:center;
+}
+
+.status{
+  margin-top:12px;
+  color:var(--muted);
+  font-weight:800;
+  font-size:13px;
+}
+.status.ok{ color:#065f46; }
+.status.bad{ color:#991b1b; }
+
+.stack{
+  display:grid;
+  gap:16px;
+  margin-top:12px;
+}
+
+.small-note{
+  color:var(--muted);
+  font-weight:700;
+  font-size:13px;
+}
+
+.result-box{
+  border:1px solid rgba(229,231,235,.9);
+  border-radius:16px;
+  padding:14px;
+  background:#fff;
+  min-height:120px;
+  white-space:pre-wrap;
+  word-break:break-word;
+}
+
 /* ===== Buttons (global default) ===== */
 .btn{
   display:inline-flex;
@@ -364,7 +425,6 @@ a:hover{text-decoration:underline}
 }
 
 /* ===== Action buttons (Generate / Copy / Clear / Regenerate) ===== */
-/* NOTE: Add class="action" to those 4 buttons in HTML */
 .btn.action{
   min-height:56px;
   padding:16px 28px;
@@ -395,9 +455,8 @@ a:hover{text-decoration:underline}
 }
 
 /* ===== Toggle pills (a-z / A-Z / 0-9 etc.) ===== */
-/* Settings should be visually lighter than action buttons */
 .pill.switch{
-  min-height:42px;                 /* action(56)より小さく */
+  min-height:42px;
   padding:0 14px;
   border-radius:999px;
   border:1px solid rgba(229,231,235,.95);
@@ -413,7 +472,6 @@ a:hover{text-decoration:underline}
   box-shadow:none;
 }
 
-/* Checkbox is not tiny but not "main CTA" */
 .pill.switch input{
   appearance:none;
   width:16px;
@@ -436,7 +494,6 @@ a:hover{text-decoration:underline}
   line-height:1;
 }
 
-/* Checked pill: ON感は出すが、影は控えめ */
 .pill.switch:has(input:checked){
   background: rgba(37,99,235,.10);
   border-color: rgba(37,99,235,.35);

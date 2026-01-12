@@ -8,11 +8,8 @@
   <meta name="page-type" content="tool" />
   <meta name="page-category" content="utility" />
   <link rel="canonical" href="/utility/unix-timestamp-converter/" />
-
   <link rel="stylesheet" href="/assets/css/styles.css" />
   <script defer src="/assets/js/tools-ui.js"></script>
-
-  <!-- AdSense (keep this) -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5493851170081090"
     crossorigin="anonymous"></script>
 </head>
@@ -26,9 +23,7 @@
             <path d="M5 5h5v5H5V5Zm9 0h5v5h-5V5ZM5 14h5v5H5v-5Zm9 0h5v5h-5v-5Z" fill="currentColor"/>
           </svg>
         </div>
-        <div>
-          <div>Simple Web Tools <span class="badge">beta</span></div>
-        </div>
+        <div><div>Simple Web Tools <span class="badge">beta</span></div></div>
       </a>
 
       <nav class="nav" aria-label="Legal">
@@ -55,49 +50,81 @@
           </div>
           <div class="cat-list" id="sidebar-categories"></div>
         </div>
-
-        <div class="card" style="margin-top:14px;">
-          <h2 style="margin-top:0;">Support</h2>
-          <p style="color:var(--muted);margin:8px 0 0;">This site is supported by ads.</p>
-          <div class="ad-slot" style="margin-top:12px;">Ad space</div>
-        </div>
       </aside>
 
       <div class="main">
         <section class="hero">
           <div class="breadcrumbs" id="breadcrumbs"></div>
           <h1>Unix Timestamp Converter</h1>
-          <p>Unix timestamp ⇄ date-time. Local tool.</p>
+          <p>Convert Unix timestamps (seconds/milliseconds) to date-time and back.</p>
+          <div class="note">Tip: Explanations come first. The tool is below. Ads are placed last.</div>
         </section>
 
-        <section class="grid" aria-label="Unix Timestamp Converter">
+        <section class="grid" aria-label="About Unix Timestamp Converter">
           <div class="card">
-            <div class="tool-grid">
-              <div class="card">
-                <label class="label">Unix Timestamp</label>
-                <input id="ts" class="input" placeholder="e.g. 1700000000 or 1700000000000" />
-                <div class="row wrap">
-                  <label class="pill"><input type="radio" name="unit" value="s" checked> seconds</label>
-                  <label class="pill"><input type="radio" name="unit" value="ms"> milliseconds</label>
-                  <button class="btn" id="toDate">To Date</button>
-                  <button class="btn" id="now">Now</button>
-                </div>
-                <div class="stat"><span>Local</span><b id="local">-</b></div>
-                <div class="stat"><span>UTC</span><b id="utc">-</b></div>
-              </div>
+            <h2 style="margin-top:0;">Overview</h2>
+            <p style="color:var(--muted);line-height:1.8;">Convert between Unix timestamps and human-readable date/time instantly. Unix time is widely used in logs, APIs, and databases, but it can be hard to interpret at a glance. This converter supports both seconds and milliseconds, so it works with common formats from JavaScript and backend systems.<br/>Paste a timestamp to see the corresponding date/time, or enter a date/time to get the Unix value. Everything runs locally in your browser for speed and privacy.</p>
 
-              <div class="card">
-                <label class="label">Date → Timestamp</label>
-                <input id="dt" class="input" type="datetime-local" />
-                <div class="row wrap">
-                  <button class="btn" id="toTs">To Timestamp</button>
-                  <button class="btn" id="copyTs">Copy</button>
-                </div>
-                <textarea id="out" class="textarea" rows="6" readonly></textarea>
-              </div>
-            </div>
+            <h2>How to use</h2>
+            <ol style="color:var(--muted);line-height:1.8;margin-top:8px;">
+              <li>Read the notes above so you know what the tool will do.</li>
+              <li>Enter your input and click the main action button.</li>
+              <li>Copy or download the result when you’re done.</li>
+            </ol>
+
+            <h2>Privacy</h2>
+            <p style="color:var(--muted);line-height:1.8;">
+              This page is designed for fast, local processing in your browser. We don’t ask you to create an account, and we avoid uploading inputs to our server whenever possible.
+            </p>
           </div>
         </section>
+
+        <section class="grid" aria-label="Advertisement">
+          <div class="ad-slot">Ad space</div>
+        </section>
+
+<section aria-label="Unix Timestamp Converter" class="grid">
+<div class="card">
+<div class="tool-grid">
+<div class="card">
+<label class="label">Unix Timestamp</label>
+<input class="input" id="ts" placeholder="e.g. 1700000000 or 1700000000000"/>
+<div class="row wrap">
+<label class="pill"><input checked="" name="unit" type="radio" value="s"/> seconds</label>
+<label class="pill"><input name="unit" type="radio" value="ms"/> milliseconds</label>
+<button class="btn action" id="toDate">To Date</button>
+<button class="btn action" id="now">Now</button>
+</div>
+<div class="stat"><span>Local</span><b id="local">-</b></div>
+<div class="stat"><span>UTC</span><b id="utc">-</b></div>
+</div>
+<div class="card">
+<label class="label">Date → Timestamp</label>
+<input class="input" id="dt" type="datetime-local">
+<div class="row wrap">
+<button class="btn action" id="toTs">To Timestamp</button>
+<button class="btn action" id="copyTs">Copy</button>
+</div>
+<textarea class="textarea" id="out" readonly="" rows="6"></textarea>
+</input></div>
+</div>
+</div>
+</section>
+
+        <section class="grid" aria-label="FAQ">
+          <div class="card">
+            <h2 style="margin-top:0;">FAQ</h2>
+            <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
+              <strong>Does this tool upload my data?</strong><br/>
+              Most tools run locally in your browser. If a tool ever needs a network request (for example, to load a library), it will be mentioned on the page.
+            </p>
+            <p style="color:var(--muted);line-height:1.8;margin:0;">
+              <strong>Why does the output look different from another site?</strong><br/>
+              Different tools can use different defaults (timezones, whitespace rules, encoding behavior). Check the options and try a small sample first.
+            </p>
+          </div>
+        </section>
+
       </div>
     </div>
   </main>

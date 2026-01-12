@@ -3,81 +3,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-
-  <title>Hash Generator (SHA) | Simple Web Tools</title>
+  <title>Hash Generator | Simple Web Tools</title>
   <meta name="description" content="Generate SHA hashes locally in your browser (SHA-1 / SHA-256 / SHA-384 / SHA-512). No upload." />
   <meta name="page-type" content="tool" />
   <meta name="page-category" content="developer" />
   <link rel="canonical" href="/developer/hash-generator/" />
-
   <link rel="stylesheet" href="/assets/css/styles.css" />
   <script defer src="/assets/js/tools-ui.js"></script>
-
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5493851170081090"
     crossorigin="anonymous"></script>
-
-  <style>
-    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
-
-    .textarea{
-      width:100%;
-      min-height:260px;
-      resize:vertical;
-      padding:14px;
-      border-radius:14px;
-      border:1px solid rgba(229,231,235,.95);
-      background:#fff;
-      outline:none;
-      font: 14px/1.6 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
-    }
-    .textarea:focus{
-      box-shadow: 0 0 0 3px rgba(37,99,235,.12);
-      border-color: rgba(37,99,235,.35);
-    }
-
-    .tool-actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:14px;
-      align-items:center;
-    }
-
-    .status{
-      margin-top:12px;
-      color:var(--muted);
-      font-weight:800;
-      font-size:13px;
-    }
-    .status.ok{ color:#065f46; }
-    .status.bad{ color:#991b1b; }
-
-    .algo-row{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:10px;
-      align-items:center;
-    }
-    .small-note{ color:var(--muted); font-weight:700; font-size:13px; }
-
-    .result-box{
-      border:1px solid rgba(229,231,235,.9);
-      border-radius:16px;
-      padding:14px;
-      background:#fff;
-      min-height:84px;
-      word-break:break-all;
-      white-space:pre-wrap;
-    }
-
-    /* ★ 縦2段（Input→Output）に統一 */
-    .stack{
-      display:grid;
-      gap:16px;
-      margin-top:12px;
-    }
-  </style>
 </head>
 
 <body>
@@ -116,70 +50,88 @@
           </div>
           <div class="cat-list" id="sidebar-categories"></div>
         </div>
-
-        <div class="card" style="margin-top:14px;">
-          <h2 style="margin-top:0;">Support</h2>
-          <p class="muted" style="margin:8px 0 0;">This site is supported by ads.</p>
-          <div class="ad-slot" style="margin-top:12px;">Ad space</div>
-        </div>
       </aside>
 
       <div class="main">
         <section class="hero">
           <div class="breadcrumbs" id="breadcrumbs"></div>
           <h1>Hash Generator</h1>
-          <p>Generate SHA hashes locally in your browser.</p>
-          <div class="note">Tip: Web Crypto doesn’t include MD5. Use SHA-256 for most needs.</div>
+          <p>Generate SHA hashes locally in your browser (SHA-1 / SHA-256 / SHA-384 / SHA-512). No upload.</p>
+          <div class="note">Tip: Explanations come first. The tool is below. Ads are placed last.</div>
+        </section>
 
-          <!-- 上のアド枠（従来） -->
-          <div class="card" style="margin-top:14px;">
-            <div class="ad-slot">Ad space (after AdSense approval)</div>
+        <section class="grid" aria-label="About Hash Generator">
+          <div class="card">
+            <h2 style="margin-top:0;">Overview</h2>
+            <p style="color:var(--muted);line-height:1.8;">Generate hashes locally for quick checks, fingerprints, and debugging. Hashes are one-way digests used to compare content, verify integrity, or create stable identifiers.<br/>Enter text, choose a hash algorithm (via Web Crypto where available), and copy the output. Your input never leaves your device.</p>
+
+            <h2>How to use</h2>
+            <ol style="color:var(--muted);line-height:1.8;margin-top:8px;">
+              <li>Read the notes above so you know what the tool will do.</li>
+              <li>Enter your input and click the main action button.</li>
+              <li>Copy or download the result when you’re done.</li>
+            </ol>
+
+            <h2>Privacy</h2>
+            <p style="color:var(--muted);line-height:1.8;">
+              This page is designed for fast, local processing in your browser. We don’t ask you to create an account, and we avoid uploading inputs to our server whenever possible.
+            </p>
           </div>
         </section>
 
-        <section class="grid" aria-label="Hash Generator Tool">
+        <section class="grid" aria-label="Advertisement">
+          <div class="ad-slot">Ad space</div>
+        </section>
+
+<section aria-label="Hash Generator Tool" class="grid">
+<div class="card">
+<div class="algo-row">
+<label class="pill switch"><input id="sha1" type="checkbox"/> SHA-1</label>
+<label class="pill switch"><input checked="" id="sha256" type="checkbox"/> SHA-256</label>
+<label class="pill switch"><input id="sha384" type="checkbox"/> SHA-384</label>
+<label class="pill switch"><input id="sha512" type="checkbox"/> SHA-512</label>
+<span class="small-note">Select one or more algorithms.</span>
+</div>
+<div class="stack">
+<!-- 1) Input -->
+<div>
+<h2 style="margin:0;">1) Input</h2>
+<p class="small-note" style="margin:6px 0 10px;">Paste text and click Generate.</p>
+<textarea class="textarea" id="in" placeholder="Paste text here..."></textarea>
+<div class="tool-actions">
+<button class="btn primary action" id="genBtn">Generate</button>
+<button class="btn action" id="clearBtn">Clear</button>
+</div>
+</div>
+<!-- 2) Output -->
+<div>
+<h2 style="margin:0;">2) Output</h2>
+<p class="small-note" style="margin:6px 0 10px;">Results update after generation.</p>
+<div class="result-box mono" id="out">—</div>
+<div class="tool-actions">
+<button class="btn primary action" id="copyBtn">Copy</button>
+</div>
+</div>
+</div>
+<div aria-live="polite" class="status" id="status">Ready.</div>
+<!-- ★ 下側に追加アド枠（任意で増やす） -->
+<div class="card" style="margin-top:16px;">
+<div class="ad-slot">Ad space (below tool)</div>
+</div>
+</div>
+</section>
+
+        <section class="grid" aria-label="FAQ">
           <div class="card">
-            <div class="algo-row">
-              <label class="pill switch"><input type="checkbox" id="sha1"> SHA-1</label>
-              <label class="pill switch"><input type="checkbox" id="sha256" checked> SHA-256</label>
-              <label class="pill switch"><input type="checkbox" id="sha384"> SHA-384</label>
-              <label class="pill switch"><input type="checkbox" id="sha512"> SHA-512</label>
-              <span class="small-note">Select one or more algorithms.</span>
-            </div>
-
-            <div class="stack">
-              <!-- 1) Input -->
-              <div>
-                <h2 style="margin:0;">1) Input</h2>
-                <p class="small-note" style="margin:6px 0 10px;">Paste text and click Generate.</p>
-
-                <textarea id="in" class="textarea" placeholder="Paste text here..."></textarea>
-
-                <div class="tool-actions">
-                  <button class="btn primary action" id="genBtn">Generate</button>
-                  <button class="btn action" id="clearBtn">Clear</button>
-                </div>
-              </div>
-
-              <!-- 2) Output -->
-              <div>
-                <h2 style="margin:0;">2) Output</h2>
-                <p class="small-note" style="margin:6px 0 10px;">Results update after generation.</p>
-
-                <div id="out" class="result-box mono">—</div>
-
-                <div class="tool-actions">
-                  <button class="btn primary action" id="copyBtn">Copy</button>
-                </div>
-              </div>
-            </div>
-
-            <div id="status" class="status" aria-live="polite">Ready.</div>
-
-            <!-- ★ 下側に追加アド枠（任意で増やす） -->
-            <div class="card" style="margin-top:16px;">
-              <div class="ad-slot">Ad space (below tool)</div>
-            </div>
+            <h2 style="margin-top:0;">FAQ</h2>
+            <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
+              <strong>Does this tool upload my data?</strong><br/>
+              Most tools run locally in your browser. If a tool ever needs a network request (for example, to load a library), it will be mentioned on the page.
+            </p>
+            <p style="color:var(--muted);line-height:1.8;margin:0;">
+              <strong>Why does the output look different from another site?</strong><br/>
+              Different tools can use different defaults (timezones, whitespace rules, encoding behavior). Check the options and try a small sample first.
+            </p>
           </div>
         </section>
 

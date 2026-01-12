@@ -1,17 +1,16 @@
 [
   {
     "category": "pdf",
-    "slug": "merge",
+    "slug": "merge-pdf",
     "title": "Merge PDF",
-    "description": "Combine multiple PDF files into one — in your browser."
+    "description": "Combine multiple PDF files into one \u2014 in your browser."
   },
   {
     "category": "pdf",
-    "slug": "split",
+    "slug": "split-pdf",
     "title": "Split PDF",
-    "description": "Split a PDF into pages or page ranges — in your browser."
+    "description": "Split a PDF into pages or page ranges \u2014 in your browser."
   },
-
   {
     "category": "utility",
     "slug": "uuid-generator",
@@ -36,18 +35,17 @@
     "title": "QR Code Generator",
     "description": "Generate QR codes locally and download as PNG."
   },
-
   {
     "category": "text",
     "slug": "word-counter",
     "title": "Word Counter",
-    "description": "Count words, characters, sentences and paragraphs — locally."
+    "description": "Count words, characters, sentences and paragraphs \u2014 locally."
   },
   {
     "category": "text",
     "slug": "char-counter",
     "title": "Character Counter",
-    "description": "Count characters, lines, and UTF-8 bytes — locally."
+    "description": "Count characters, lines, and UTF-8 bytes \u2014 locally."
   },
   {
     "category": "text",
@@ -59,13 +57,13 @@
     "category": "text",
     "slug": "remove-line-breaks",
     "title": "Remove Line Breaks",
-    "description": "Remove line breaks and flatten text — locally in your browser."
+    "description": "Remove line breaks and flatten text \u2014 locally in your browser."
   },
   {
     "category": "text",
     "slug": "text-sorter",
     "title": "Text Sorter",
-    "description": "Sort lines A→Z / Z→A, unique, numeric sort — locally."
+    "description": "Sort lines A\u2192Z / Z\u2192A, unique, numeric sort \u2014 locally."
   },
   {
     "category": "developer",
@@ -75,13 +73,13 @@
   },
   {
     "category": "developer",
-    "slug": "base64-encoder-decoder",
+    "slug": "base64-encode-decode",
     "title": "Base64 Encode / Decode",
     "description": "Encode or decode Base64 locally in your browser (UTF-8 safe)."
   },
   {
     "category": "developer",
-    "slug": "url-encoder-decoder",
+    "slug": "url-encode-decode",
     "title": "URL Encoder / Decoder",
     "description": "Encode or decode URL components locally in your browser."
   },

@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Case Converter | Simple Web Tools</title>
-  <meta name="description" content="Convert text case: uppercase, lowercase, sentence case, title case — locally in your browser." />
+  <title>URL Encoder / Decoder | Simple Web Tools</title>
+  <meta name="description" content="Encode or decode URL components locally in your browser. No upload." />
   <meta name="page-type" content="tool" />
-  <meta name="page-category" content="text" />
-  <link rel="canonical" href="/text/case-converter/" />
+  <meta name="page-category" content="developer" />
+  <link rel="canonical" href="/developer/url-encode-decode/" />
   <link rel="stylesheet" href="/assets/css/styles.css" />
   <script defer src="/assets/js/tools-ui.js"></script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5493851170081090"
@@ -55,15 +55,15 @@
       <div class="main">
         <section class="hero">
           <div class="breadcrumbs" id="breadcrumbs"></div>
-          <h1>Case Converter</h1>
-          <p>Convert text case: uppercase, lowercase, sentence case, title case — locally in your browser.</p>
+          <h1>URL Encoder / Decoder</h1>
+          <p>Encode or decode URL components locally in your browser. No upload.</p>
           <div class="note">Tip: Explanations come first. The tool is below. Ads are placed last.</div>
         </section>
 
-        <section class="grid" aria-label="About Case Converter">
+        <section class="grid" aria-label="About URL Encoder / Decoder">
           <div class="card">
             <h2 style="margin-top:0;">Overview</h2>
-            <p style="color:var(--muted);line-height:1.8;">Convert text between common casing styles used in writing and programming. Switch to UPPERCASE or lowercase, Title Case for headlines, Sentence case for prose, and developer-friendly formats like snake_case and kebab-case.<br/>Paste text, pick a conversion mode, and copy the result. Processing runs locally in your browser.</p>
+            <p style="color:var(--muted);line-height:1.8;">Encode or decode URL components to make links safe and readable. URL encoding converts characters like spaces and symbols into a format browsers and servers can handle reliably.<br/>Paste a URL or component, choose Encode or Decode, and copy the result. Processing stays in your browser.</p>
 
             <h2>How to use</h2>
             <ol style="color:var(--muted);line-height:1.8;margin-top:8px;">
@@ -83,30 +83,37 @@
           <div class="ad-slot">Ad space</div>
         </section>
 
-<section aria-label="Case Converter Tool" class="grid">
+<section aria-label="URL Encode Decode Tool" class="grid">
 <div class="card">
-<h2 style="margin-top:0;">1) Input</h2>
-<textarea class="textarea" id="in" placeholder="Type or paste text here..."></textarea>
+<div class="row wrap" style="margin-top:2px;">
+<label class="pill switch"><input checked="" id="modeComponent" type="checkbox"/> Component</label>
+<label class="pill switch"><input id="modeFull" type="checkbox"/> Full URL</label>
+</div>
+<p class="small-note" style="margin:10px 0 0;">Choose one mode.</p>
+<div class="stack">
+<div>
+<h2 style="margin:0;">1) Input</h2>
+<p class="small-note" style="margin:6px 0 10px;">Paste text and encode/decode.</p>
+<textarea class="textarea" id="in" placeholder="e.g. hello world?x=1&amp;y=2"></textarea>
 <div class="tool-actions">
-<button class="btn primary action" data-act="upper">UPPERCASE</button>
-<button class="btn action" data-act="lower">lowercase</button>
-<button class="btn action" data-act="sentence">Sentence case</button>
-<button class="btn action" data-act="title">Title Case</button>
+<button class="btn primary action" id="encBtn">Encode</button>
+<button class="btn primary action" id="decBtn">Decode</button>
 <button class="btn action" id="clearBtn">Clear</button>
 </div>
-<p class="muted" style="margin-top:12px;">Click a button to convert and update the output.</p>
 </div>
-<div class="card">
-<h2 style="margin-top:0;">2) Output</h2>
-<div class="result-wrap">
-<div aria-live="polite" class="result-box mono" id="out">—</div>
-<div class="tool-actions" style="margin-top:0;">
+<div>
+<h2 style="margin:0;">2) Output</h2>
+<p class="small-note" style="margin:6px 0 10px;">Copy the result.</p>
+<div class="result-box mono" id="out">—</div>
+<div class="tool-actions">
 <button class="btn primary action" id="copyBtn">Copy</button>
 </div>
 </div>
-<div class="note" style="margin-top:12px;">
-              All conversions run locally. No upload.
-            </div>
+</div>
+<div aria-live="polite" class="status" id="status">Ready.</div>
+<div class="card" style="margin-top:16px;">
+<div class="ad-slot">Ad space (below tool)</div>
+</div>
 </div>
 </section>
 
@@ -133,54 +140,78 @@
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const $ = (id) => document.getElementById(id);
-      const input = $("in");
+      const status = $("status");
       const out = $("out");
 
-      function sentenceCase(str){
-        const s = (str || "").trim();
-        if (!s) return "";
-        const lowered = s.toLowerCase();
-        return lowered.charAt(0).toUpperCase() + lowered.slice(1);
+      function setStatus(text, kind){
+        status.textContent = text;
+        status.classList.remove("ok","bad");
+        if (kind) status.classList.add(kind);
       }
 
-      function titleCase(str){
-        const s = (str || "").toLowerCase();
-        return s.replace(/\b([a-z])/g, (m, p1) => p1.toUpperCase());
+      function getMode(){
+        return $("modeFull").checked ? "full" : "component";
       }
 
-      function apply(action){
-        const v = input.value || "";
-        let r = v;
+      // mutually exclusive toggles
+      $("modeComponent").addEventListener("change", () => {
+        if ($("modeComponent").checked) $("modeFull").checked = false;
+        if (!$("modeComponent").checked && !$("modeFull").checked) $("modeComponent").checked = true;
+      });
+      $("modeFull").addEventListener("change", () => {
+        if ($("modeFull").checked) $("modeComponent").checked = false;
+        if (!$("modeComponent").checked && !$("modeFull").checked) $("modeFull").checked = true;
+      });
 
-        if (action === "upper") r = v.toUpperCase();
-        else if (action === "lower") r = v.toLowerCase();
-        else if (action === "sentence") r = sentenceCase(v);
-        else if (action === "title") r = titleCase(v);
+      function setOut(v){ out.textContent = v ? v : "—"; }
 
-        out.textContent = r || "—";
-      }
+      $("encBtn").addEventListener("click", () => {
+        const v = $("in").value || "";
+        if (!v.trim()){ setOut(""); setStatus("Paste text first.", ""); return; }
+        try{
+          const m = getMode();
+          const res = (m === "full") ? encodeURI(v) : encodeURIComponent(v);
+          setOut(res);
+          setStatus("Encoded.", "ok");
+        }catch(e){
+          setOut("");
+          setStatus("Encode failed.", "bad");
+        }
+      });
 
-      document.querySelectorAll("[data-act]").forEach(btn => {
-        btn.addEventListener("click", () => apply(btn.getAttribute("data-act")));
+      $("decBtn").addEventListener("click", () => {
+        const v = $("in").value || "";
+        if (!v.trim()){ setOut(""); setStatus("Paste encoded text first.", ""); return; }
+        try{
+          const m = getMode();
+          const res = (m === "full") ? decodeURI(v) : decodeURIComponent(v);
+          setOut(res);
+          setStatus("Decoded.", "ok");
+        }catch(e){
+          setOut("");
+          setStatus("Decode failed. The input may be invalid.", "bad");
+        }
       });
 
       $("clearBtn").addEventListener("click", () => {
-        input.value = "";
-        out.textContent = "—";
-        input.focus();
+        $("in").value = "";
+        setOut("");
+        setStatus("Cleared.", "");
+        $("in").focus();
       });
 
       $("copyBtn").addEventListener("click", async () => {
         const v = out.textContent === "—" ? "" : out.textContent;
-        try { await navigator.clipboard.writeText(v); }
+        if (!v) return;
+        try { await navigator.clipboard.writeText(v); setStatus("Copied.", "ok"); }
         catch{
-          // fallback
           const t = document.createElement("textarea");
           t.value = v;
           document.body.appendChild(t);
           t.select();
           document.execCommand("copy");
           t.remove();
+          setStatus("Copied.", "ok");
         }
       });
     });

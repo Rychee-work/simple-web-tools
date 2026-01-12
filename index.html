@@ -4,11 +4,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Simple Web Tools — Fast, simple, private</title>
-  <meta name="description" content="Free online tools. Many tools run locally in your browser — we don't upload your files to a server." />
+  <meta name="description" content="Free online tools that run locally in your browser whenever possible." />
+  <meta name="page-type" content="home" />
+  <link rel="canonical" href="/" />
   <link rel="stylesheet" href="/assets/css/styles.css" />
   <script defer src="/assets/js/tools-ui.js"></script>
-
-  <!-- AdSense (keep this) -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5493851170081090"
     crossorigin="anonymous"></script>
 </head>
@@ -18,14 +18,11 @@
     <div class="header-inner">
       <a class="brand" href="/">
         <div class="logo" aria-hidden="true">
-          <!-- Grid icon -->
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M5 5h5v5H5V5Zm9 0h5v5h-5V5ZM5 14h5v5H5v-5Zm9 0h5v5h-5v-5Z" fill="currentColor"/>
           </svg>
         </div>
-        <div>
-          <div>Simple Web Tools <span class="badge">beta</span></div>
-        </div>
+        <div><div>Simple Web Tools <span class="badge">beta</span></div></div>
       </a>
 
       <nav class="nav" aria-label="Legal">
@@ -33,26 +30,24 @@
         <a href="/legal/terms.html">Terms</a>
         <a href="/legal/contact.html">Contact</a>
       </nav>
-      <!-- menu button is injected/bound by tools-ui.js (or you can place it manually; JS will still bind) -->
+
+      <button class="menu-btn" type="button" aria-label="Open categories" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
     </div>
   </header>
 
   <main class="container">
     <div class="layout">
-      <aside class="sidebar">
+      <aside class="sidebar" aria-label="Categories">
         <div class="card">
           <div class="section-title">
             <h2>Categories</h2>
             <a class="hint" href="/">All tools</a>
           </div>
-
           <div class="cat-list" id="sidebar-categories"></div>
-        </div>
-
-        <div class="card" style="margin-top:14px;">
-          <h2 style="margin-top:0;">Support</h2>
-          <p style="color:var(--muted);margin:8px 0 0;">This site is supported by ads.</p>
-          <div class="ad-slot" style="margin-top:12px;">Ad space</div>
         </div>
       </aside>
 
@@ -60,15 +55,33 @@
         <section class="hero">
           <h1>Free Online Tools</h1>
           <p>
-            Simple utilities that feel safe to use.
-            Many tools process files <strong>locally in your browser</strong> — we don’t upload your files to a server.
+            Simple utilities that feel safe to use. Explanations come first, tools come second, and ads come last.
           </p>
-          <div class="note">Tip: Bookmark this page — more tools will be added regularly.</div>
+          <div class="note">Many tools run locally in your browser — we don’t upload your files to a server whenever possible.</div>
+        </section>
+
+        <section class="grid" aria-label="About Simple Web Tools">
+          <div class="card">
+            <h2 style="margin-top:0;">What this site is</h2>
+            <p style="color:var(--muted);line-height:1.8;margin:0;">Simple Web Tools is a collection of small, focused utilities that help you solve everyday problems in seconds. Instead of long articles that bury the answer, each page follows the same pattern: a clear explanation first, then a fast tool you can use immediately. This structure makes the pages useful even if you never click a button — and it also helps you choose the right tool with confidence.</p><p style="color:var(--muted);line-height:1.8;margin:12px 0 0;"></p><p style="color:var(--muted);line-height:1.8;margin:12px 0 0;">Many tools run locally in your browser, which means your inputs (text, settings, and in some cases files) are processed on your device and are not uploaded to our server. This is especially helpful when you’re working with private snippets like passwords, IDs, JSON payloads, or internal URLs. We still keep things simple: no accounts, no tracking walls, and no unnecessary steps.</p><p style="color:var(--muted);line-height:1.8;margin:12px 0 0;"></p><p style="color:var(--muted);line-height:1.8;margin:12px 0 0;">Browse by category in the sidebar. PDF tools help you merge or split documents. Text tools help you count, clean, and transform text. Utility tools include generators and converters you use all the time. Developer tools cover common encodings and formats used in APIs and debugging. New tools are added regularly, and the UI stays consistent so you always know where to find the explanation, the tool, and the FAQs.</p>
+            <h2>Popular starting points</h2>
+            <p style="color:var(--muted);line-height:1.8;margin:0;">
+              Try <a href="/utility/password-generator/">Password Generator</a> for strong passwords,
+              <a href="/developer/json-formatter/">JSON Formatter</a> for API debugging,
+              and <a href="/text/word-counter/">Word Counter</a> for writing limits.
+            </p>
+          </div>
+        </section>
+
+        <section class="grid" aria-label="Advertisement">
+          <div class="ad-slot">Ad space</div>
         </section>
 
         <section class="grid" aria-label="Tools" id="home-grid"></section>
       </div>
     </div>
   </main>
+
+  <div class="sidebar-overlay"></div>
 </body>
 </html>

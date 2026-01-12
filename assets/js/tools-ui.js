@@ -43,6 +43,8 @@
     const m = new Map();
     for(const c of CATEGORY_LABELS) m.set(c.key, []);
     for(const t of tools){
+      const status = (t.status || "live").toLowerCase();
+      if(status === "soon") continue;
       if(!t || !t.category) continue;
       if(!m.has(t.category)) m.set(t.category, []);
       m.get(t.category).push(t);
@@ -79,26 +81,6 @@
       if(currentCat === c.key) a.classList.add('active');
       host.appendChild(a);
     }
-  }
-
-  function ensureSupportCard(){
-    const sidebar = document.querySelector('aside.sidebar');
-    if(!sidebar) return;
-    if(sidebar.querySelector('.ad-slot')) return;
-
-    const card = el('div','card');
-    card.style.marginTop = "14px";
-
-    const h2 = el('h2'); h2.style.marginTop = "0"; h2.textContent = "Support";
-    const p = el('p'); p.style.color = "var(--muted)"; p.style.margin = "8px 0 0";
-    p.textContent = "This site is supported by ads.";
-
-    const ad = el('div','ad-slot'); ad.style.marginTop = "12px"; ad.textContent = "Ad space";
-
-    card.appendChild(h2);
-    card.appendChild(p);
-    card.appendChild(ad);
-    sidebar.appendChild(card);
   }
 
   function renderToolRow(t){
@@ -182,6 +164,8 @@
     }
 
     for(const t of tools){
+      const status = (t.status || "live").toLowerCase();
+      if(status === "soon") continue;
       target.appendChild(renderToolRow(t));
     }
   }
@@ -317,7 +301,6 @@
     const categoriesMap = groupByCategory(tools);
 
     renderSidebar(categoriesMap);
-    ensureSupportCard();
     renderBreadcrumbs(categoriesMap);
 
     renderHome(categoriesMap);

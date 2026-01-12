@@ -8,10 +8,8 @@
   <meta name="page-type" content="tool" />
   <meta name="page-category" content="utility" />
   <link rel="canonical" href="/utility/qr-code-generator/" />
-
   <link rel="stylesheet" href="/assets/css/styles.css" />
   <script defer src="/assets/js/tools-ui.js"></script>
-
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5493851170081090"
     crossorigin="anonymous"></script>
 </head>
@@ -52,61 +50,89 @@
           </div>
           <div class="cat-list" id="sidebar-categories"></div>
         </div>
-
-        <div class="card" style="margin-top:14px;">
-          <h2 style="margin-top:0;">Support</h2>
-          <p style="color:var(--muted);margin:8px 0 0;">This site is supported by ads.</p>
-          <div class="ad-slot" style="margin-top:12px;">Ad space</div>
-        </div>
       </aside>
 
       <div class="main">
         <section class="hero">
           <div class="breadcrumbs" id="breadcrumbs"></div>
           <h1>QR Code Generator</h1>
-          <p>Create a QR code locally and download as PNG.</p>
+          <p>Generate QR codes locally and download as PNG.</p>
+          <div class="note">Tip: Explanations come first. The tool is below. Ads are placed last.</div>
         </section>
 
-        <section class="grid" aria-label="QR Code Generator">
+        <section class="grid" aria-label="About QR Code Generator">
           <div class="card">
-            <div class="tool-grid">
-              <div class="card">
-                <label class="label">Text / URL</label>
-                <textarea id="text" class="textarea" rows="6" placeholder="https://example.com"></textarea>
+            <h2 style="margin-top:0;">Overview</h2>
+            <p style="color:var(--muted);line-height:1.8;">Generate QR codes locally from text, URLs, Wi‑Fi settings, or other short payloads. QR codes make it easy to share links and configuration data with a phone camera without typing.<br/>Enter the content, generate the QR code, and download it as an image. Processing happens in your browser, so your data stays on your device.</p>
 
-                <div class="row wrap">
-                  <label class="pill">Size:
-                    <input id="size" type="number" min="128" max="1024" value="256" style="width:110px;">
-                  </label>
-                  <label class="pill">Error:
-                    <select id="ec" class="input" style="width:140px;">
-                      <option value="L">L</option>
-                      <option value="M" selected>M</option>
-                      <option value="Q">Q</option>
-                      <option value="H">H</option>
-                    </select>
-                  </label>
-                  <button class="btn" id="gen">Generate</button>
-                  <button class="btn" id="download">Download PNG</button>
-                </div>
-              </div>
+            <h2>How to use</h2>
+            <ol style="color:var(--muted);line-height:1.8;margin-top:8px;">
+              <li>Read the notes above so you know what the tool will do.</li>
+              <li>Enter your input and click the main action button.</li>
+              <li>Copy or download the result when you’re done.</li>
+            </ol>
 
-              <div class="card">
-                <label class="label">Preview</label>
-                <canvas id="canvas"></canvas>
-                <p class="muted" style="margin-top:10px;">No upload. Generated in your browser.</p>
-              </div>
-            </div>
+            <h2>Privacy</h2>
+            <p style="color:var(--muted);line-height:1.8;">
+              This page is designed for fast, local processing in your browser. We don’t ask you to create an account, and we avoid uploading inputs to our server whenever possible.
+            </p>
           </div>
         </section>
+
+        <section class="grid" aria-label="Advertisement">
+          <div class="ad-slot">Ad space</div>
+        </section>
+
+<section aria-label="QR Code Generator" class="grid">
+<div class="card">
+<div class="tool-grid">
+<div class="card">
+<label class="label">Text / URL</label>
+<textarea class="textarea" id="text" placeholder="https://example.com" rows="6"></textarea>
+<div class="row wrap">
+<label class="pill">Size:
+                    <input id="size" max="1024" min="128" style="width:110px;" type="number" value="256"/>
+</label>
+<label class="pill">Error:
+                    <select class="input" id="ec" style="width:140px;">
+<option value="L">L</option>
+<option selected="" value="M">M</option>
+<option value="Q">Q</option>
+<option value="H">H</option>
+</select>
+</label>
+<button class="btn action" id="gen">Generate</button>
+<button class="btn action" id="download">Download PNG</button>
+</div>
+</div>
+<div class="card">
+<label class="label">Preview</label>
+<canvas id="canvas"></canvas>
+<p class="muted" style="margin-top:10px;">No upload. Generated in your browser.</p>
+</div>
+</div>
+</div>
+</section>
+
+        <section class="grid" aria-label="FAQ">
+          <div class="card">
+            <h2 style="margin-top:0;">FAQ</h2>
+            <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
+              <strong>Does this tool upload my data?</strong><br/>
+              Most tools run locally in your browser. If a tool ever needs a network request (for example, to load a library), it will be mentioned on the page.
+            </p>
+            <p style="color:var(--muted);line-height:1.8;margin:0;">
+              <strong>Why does the output look different from another site?</strong><br/>
+              Different tools can use different defaults (timezones, whitespace rules, encoding behavior). Check the options and try a small sample first.
+            </p>
+          </div>
+        </section>
+
       </div>
     </div>
   </main>
 
   <div class="sidebar-overlay"></div>
-
-  <!-- QR library -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {

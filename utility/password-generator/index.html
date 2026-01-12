@@ -3,63 +3,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-
   <title>Password Generator | Simple Web Tools</title>
   <meta name="description" content="Generate secure passwords locally in your browser. No upload." />
   <meta name="page-type" content="tool" />
   <meta name="page-category" content="utility" />
   <link rel="canonical" href="/utility/password-generator/" />
-
   <link rel="stylesheet" href="/assets/css/styles.css" />
   <script defer src="/assets/js/tools-ui.js"></script>
-
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5493851170081090"
     crossorigin="anonymous"></script>
-
-  <style>
-    /* NOTE:
-      - Button styling should be handled by /assets/css/styles.css
-      - Avoid overriding .btn/.btn.primary here to keep global consistency
-    */
-    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
-    .range { width: 240px; }
-    .kpi { display:flex; gap:12px; flex-wrap:wrap; margin-top:12px; }
-    .kpi .stat { flex:1; min-width: 210px; }
-    .bar { height:10px; border-radius:999px; background:rgba(229,231,235,.9); overflow:hidden; border:1px solid rgba(229,231,235,.9); }
-    .bar > div { height:100%; width:0%; background: var(--accent); }
-    .muted-small { color: var(--muted); font-weight:700; font-size:13px; }
-
-    /* Result: make output look "premium" */
-    .result-box{
-      border:1px solid rgba(229,231,235,.9);
-      border-radius:16px;
-      padding:14px 14px;
-      background:#fff;
-      min-height:64px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-    }
-    .result-text{
-      flex:1;
-      font-size:16px;
-      font-weight:900;
-      line-height:1.35;
-      word-break:break-all;
-      white-space:pre-wrap;
-    }
-    .result-actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-      justify-content:flex-end;
-    }
-
-    /* Make the result area breathe */
-    .result-block{ display:grid; gap:12px; }
-  </style>
 </head>
 
 <body>
@@ -98,100 +50,114 @@
           </div>
           <div class="cat-list" id="sidebar-categories"></div>
         </div>
-
-        <div class="card" style="margin-top:14px;">
-          <h2 style="margin-top:0;">Support</h2>
-          <p class="muted" style="margin:8px 0 0;">This site is supported by ads.</p>
-          <div class="ad-slot" style="margin-top:12px;">Ad space</div>
-        </div>
       </aside>
 
       <div class="main">
         <section class="hero">
           <div class="breadcrumbs" id="breadcrumbs"></div>
           <h1>Password Generator</h1>
-          <p>Generate secure passwords locally in your browser.</p>
+          <p>Generate secure passwords locally in your browser. No upload.</p>
+          <div class="note">Tip: Explanations come first. The tool is below. Ads are placed last.</div>
+        </section>
 
-          <div class="note">Tip: Use at least <b>12–16</b> characters. Enable “Avoid ambiguous” when sharing passwords verbally.</div>
+        <section class="grid" aria-label="About Password Generator">
+          <div class="card">
+            <h2 style="margin-top:0;">Overview</h2>
+            <p style="color:var(--muted);line-height:1.8;">Create strong passwords locally with simple options like length and character sets. A good password is long, random, and unique per site. This tool helps you generate passwords that are harder to guess than human-made ones.<br/>Select the length and toggles for uppercase/lowercase, numbers, and symbols. Click Generate to create a password, then Copy to put it on your clipboard. No passwords are uploaded — generation happens on your device.</p>
 
-          <div class="card" style="margin-top:14px;">
-            <div class="ad-slot">Ad space (after AdSense approval)</div>
+            <h2>How to use</h2>
+            <ol style="color:var(--muted);line-height:1.8;margin-top:8px;">
+              <li>Read the notes above so you know what the tool will do.</li>
+              <li>Enter your input and click the main action button.</li>
+              <li>Copy or download the result when you’re done.</li>
+            </ol>
+
+            <h2>Privacy</h2>
+            <p style="color:var(--muted);line-height:1.8;">
+              This page is designed for fast, local processing in your browser. We don’t ask you to create an account, and we avoid uploading inputs to our server whenever possible.
+            </p>
           </div>
         </section>
 
-        <section class="grid" aria-label="Password Generator">
-          <!-- 1) Options -->
-          <div class="card">
-            <h2 style="margin-top:0;">1) Options</h2>
+        <section class="grid" aria-label="Advertisement">
+          <div class="ad-slot">Ad space</div>
+        </section>
 
-            <div class="row wrap" style="margin-top:10px;">
-              <label class="pill">Length:
-                <input id="len" type="number" min="4" max="128" value="16" style="width:90px;">
-              </label>
-              <input id="lenRange" class="range" type="range" min="4" max="128" value="16" />
-            </div>
-
-            <div class="row wrap" style="margin-top:12px;">
-              <label class="pill switch"><input id="az" type="checkbox" checked> a-z</label>
-              <label class="pill switch"><input id="AZ" type="checkbox" checked> A-Z</label>
-              <label class="pill switch"><input id="num" type="checkbox" checked> 0-9</label>
-              <label class="pill switch"><input id="sym" type="checkbox"> Symbols</label>
-              <label class="pill switch"><input id="amb" type="checkbox" checked> Avoid ambiguous</label>
-            </div>
-
-            <div class="kpi">
-              <div class="stat">
-                <span>Strength</span>
-                <b id="strengthLabel">—</b>
-              </div>
-              <div class="stat">
-                <span>Estimated entropy</span>
-                <b id="entropyBits">—</b>
-              </div>
-            </div>
-
-            <div style="margin-top:10px;">
-              <div class="bar"><div id="barFill"></div></div>
-              <div class="muted-small" id="strengthHint" style="margin-top:8px;">Adjust length and character sets.</div>
-            </div>
-
-            <!-- ACTION BUTTONS (big, same size) -->
-            <div class="row wrap" style="margin-top:14px;">
-              <button class="btn primary action" id="gen">Generate</button>
-              <button class="btn action" id="clear">Clear</button>
-            </div>
-
-            <p class="muted" style="margin-top:12px;">No upload. Everything runs in your browser.</p>
-          </div>
-
-          <!-- 2) Result -->
-          <div class="card">
-            <h2 style="margin-top:0;">2) Result</h2>
-
-            <div class="result-block">
-              <div>
-                <div class="muted-small" style="margin-bottom:8px;font-weight:900;">Generated password</div>
-
-                <div class="result-box">
-                  <div id="out" class="result-text mono">—</div>
-
-                  <!-- ACTION BUTTONS (big, same size) -->
-                  <div class="result-actions">
-                    <button class="btn primary action" id="copy">Copy</button>
-                    <button class="btn action" id="regen">Regenerate</button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="stat">
-                <span>Status</span>
-                <b id="status">Ready.</b>
-              </div>
-
-              <div class="note">
+<section aria-label="Password Generator" class="grid">
+<!-- 1) Options -->
+<div class="card">
+<h2 style="margin-top:0;">1) Options</h2>
+<div class="row wrap" style="margin-top:10px;">
+<label class="pill">Length:
+                <input id="len" max="128" min="4" style="width:90px;" type="number" value="16"/>
+</label>
+<input class="range" id="lenRange" max="128" min="4" type="range" value="16">
+</input></div>
+<div class="row wrap" style="margin-top:12px;">
+<label class="pill switch"><input checked="" id="az" type="checkbox"/> a-z</label>
+<label class="pill switch"><input checked="" id="AZ" type="checkbox"/> A-Z</label>
+<label class="pill switch"><input checked="" id="num" type="checkbox"/> 0-9</label>
+<label class="pill switch"><input id="sym" type="checkbox"/> Symbols</label>
+<label class="pill switch"><input checked="" id="amb" type="checkbox"/> Avoid ambiguous</label>
+</div>
+<div class="kpi">
+<div class="stat">
+<span>Strength</span>
+<b id="strengthLabel">—</b>
+</div>
+<div class="stat">
+<span>Estimated entropy</span>
+<b id="entropyBits">—</b>
+</div>
+</div>
+<div style="margin-top:10px;">
+<div class="bar"><div id="barFill"></div></div>
+<div class="muted-small" id="strengthHint" style="margin-top:8px;">Adjust length and character sets.</div>
+</div>
+<!-- ACTION BUTTONS (big, same size) -->
+<div class="row wrap" style="margin-top:14px;">
+<button class="btn primary action" id="gen">Generate</button>
+<button class="btn action" id="clear">Clear</button>
+</div>
+<p class="muted" style="margin-top:12px;">No upload. Everything runs in your browser.</p>
+</div>
+<!-- 2) Result -->
+<div class="card">
+<h2 style="margin-top:0;">2) Result</h2>
+<div class="result-block">
+<div>
+<div class="muted-small" style="margin-bottom:8px;font-weight:900;">Generated password</div>
+<div class="result-box">
+<div class="result-text mono" id="out">—</div>
+<!-- ACTION BUTTONS (big, same size) -->
+<div class="result-actions">
+<button class="btn primary action" id="copy">Copy</button>
+<button class="btn action" id="regen">Regenerate</button>
+</div>
+</div>
+</div>
+<div class="stat">
+<span>Status</span>
+<b id="status">Ready.</b>
+</div>
+<div class="note">
                 If you use this for accounts, prefer a password manager. Don’t reuse passwords.
               </div>
-            </div>
+</div>
+</div>
+</section>
+
+        <section class="grid" aria-label="FAQ">
+          <div class="card">
+            <h2 style="margin-top:0;">FAQ</h2>
+            <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
+              <strong>Does this tool upload my data?</strong><br/>
+              Most tools run locally in your browser. If a tool ever needs a network request (for example, to load a library), it will be mentioned on the page.
+            </p>
+            <p style="color:var(--muted);line-height:1.8;margin:0;">
+              <strong>Why does the output look different from another site?</strong><br/>
+              Different tools can use different defaults (timezones, whitespace rules, encoding behavior). Check the options and try a small sample first.
+            </p>
           </div>
         </section>
 
