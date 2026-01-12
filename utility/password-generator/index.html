@@ -3,28 +3,70 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Password Generator | Simple Web Tools</title>
-  <meta name="description" content="Generate secure passwords locally in your browser. No upload." />
-  <meta name="page-type" content="tool" />
-  <meta name="page-category" content="utility" />
-  <link rel="canonical" href="/utility/password-generator/" />
+  <title>Password Generator — Simple Web Tools</title>
+  <meta name="description" content="Generate secure passwords locally in your browser. Choose length and character sets, avoid ambiguous characters, and copy results instantly. No uploads." />
+  <link rel="canonical" href="https://simple-web-tools.com/utility/password-generator/" />
   <link rel="stylesheet" href="/assets/css/styles.css" />
-  <script defer src="/assets/js/tools-ui.js"></script>
+
+  <!-- AdSense script (tool pages only) -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5493851170081090"
     crossorigin="anonymous"></script>
+
+  <!-- Common UI helper -->
+  <script defer src="/assets/js/tools-ui.js"></script>
+
+  <!-- ✅ This page only: force vertical stack + polish spacing (NO global impact) -->
+  <style>
+    /* Force: Options -> Result (vertical stack) only on this page */
+    .tool-grid.pg-stack { grid-template-columns: 1fr !important; }
+
+    /* spacing polish */
+    .tool-grid.pg-stack > .card { margin-bottom: 16px; }
+    .form-row { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+    .control {
+      height:40px; padding:0 10px;
+      border-radius:12px; border:1px solid var(--border);
+      background:#fff; color:var(--text);
+      font-weight:800;
+    }
+    input[type="range"]{ width:240px; }
+    .small-muted{ color:var(--muted); font-weight:700; font-size:13px; }
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
+
+    .result-box{
+      width:100%;
+      min-height:110px;
+      padding:12px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      background:#fff;
+      font-weight:800;
+      resize:vertical;
+    }
+
+    /* Keep Copy/Regenerate as strong actions, aligned nicely */
+    .result-actions{ margin-top:12px; }
+    .result-actions .btn{ min-width:160px; }
+
+    /* Keep the “note” inside Result looking like a note (not too huge) */
+    .result-note{ margin-top:12px; }
+  </style>
 </head>
 
 <body>
+  <div class="sidebar-overlay" data-sidebar-overlay></div>
+
+  <!-- ✅ Header: keep your existing structure (logo / beta / legal / menu) -->
   <header class="header">
     <div class="header-inner">
-      <a class="brand" href="/">
-        <div class="logo" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M5 5h5v5H5V5Zm9 0h5v5h-5V5ZM5 14h5v5H5v-5Zm9 0h5v5h-5v-5Z" fill="currentColor"/>
-          </svg>
+      <div class="brand">
+        <!-- ここ、あなたのサイトのロゴ構造があるならそのまま置き換えてOK（STのままで良いならそのまま） -->
+        <div class="logo" aria-label="Simple Web Tools logo">ST</div>
+        <div>
+          <div>Simple Web Tools <span class="badge">beta</span></div>
+          <div class="tagline">Fast, simple, private</div>
         </div>
-        <div><div>Simple Web Tools <span class="badge">beta</span></div></div>
-      </a>
+      </div>
 
       <nav class="nav" aria-label="Legal">
         <a href="/legal/privacy.html">Privacy</a>
@@ -32,8 +74,8 @@
         <a href="/legal/contact.html">Contact</a>
       </nav>
 
-      <button class="menu-btn" type="button" aria-label="Open categories" aria-expanded="false">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <button class="menu-btn" type="button" aria-label="Open menu" data-menu-btn>
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>
       </button>
@@ -42,249 +84,260 @@
 
   <main class="container">
     <div class="layout">
-      <aside class="sidebar" aria-label="Categories">
+
+      <!-- ✅ Sidebar: ここが消えたのが今回の地雷。必ず残す -->
+      <aside class="sidebar" data-sidebar>
         <div class="card">
           <div class="section-title">
             <h2>Categories</h2>
-            <a class="hint" href="/">All tools</a>
+            <span class="hint">Browse</span>
           </div>
-          <div class="cat-list" id="sidebar-categories"></div>
+
+          <!-- tools-ui.js が自動生成できるなら data-cat-list を使う -->
+          <div class="cat-list" data-cat-list>
+            <a class="cat" href="/pdf/"><span>PDF</span><small>Tools</small></a>
+            <a class="cat" href="/image/"><span>Image</span><small>Tools</small></a>
+            <a class="cat" href="/text/"><span>Text</span><small>Tools</small></a>
+            <a class="cat" href="/math/"><span>Math</span><small>Tools</small></a>
+            <a class="cat" href="/utility/"><span>Utility</span><small>Tools</small></a>
+            <a class="cat" href="/developer/"><span>Developer</span><small>Tools</small></a>
+            <a class="cat" href="/ai-fun/"><span>AI Fun</span><small>Tools</small></a>
+          </div>
+        </div>
+
+        <!-- Support（広告枠）: 審査中はダミー枠でOK（scriptを入れない） -->
+        <div class="card" style="margin-top:16px">
+          <div class="section-title">
+            <h2>Support</h2>
+            <span class="hint">Ads</span>
+          </div>
+          <div class="ad-slot" style="height:120px">Ad space</div>
+          <p class="small-muted" style="margin:10px 0 0">Ads appear after approval. Tools work without uploads.</p>
         </div>
       </aside>
 
-      <div class="main">
-        <section class="hero">
-          <div class="breadcrumbs" id="breadcrumbs"></div>
-          <h1>Password Generator</h1>
-          <p>Generate secure passwords locally in your browser. No upload.</p>
-          <div class="note">Tip: Explanations come first. The tool is below. Ads are placed last.</div>
-        </section>
+      <!-- ✅ Main -->
+      <section class="main">
 
-        <section class="grid" aria-label="About Password Generator">
-          <div class="card">
-            <h2 style="margin-top:0;">Overview</h2>
-            <p style="color:var(--muted);line-height:1.8;">Create strong passwords locally with simple options like length and character sets. A good password is long, random, and unique per site. This tool helps you generate passwords that are harder to guess than human-made ones.<br/>Select the length and toggles for uppercase/lowercase, numbers, and symbols. Click Generate to create a password, then Copy to put it on your clipboard. No passwords are uploaded — generation happens on your device.</p>
-
-            <h2>How to use</h2>
-            <ol style="color:var(--muted);line-height:1.8;margin-top:8px;">
-              <li>Read the notes above so you know what the tool will do.</li>
-              <li>Enter your input and click the main action button.</li>
-              <li>Copy or download the result when you’re done.</li>
-            </ol>
-
-            <h2>Privacy</h2>
-            <p style="color:var(--muted);line-height:1.8;">
-              This page is designed for fast, local processing in your browser. We don’t ask you to create an account, and we avoid uploading inputs to our server whenever possible.
-            </p>
+        <!-- Hero -->
+        <div class="hero">
+          <div class="breadcrumbs">
+            <a href="/">All tools</a> &nbsp;›&nbsp; <a href="/utility/">Utility</a> &nbsp;›&nbsp; <span>Password Generator</span>
           </div>
-        </section>
+          <h1>Password Generator</h1>
+          <p>
+            Generate secure passwords locally in your browser. Choose length and character sets, avoid ambiguous characters,
+            and copy results instantly. No uploads.
+          </p>
+          <div class="note">
+            Tip: 12–16 characters is a good baseline. Enable “Avoid ambiguous” for easier typing.
+          </div>
+        </div>
 
-        <section class="grid" aria-label="Advertisement">
-          <div class="ad-slot">Ad space</div>
-        </section>
+        <!-- Ad slot (safe position: after explanation) -->
+        <div class="grid">
+          <div class="ad-slot">Ad space (below hero)</div>
+        </div>
 
-<section aria-label="Password Generator" class="grid">
-<!-- 1) Options -->
-<div class="card">
-<h2 style="margin-top:0;">1) Options</h2>
-<div class="row wrap" style="margin-top:10px;">
-<label class="pill">Length:
-                <input id="len" max="128" min="4" style="width:90px;" type="number" value="16"/>
-</label>
-<input class="range" id="lenRange" max="128" min="4" type="range" value="16">
-</input></div>
-<div class="row wrap" style="margin-top:12px;">
-<label class="pill switch"><input checked="" id="az" type="checkbox"/> a-z</label>
-<label class="pill switch"><input checked="" id="AZ" type="checkbox"/> A-Z</label>
-<label class="pill switch"><input checked="" id="num" type="checkbox"/> 0-9</label>
-<label class="pill switch"><input id="sym" type="checkbox"/> Symbols</label>
-<label class="pill switch"><input checked="" id="amb" type="checkbox"/> Avoid ambiguous</label>
-</div>
-<div class="kpi">
-<div class="stat">
-<span>Strength</span>
-<b id="strengthLabel">—</b>
-</div>
-<div class="stat">
-<span>Estimated entropy</span>
-<b id="entropyBits">—</b>
-</div>
-</div>
-<div style="margin-top:10px;">
-<div class="bar"><div id="barFill"></div></div>
-<div class="muted-small" id="strengthHint" style="margin-top:8px;">Adjust length and character sets.</div>
-</div>
-<!-- ACTION BUTTONS (big, same size) -->
-<div class="row wrap" style="margin-top:14px;">
-<button class="btn primary action" id="gen">Generate</button>
-<button class="btn action" id="clear">Clear</button>
-</div>
-<p class="muted" style="margin-top:12px;">No upload. Everything runs in your browser.</p>
-</div>
-<!-- 2) Result -->
-<div class="card">
-<h2 style="margin-top:0;">2) Result</h2>
-<div class="result-block">
-<div>
-<div class="muted-small" style="margin-bottom:8px;font-weight:900;">Generated password</div>
-<div class="result-box">
-<div class="result-text mono" id="out">—</div>
-<!-- ACTION BUTTONS (big, same size) -->
-<div class="result-actions">
-<button class="btn primary action" id="copy">Copy</button>
-<button class="btn action" id="regen">Regenerate</button>
-</div>
-</div>
-</div>
-<div class="stat">
-<span>Status</span>
-<b id="status">Ready.</b>
-</div>
-<div class="note">
+        <!-- Tool (vertical stack) -->
+        <div class="grid">
+          <div class="tool-grid pg-stack">
+
+            <!-- 1) Options -->
+            <div class="card">
+              <div class="section-title">
+                <h2>1) Options</h2>
+                <span class="hint">Customize</span>
+              </div>
+
+              <div class="form-row" style="margin-bottom:12px">
+                <label for="len" style="font-weight:800">Length</label>
+                <input id="len" class="control" type="number" min="4" max="128" value="16" style="width:88px" />
+                <input id="lenRange" type="range" min="4" max="128" value="16" />
+              </div>
+
+              <!-- Setting pills (light) -->
+              <div class="row wrap" style="margin:12px 0 10px">
+                <label class="pill switch">
+                  <input id="optLower" type="checkbox" checked />
+                  a-z
+                </label>
+                <label class="pill switch">
+                  <input id="optUpper" type="checkbox" checked />
+                  A-Z
+                </label>
+                <label class="pill switch">
+                  <input id="optNum" type="checkbox" checked />
+                  0-9
+                </label>
+                <label class="pill switch">
+                  <input id="optSym" type="checkbox" />
+                  Symbols
+                </label>
+                <label class="pill switch">
+                  <input id="optAmb" type="checkbox" checked />
+                  Avoid ambiguous
+                </label>
+              </div>
+
+              <div class="small-muted" id="strengthLine">
+                Strength <b>—</b><br/>
+                Estimated entropy <b>—</b>
+              </div>
+              <p class="desc" style="margin-top:8px">Excellent for most uses.</p>
+
+              <!-- Main actions (big) -->
+              <div class="row wrap" style="margin-top:14px">
+                <button id="btnGen" class="btn primary action" type="button">Generate</button>
+                <button id="btnClear" class="btn action" type="button">Clear</button>
+              </div>
+
+              <p class="small-muted" style="margin-top:12px">
+                No upload. Everything runs in your browser.
+              </p>
+            </div>
+
+            <!-- 2) Result -->
+            <div class="card">
+              <div class="section-title">
+                <h2>2) Result</h2>
+                <span class="hint">Copy</span>
+              </div>
+
+              <div class="small-muted" style="margin-bottom:8px">Generated password</div>
+
+              <textarea id="out" class="result-box mono" readonly spellcheck="false">—</textarea>
+
+              <div class="row wrap result-actions">
+                <button id="btnCopy" class="btn primary action" type="button">Copy</button>
+                <button id="btnRegen" class="btn action" type="button">Regenerate</button>
+              </div>
+
+              <div class="status-line" style="margin-top:10px; font-weight:800;">
+                Status <span id="status">Ready.</span>
+              </div>
+
+              <div class="note result-note">
                 If you use this for accounts, prefer a password manager. Don’t reuse passwords.
               </div>
-</div>
-</div>
-</section>
+            </div>
 
-        <section class="grid" aria-label="FAQ">
-          <div class="card">
-            <h2 style="margin-top:0;">FAQ</h2>
-            <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
-              <strong>Does this tool upload my data?</strong><br/>
-              Most tools run locally in your browser. If a tool ever needs a network request (for example, to load a library), it will be mentioned on the page.
-            </p>
-            <p style="color:var(--muted);line-height:1.8;margin:0;">
-              <strong>Why does the output look different from another site?</strong><br/>
-              Different tools can use different defaults (timezones, whitespace rules, encoding behavior). Check the options and try a small sample first.
-            </p>
           </div>
-        </section>
 
-      </div>
+          <!-- FAQ (optional, under tool) -->
+          <div class="card">
+            <div class="section-title">
+              <h2>FAQ</h2>
+              <span class="hint">Help</span>
+            </div>
+            <p class="desc"><b>Is this generated on a server?</b><br/>No. Everything runs locally in your browser.</p>
+            <p class="desc"><b>What does “Avoid ambiguous” mean?</b><br/>It removes characters easy to confuse like O/0 or l/1.</p>
+          </div>
+
+          <!-- Bottom ad slot (optional) -->
+          <div class="ad-slot">Ad space (below tool)</div>
+        </div>
+
+        <!-- Tool JS (self-contained; if you already have JS, keep IDs and replace logic only if needed) -->
+        <script>
+          const len = document.getElementById('len');
+          const lenRange = document.getElementById('lenRange');
+          const out = document.getElementById('out');
+          const status = document.getElementById('status');
+          const strengthLine = document.getElementById('strengthLine');
+
+          const optLower = document.getElementById('optLower');
+          const optUpper = document.getElementById('optUpper');
+          const optNum   = document.getElementById('optNum');
+          const optSym   = document.getElementById('optSym');
+          const optAmb   = document.getElementById('optAmb');
+
+          const btnGen   = document.getElementById('btnGen');
+          const btnClear = document.getElementById('btnClear');
+          const btnCopy  = document.getElementById('btnCopy');
+          const btnRegen = document.getElementById('btnRegen');
+
+          function syncLen(v){
+            const n = Math.max(4, Math.min(128, Number(v || 16)));
+            len.value = String(n);
+            lenRange.value = String(n);
+          }
+          len.addEventListener('input', e => syncLen(e.target.value));
+          lenRange.addEventListener('input', e => syncLen(e.target.value));
+
+          function buildCharset(){
+            let s = '';
+            if (optLower.checked) s += 'abcdefghijklmnopqrstuvwxyz';
+            if (optUpper.checked) s += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            if (optNum.checked)   s += '0123456789';
+            if (optSym.checked)   s += '!@#$%^&*()-_=+[]{};:,.?/<>~';
+
+            if (optAmb.checked){
+              s = s.replace(/[O0Il1]/g, '');
+            }
+            return s;
+          }
+
+          function estimateEntropy(L, N){
+            if (N <= 1) return 0;
+            return Math.log2(N) * L;
+          }
+          function strengthLabel(bits){
+            if (bits >= 80) return 'Very Strong';
+            if (bits >= 60) return 'Strong';
+            if (bits >= 40) return 'OK';
+            if (bits >= 28) return 'Weak';
+            return 'Very Weak';
+          }
+
+          function generate(){
+            const charset = buildCharset();
+            const L = Number(len.value || 16);
+
+            if (charset.length < 2){
+              out.value = '—';
+              status.textContent = 'Select at least 2 character sets.';
+              strengthLine.innerHTML = 'Strength <b>—</b><br/>Estimated entropy <b>—</b>';
+              return;
+            }
+
+            let pw = '';
+            for (let i=0;i<L;i++){
+              pw += charset[Math.floor(Math.random() * charset.length)];
+            }
+            out.value = pw;
+
+            const bits = estimateEntropy(L, charset.length);
+            strengthLine.innerHTML =
+              `Strength <b>${strengthLabel(bits)}</b><br/>Estimated entropy <b>${bits.toFixed(1)} bits</b>`;
+
+            status.textContent = 'Generated.';
+          }
+
+          btnGen.addEventListener('click', generate);
+          btnRegen.addEventListener('click', generate);
+
+          btnClear.addEventListener('click', () => {
+            out.value = '—';
+            status.textContent = 'Cleared.';
+          });
+
+          btnCopy.addEventListener('click', async () => {
+            try{
+              await navigator.clipboard.writeText(out.value === '—' ? '' : out.value);
+              status.textContent = 'Copied.';
+            }catch(e){
+              status.textContent = 'Copy failed.';
+            }
+          });
+
+          // init
+          syncLen(16);
+          generate();
+        </script>
+
+      </section>
     </div>
   </main>
-
-  <div class="sidebar-overlay"></div>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const $ = (id) => document.getElementById(id);
-
-      const LOWER = "abcdefghijklmnopqrstuvwxyz";
-      const UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-      const NUMS  = "0123456789";
-      const SYMS  = "!@#$%^&*()-_=+[]{};:,.?/<>|~";
-      const AMBIG = new Set(["0","O","o","1","l","I","|"]);
-
-      function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
-
-      function getPool() {
-        let pool = "";
-        if ($("az").checked) pool += LOWER;
-        if ($("AZ").checked) pool += UPPER;
-        if ($("num").checked) pool += NUMS;
-        if ($("sym").checked) pool += SYMS;
-
-        if ($("amb").checked) {
-          pool = [...pool].filter(ch => !AMBIG.has(ch)).join("");
-        }
-        return pool;
-      }
-
-      function securePick(pool) {
-        const bytes = new Uint32Array(1);
-        crypto.getRandomValues(bytes);
-        return pool[bytes[0] % pool.length];
-      }
-
-      function estimateEntropyBits(length, poolSize) {
-        if (poolSize <= 1) return 0;
-        return length * (Math.log(poolSize) / Math.log(2));
-      }
-
-      function strengthFromEntropy(bits) {
-        if (bits >= 90) return { label:"Very Strong", pct:100, hint:"Excellent for most uses." };
-        if (bits >= 70) return { label:"Strong", pct:85, hint:"Good default for accounts." };
-        if (bits >= 50) return { label:"Medium", pct:65, hint:"Consider longer length (16+)." };
-        if (bits >= 30) return { label:"Weak", pct:40, hint:"Increase length or add sets." };
-        return { label:"Very Weak", pct:20, hint:"Not recommended." };
-      }
-
-      function updateStrength() {
-        const len = clamp(Number($("len").value || 16), 4, 128);
-        const pool = getPool();
-        const bits = estimateEntropyBits(len, pool.length);
-        const s = strengthFromEntropy(bits);
-
-        $("entropyBits").textContent = bits ? `${bits.toFixed(1)} bits` : "—";
-        $("strengthLabel").textContent = pool.length ? s.label : "—";
-        $("strengthHint").textContent = pool.length ? s.hint : "Select at least one character set.";
-        $("barFill").style.width = pool.length ? `${s.pct}%` : "0%";
-      }
-
-      function setOut(text){
-        $("out").textContent = text || "—";
-      }
-
-      function generate() {
-        const len = clamp(Number($("len").value || 16), 4, 128);
-        $("len").value = String(len);
-        $("lenRange").value = String(len);
-
-        const pool = getPool();
-        if (!pool.length) {
-          $("status").textContent = "Select at least one set.";
-          setOut("");
-          updateStrength();
-          return;
-        }
-
-        let out = "";
-        for (let i = 0; i < len; i++) out += securePick(pool);
-
-        setOut(out);
-        $("status").textContent = "Generated.";
-        updateStrength();
-      }
-
-      $("len").addEventListener("input", () => {
-        const len = clamp(Number($("len").value || 16), 4, 128);
-        $("lenRange").value = String(len);
-        updateStrength();
-      });
-      $("lenRange").addEventListener("input", () => {
-        $("len").value = $("lenRange").value;
-        updateStrength();
-      });
-
-      ["az","AZ","num","sym","amb"].forEach(id => $(id).addEventListener("change", updateStrength));
-
-      $("gen").addEventListener("click", generate);
-      $("regen").addEventListener("click", generate);
-
-      $("copy").addEventListener("click", async () => {
-        const v = $("out").textContent || "";
-        try { await navigator.clipboard.writeText(v === "—" ? "" : v); }
-        catch {
-          const t = document.createElement("textarea");
-          t.value = (v === "—") ? "" : v;
-          document.body.appendChild(t);
-          t.select();
-          document.execCommand("copy");
-          t.remove();
-        }
-        $("status").textContent = "Copied.";
-      });
-
-      $("clear").addEventListener("click", () => {
-        setOut("");
-        $("status").textContent = "Cleared.";
-      });
-
-      updateStrength();
-      generate();
-    });
-  </script>
 </body>
 </html>

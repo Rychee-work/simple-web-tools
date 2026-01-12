@@ -12,6 +12,16 @@
   <script defer src="/assets/js/tools-ui.js"></script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5493851170081090"
     crossorigin="anonymous"></script>
+
+  <!-- page-only: vertical stack + light polish -->
+  <style>
+    .tool-grid.pg-stack { grid-template-columns: 1fr !important; }
+    .tool-grid.pg-stack > .card { margin-bottom: 16px; }
+
+    /* Make output look intentional */
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
+    .out-box { min-height: 220px; }
+  </style>
 </head>
 
 <body>
@@ -67,14 +77,14 @@
 
             <h2>How to use</h2>
             <ol style="color:var(--muted);line-height:1.8;margin-top:8px;">
-              <li>Read the notes above so you know what the tool will do.</li>
-              <li>Enter your input and click the main action button.</li>
-              <li>Copy or download the result when you’re done.</li>
+              <li>Set how many UUIDs you want.</li>
+              <li>Click <strong>Generate</strong>.</li>
+              <li>Click <strong>Copy</strong> to copy all lines.</li>
             </ol>
 
             <h2>Privacy</h2>
             <p style="color:var(--muted);line-height:1.8;">
-              This page is designed for fast, local processing in your browser. We don’t ask you to create an account, and we avoid uploading inputs to our server whenever possible.
+              This page runs locally in your browser. We don’t upload inputs to a server.
             </p>
           </div>
         </section>
@@ -83,30 +93,56 @@
           <div class="ad-slot">Ad space</div>
         </section>
 
-<section aria-label="UUID Generator" class="grid">
-<div class="card">
-<div class="row wrap">
-<label class="pill">Count:
-                <input id="count" max="100" min="1" style="width:90px;" type="number" value="10"/>
-</label>
-<button class="btn action" id="gen">Generate</button>
-<button class="btn action" id="copy">Copy</button>
-<button class="btn action" id="clear">Clear</button>
-</div>
-<textarea class="textarea" id="out" readonly="" rows="10"></textarea>
-</div>
-</section>
+        <!-- Tool: stacked (Options -> Result) -->
+        <section aria-label="UUID Generator" class="grid">
+          <div class="tool-grid pg-stack">
+
+            <!-- 1) Options -->
+            <div class="card">
+              <div class="section-title">
+                <h2>1) Options</h2>
+                <span class="hint">Customize</span>
+              </div>
+
+              <div class="row wrap">
+                <label class="pill">Count:
+                  <input id="count" max="100" min="1" style="width:90px;" type="number" value="10"/>
+                </label>
+
+                <button class="btn primary action" id="gen">Generate</button>
+                <button class="btn action" id="clear">Clear</button>
+              </div>
+
+              <p class="muted" style="margin:10px 0 0;">No upload. Generated in your browser.</p>
+            </div>
+
+            <!-- 2) Result -->
+            <div class="card">
+              <div class="section-title">
+                <h2>2) Result</h2>
+                <span class="hint">Copy</span>
+              </div>
+
+              <textarea class="textarea mono out-box" id="out" readonly rows="10"></textarea>
+
+              <div class="row wrap" style="margin-top:12px;">
+                <button class="btn primary action" id="copy">Copy</button>
+              </div>
+            </div>
+
+          </div>
+        </section>
 
         <section class="grid" aria-label="FAQ">
           <div class="card">
             <h2 style="margin-top:0;">FAQ</h2>
             <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
               <strong>Does this tool upload my data?</strong><br/>
-              Most tools run locally in your browser. If a tool ever needs a network request (for example, to load a library), it will be mentioned on the page.
+              No. UUIDs are generated locally in your browser.
             </p>
             <p style="color:var(--muted);line-height:1.8;margin:0;">
-              <strong>Why does the output look different from another site?</strong><br/>
-              Different tools can use different defaults (timezones, whitespace rules, encoding behavior). Check the options and try a small sample first.
+              <strong>Which UUID version is generated?</strong><br/>
+              This tool generates UUID v4 (random).
             </p>
           </div>
         </section>

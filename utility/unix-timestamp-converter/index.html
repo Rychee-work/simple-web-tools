@@ -3,28 +3,81 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Unix Timestamp Converter | Simple Web Tools</title>
-  <meta name="description" content="Convert Unix timestamps (seconds/milliseconds) to date-time and back." />
-  <meta name="page-type" content="tool" />
-  <meta name="page-category" content="utility" />
-  <link rel="canonical" href="/utility/unix-timestamp-converter/" />
+  <title>Unix Timestamp Converter — Simple Web Tools</title>
+  <meta name="description" content="Convert Unix timestamps to dates and dates to Unix timestamps locally in your browser. No uploads." />
+  <link rel="canonical" href="https://simple-web-tools.com/utility/unix-timestamp-converter/" />
   <link rel="stylesheet" href="/assets/css/styles.css" />
-  <script defer src="/assets/js/tools-ui.js"></script>
+
+  <!-- AdSense: tool pages only -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5493851170081090"
     crossorigin="anonymous"></script>
+
+  <!-- Common UI helper -->
+  <script defer src="/assets/js/tools-ui.js"></script>
+
+  <style>
+    /* Force vertical stack for this tool page */
+    .tool-grid.pg-stack { grid-template-columns: 1fr !important; }
+    .tool-grid.pg-stack > .card { margin-bottom: 16px; }
+
+    .form-row { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+    .control {
+      height:40px; padding:0 10px;
+      border-radius:12px; border:1px solid var(--border);
+      background:#fff; color:var(--text);
+      font-weight:800;
+    }
+    .small-muted{ color:var(--muted); font-weight:700; font-size:13px; }
+
+    .outbox{
+      border:1px solid var(--border);
+      background:#fff;
+      border-radius:14px;
+      padding:10px 12px;
+      margin-top:10px;
+    }
+    .outbox .kv{
+      display:grid;
+      grid-template-columns: 120px 1fr;
+      gap:10px;
+      padding:10px 6px;
+      border-top:1px dashed var(--border);
+    }
+    .outbox .kv:first-child{ border-top:none; }
+    .outbox .k{
+      color:var(--muted);
+      font-weight:900;
+      text-transform: lowercase;
+      font-size:12px;
+      letter-spacing:.02em;
+      align-self:center;
+    }
+    .outbox .v{
+      font-weight:900;
+      word-break: break-word;
+      font-size:14px;
+      align-self:center;
+    }
+
+    @media (max-width: 520px){
+      .outbox .kv{ grid-template-columns: 1fr; }
+      .outbox .k{ margin-bottom:2px; }
+    }
+  </style>
 </head>
 
 <body>
+  <div class="sidebar-overlay" data-sidebar-overlay></div>
+
   <header class="header">
     <div class="header-inner">
-      <a class="brand" href="/">
-        <div class="logo" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M5 5h5v5H5V5Zm9 0h5v5h-5V5ZM5 14h5v5H5v-5Zm9 0h5v5h-5v-5Z" fill="currentColor"/>
-          </svg>
+      <div class="brand">
+        <div class="logo" aria-label="Simple Web Tools logo">ST</div>
+        <div>
+          <div>Simple Web Tools <span class="badge">beta</span></div>
+          <div class="tagline">Fast, simple, private</div>
         </div>
-        <div><div>Simple Web Tools <span class="badge">beta</span></div></div>
-      </a>
+      </div>
 
       <nav class="nav" aria-label="Legal">
         <a href="/legal/privacy.html">Privacy</a>
@@ -32,8 +85,8 @@
         <a href="/legal/contact.html">Contact</a>
       </nav>
 
-      <button class="menu-btn" type="button" aria-label="Open categories" aria-expanded="false">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <button class="menu-btn" type="button" aria-label="Open menu" data-menu-btn>
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>
       </button>
@@ -42,144 +95,329 @@
 
   <main class="container">
     <div class="layout">
-      <aside class="sidebar" aria-label="Categories">
+
+      <aside class="sidebar" data-sidebar>
         <div class="card">
           <div class="section-title">
             <h2>Categories</h2>
-            <a class="hint" href="/">All tools</a>
+            <span class="hint">Browse</span>
           </div>
-          <div class="cat-list" id="sidebar-categories"></div>
+          <div class="cat-list" data-cat-list>
+            <a class="cat" href="/pdf/"><span>PDF</span><small>Tools</small></a>
+            <a class="cat" href="/image/"><span>Image</span><small>Tools</small></a>
+            <a class="cat" href="/text/"><span>Text</span><small>Tools</small></a>
+            <a class="cat" href="/math/"><span>Math</span><small>Tools</small></a>
+            <a class="cat" href="/utility/"><span>Utility</span><small>Tools</small></a>
+            <a class="cat" href="/developer/"><span>Developer</span><small>Tools</small></a>
+            <a class="cat" href="/ai-fun/"><span>AI Fun</span><small>Tools</small></a>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <div class="section-title">
+            <h2>Support</h2>
+            <span class="hint">Ads</span>
+          </div>
+          <div class="ad-slot" style="height:120px">Ad space</div>
+          <p class="small-muted" style="margin:10px 0 0">Ads appear after approval. Tools work without uploads.</p>
         </div>
       </aside>
 
-      <div class="main">
-        <section class="hero">
-          <div class="breadcrumbs" id="breadcrumbs"></div>
+      <section class="main">
+
+        <div class="hero">
+          <div class="breadcrumbs">
+            <a href="/">All tools</a> &nbsp;›&nbsp; <a href="/utility/">Utility</a> &nbsp;›&nbsp; <span>Unix Timestamp Converter</span>
+          </div>
           <h1>Unix Timestamp Converter</h1>
-          <p>Convert Unix timestamps (seconds/milliseconds) to date-time and back.</p>
-          <div class="note">Tip: Explanations come first. The tool is below. Ads are placed last.</div>
-        </section>
-
-        <section class="grid" aria-label="About Unix Timestamp Converter">
-          <div class="card">
-            <h2 style="margin-top:0;">Overview</h2>
-            <p style="color:var(--muted);line-height:1.8;">Convert between Unix timestamps and human-readable date/time instantly. Unix time is widely used in logs, APIs, and databases, but it can be hard to interpret at a glance. This converter supports both seconds and milliseconds, so it works with common formats from JavaScript and backend systems.<br/>Paste a timestamp to see the corresponding date/time, or enter a date/time to get the Unix value. Everything runs locally in your browser for speed and privacy.</p>
-
-            <h2>How to use</h2>
-            <ol style="color:var(--muted);line-height:1.8;margin-top:8px;">
-              <li>Read the notes above so you know what the tool will do.</li>
-              <li>Enter your input and click the main action button.</li>
-              <li>Copy or download the result when you’re done.</li>
-            </ol>
-
-            <h2>Privacy</h2>
-            <p style="color:var(--muted);line-height:1.8;">
-              This page is designed for fast, local processing in your browser. We don’t ask you to create an account, and we avoid uploading inputs to our server whenever possible.
-            </p>
+          <p>
+            Convert Unix timestamps to human-readable dates (local / UTC), and convert dates back to timestamps.
+            Runs locally in your browser. No uploads.
+          </p>
+          <div class="note">
+            Tip: Most APIs use <b>seconds</b>. Some logs use <b>milliseconds</b>.
           </div>
-        </section>
+        </div>
 
-        <section class="grid" aria-label="Advertisement">
-          <div class="ad-slot">Ad space</div>
-        </section>
+        <div class="grid">
+          <div class="ad-slot">Ad space (below hero)</div>
+        </div>
 
-<section aria-label="Unix Timestamp Converter" class="grid">
-<div class="card">
-<div class="tool-grid">
-<div class="card">
-<label class="label">Unix Timestamp</label>
-<input class="input" id="ts" placeholder="e.g. 1700000000 or 1700000000000"/>
-<div class="row wrap">
-<label class="pill"><input checked="" name="unit" type="radio" value="s"/> seconds</label>
-<label class="pill"><input name="unit" type="radio" value="ms"/> milliseconds</label>
-<button class="btn action" id="toDate">To Date</button>
-<button class="btn action" id="now">Now</button>
-</div>
-<div class="stat"><span>Local</span><b id="local">-</b></div>
-<div class="stat"><span>UTC</span><b id="utc">-</b></div>
-</div>
-<div class="card">
-<label class="label">Date → Timestamp</label>
-<input class="input" id="dt" type="datetime-local">
-<div class="row wrap">
-<button class="btn action" id="toTs">To Timestamp</button>
-<button class="btn action" id="copyTs">Copy</button>
-</div>
-<textarea class="textarea" id="out" readonly="" rows="6"></textarea>
-</input></div>
-</div>
-</div>
-</section>
+        <div class="grid">
+          <div class="tool-grid pg-stack">
 
-        <section class="grid" aria-label="FAQ">
-          <div class="card">
-            <h2 style="margin-top:0;">FAQ</h2>
-            <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
-              <strong>Does this tool upload my data?</strong><br/>
-              Most tools run locally in your browser. If a tool ever needs a network request (for example, to load a library), it will be mentioned on the page.
-            </p>
-            <p style="color:var(--muted);line-height:1.8;margin:0;">
-              <strong>Why does the output look different from another site?</strong><br/>
-              Different tools can use different defaults (timezones, whitespace rules, encoding behavior). Check the options and try a small sample first.
-            </p>
+            <!-- A) Timestamp -> Date -->
+            <div class="card">
+              <div class="section-title">
+                <h2>Timestamp → Date</h2>
+                <span class="hint">Decode</span>
+              </div>
+
+              <label class="label" for="ts">Unix timestamp</label>
+              <input id="ts" class="control" type="text" inputmode="numeric" placeholder="e.g. 1700000000" style="width:min(520px,100%);"/>
+
+              <div class="form-row" style="margin-top:12px">
+                <label style="font-weight:900">Unit</label>
+                <label class="small-muted" style="display:flex;align-items:center;gap:6px">
+                  <input type="radio" name="unit" id="unitSec" checked />
+                  seconds
+                </label>
+                <label class="small-muted" style="display:flex;align-items:center;gap:6px">
+                  <input type="radio" name="unit" id="unitMs" />
+                  milliseconds
+                </label>
+
+                <span style="flex:1"></span>
+
+                <button id="btnDecode" class="btn primary action" type="button">Convert</button>
+                <button id="btnNow" class="btn action" type="button">Now</button>
+                <button id="btnCopyDate" class="btn action" type="button">Copy</button>
+              </div>
+
+              <!-- ✅ outbox style (same as Date->Timestamp) -->
+              <div class="outbox" aria-label="Date outputs">
+                <div class="kv">
+                  <div class="k">local</div>
+                  <div class="v" id="outLocal">-</div>
+                </div>
+                <div class="kv">
+                  <div class="k">utc</div>
+                  <div class="v" id="outUTC">-</div>
+                </div>
+              </div>
+
+              <p class="small-muted" id="statusA" style="margin-top:6px">Status: Ready.</p>
+            </div>
+
+            <!-- B) Date -> Timestamp -->
+            <div class="card">
+              <div class="section-title">
+                <h2>Date → Timestamp</h2>
+                <span class="hint">Encode</span>
+              </div>
+
+              <label class="label" for="dt">Date / time (local)</label>
+              <input id="dt" class="control" type="datetime-local" style="width:min(360px,100%);" />
+
+              <div class="form-row" style="margin-top:12px">
+                <button id="btnEncode" class="btn primary action" type="button">Convert</button>
+                <button id="btnCopySec" class="btn action" type="button">Copy seconds</button>
+                <button id="btnCopyMs" class="btn action" type="button">Copy millis</button>
+              </div>
+
+              <div class="outbox" aria-label="Timestamp outputs">
+                <div class="kv">
+                  <div class="k">seconds</div>
+                  <div class="v" id="outSec">-</div>
+                </div>
+                <div class="kv">
+                  <div class="k">milliseconds</div>
+                  <div class="v" id="outMs">-</div>
+                </div>
+              </div>
+
+              <p class="small-muted" style="margin-top:10px">Outputs are shown above (seconds & milliseconds).</p>
+              <p class="small-muted" id="statusB" style="margin-top:6px">Status: Ready.</p>
+            </div>
+
           </div>
-        </section>
 
-      </div>
+          <div class="card">
+            <div class="section-title">
+              <h2>FAQ</h2>
+              <span class="hint">Help</span>
+            </div>
+            <p class="desc"><b>Seconds or milliseconds?</b><br/>If your timestamp has 13 digits, it’s usually milliseconds. 10 digits is usually seconds.</p>
+            <p class="desc"><b>Does this upload my data?</b><br/>No. This tool runs locally in your browser.</p>
+          </div>
+
+          <div class="ad-slot">Ad space (below tool)</div>
+        </div>
+
+        <script>
+          const $ = (id) => document.getElementById(id);
+
+          // Elements A
+          const tsEl = $("ts");
+          const unitSec = $("unitSec");
+          const unitMs  = $("unitMs");
+          const outLocal = $("outLocal");
+          const outUTC   = $("outUTC");
+          const statusA  = $("statusA");
+
+          // Elements B
+          const dtEl = $("dt");
+          const outSec = $("outSec");
+          const outMs  = $("outMs");
+          const statusB = $("statusB");
+
+          function setStatus(el, msg){ el.textContent = "Status: " + msg; }
+
+          function isNumericLike(s){
+            return /^[0-9]+$/.test(String(s || "").trim());
+          }
+
+          function fmtLocal(d){
+            // YYYY/MM/DD HH:mm:ss
+            const pad = (n)=> String(n).padStart(2,"0");
+            return `${d.getFullYear()}/${pad(d.getMonth()+1)}/${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+          }
+
+          function fmtUTC(d){
+            // YYYY-MM-DD HH:mm:ss.SSS UTC (stable)
+            const pad = (n)=> String(n).padStart(2,"0");
+            const pad3 = (n)=> String(n).padStart(3,"0");
+            return `${d.getUTCFullYear()}-${pad(d.getUTCMonth()+1)}-${pad(d.getUTCDate())} ${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}:${pad(d.getUTCSeconds())}.${pad3(d.getUTCMilliseconds())} UTC`;
+          }
+
+          function decodeTimestamp(){
+            const raw = (tsEl.value || "").trim();
+            if (!raw){
+              outLocal.textContent = "-";
+              outUTC.textContent = "-";
+              setStatus(statusA, "Ready.");
+              return;
+            }
+            if (!isNumericLike(raw)){
+              outLocal.textContent = "-";
+              outUTC.textContent = "-";
+              setStatus(statusA, "Invalid input (numbers only).");
+              return;
+            }
+
+            const n = Number(raw);
+            if (!Number.isFinite(n)){
+              outLocal.textContent = "-";
+              outUTC.textContent = "-";
+              setStatus(statusA, "Invalid number.");
+              return;
+            }
+
+            const ms = unitMs.checked ? n : n * 1000;
+            const d = new Date(ms);
+            if (Number.isNaN(d.getTime())){
+              outLocal.textContent = "-";
+              outUTC.textContent = "-";
+              setStatus(statusA, "Invalid timestamp.");
+              return;
+            }
+
+            outLocal.textContent = fmtLocal(d);
+            outUTC.textContent = fmtUTC(d);
+            setStatus(statusA, "Converted.");
+          }
+
+          function setNow(){
+            const now = Date.now();
+            // default: seconds mode, put seconds
+            unitSec.checked = true;
+            tsEl.value = String(Math.floor(now / 1000));
+            decodeTimestamp();
+          }
+
+          async function copyText(text, statusEl){
+            try{
+              await navigator.clipboard.writeText(text);
+              setStatus(statusEl, "Copied.");
+            }catch{
+              const ta = document.createElement("textarea");
+              ta.value = text;
+              document.body.appendChild(ta);
+              ta.select();
+              document.execCommand("copy");
+              ta.remove();
+              setStatus(statusEl, "Copied.");
+            }
+          }
+
+          function copyDates(){
+            const local = outLocal.textContent;
+            const utc = outUTC.textContent;
+            if (!local || !utc || local === "-" || utc === "-"){
+              setStatus(statusA, "Nothing to copy.");
+              return;
+            }
+            copyText(`local: ${local}\nutc: ${utc}`, statusA);
+          }
+
+          function encodeDate(){
+            const v = dtEl.value;
+            if (!v){
+              outSec.textContent = "-";
+              outMs.textContent = "-";
+              setStatus(statusB, "Pick a date/time.");
+              return;
+            }
+            // datetime-local -> Date (local time)
+            const d = new Date(v);
+            if (Number.isNaN(d.getTime())){
+              outSec.textContent = "-";
+              outMs.textContent = "-";
+              setStatus(statusB, "Invalid date/time.");
+              return;
+            }
+
+            const ms = d.getTime();
+            const sec = Math.floor(ms / 1000);
+
+            outSec.textContent = String(sec);
+            outMs.textContent  = String(ms);
+            setStatus(statusB, "Converted.");
+          }
+
+          function copySeconds(){
+            const v = outSec.textContent;
+            if (!v || v === "-"){ setStatus(statusB, "Nothing to copy."); return; }
+            copyText(v, statusB);
+          }
+          function copyMillis(){
+            const v = outMs.textContent;
+            if (!v || v === "-"){ setStatus(statusB, "Nothing to copy."); return; }
+            copyText(v, statusB);
+          }
+
+          // Events
+          $("btnDecode").addEventListener("click", decodeTimestamp);
+          $("btnNow").addEventListener("click", setNow);
+          $("btnCopyDate").addEventListener("click", copyDates);
+
+          $("btnEncode").addEventListener("click", encodeDate);
+          $("btnCopySec").addEventListener("click", copySeconds);
+          $("btnCopyMs").addEventListener("click", copyMillis);
+
+          // Auto update (light)
+          let tA = null;
+          function scheduleA(){
+            clearTimeout(tA);
+            tA = setTimeout(decodeTimestamp, 120);
+          }
+          tsEl.addEventListener("input", scheduleA);
+          unitSec.addEventListener("change", scheduleA);
+          unitMs.addEventListener("change", scheduleA);
+
+          let tB = null;
+          function scheduleB(){
+            clearTimeout(tB);
+            tB = setTimeout(encodeDate, 120);
+          }
+          dtEl.addEventListener("input", scheduleB);
+
+          // Init default date-time (now)
+          (function init(){
+            const now = new Date();
+            const pad = (n)=> String(n).padStart(2,"0");
+            const localVal =
+              `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
+            dtEl.value = localVal;
+
+            // Provide a reasonable default
+            setNow();
+            encodeDate();
+          })();
+        </script>
+
+      </section>
     </div>
   </main>
-
-  <div class="sidebar-overlay"></div>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const $ = (id) => document.getElementById(id);
-
-      function fmtLocal(d) { return d.toLocaleString(); }
-      function fmtUTC(d) { return d.toISOString().replace("T"," ").replace("Z"," UTC"); }
-
-      function toDate() {
-        const raw = ($("ts").value || "").trim();
-        if (!raw) return;
-        const unit = document.querySelector('input[name="unit"]:checked')?.value || "s";
-        const n = Number(raw);
-        if (!Number.isFinite(n)) return;
-
-        const ms = (unit === "s") ? Math.trunc(n * 1000) : Math.trunc(n);
-        const d = new Date(ms);
-        if (Number.isNaN(d.getTime())) return;
-
-        $("local").textContent = fmtLocal(d);
-        $("utc").textContent = fmtUTC(d);
-      }
-
-      $("toDate").addEventListener("click", toDate);
-
-      $("now").addEventListener("click", () => {
-        const unit = document.querySelector('input[name="unit"]:checked')?.value || "s";
-        const now = Date.now();
-        $("ts").value = String(unit === "s" ? Math.floor(now / 1000) : now);
-        toDate();
-      });
-
-      $("toTs").addEventListener("click", () => {
-        const v = $("dt").value;
-        if (!v) return;
-        const d = new Date(v);
-        const ms = d.getTime();
-        const s = Math.floor(ms / 1000);
-        $("out").value = `seconds: ${s}\nmilliseconds: ${ms}`;
-      });
-
-      $("copyTs").addEventListener("click", async () => {
-        try { await navigator.clipboard.writeText($("out").value || ""); }
-        catch { $("out").select(); document.execCommand("copy"); }
-      });
-
-      const now = new Date();
-      $("dt").value = new Date(now.getTime() - now.getTimezoneOffset()*60000).toISOString().slice(0,16);
-      $("now").click();
-    });
-  </script>
 </body>
 </html>

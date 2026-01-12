@@ -3,28 +3,107 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>QR Code Generator | Simple Web Tools</title>
-  <meta name="description" content="Generate QR codes locally and download as PNG." />
-  <meta name="page-type" content="tool" />
-  <meta name="page-category" content="utility" />
-  <link rel="canonical" href="/utility/qr-code-generator/" />
+  <title>QR Code Generator — Simple Web Tools</title>
+  <meta name="description" content="Generate QR codes locally in your browser and download as PNG. No uploads." />
+  <link rel="canonical" href="https://simple-web-tools.com/utility/qr-code-generator/" />
   <link rel="stylesheet" href="/assets/css/styles.css" />
-  <script defer src="/assets/js/tools-ui.js"></script>
+
+  <!-- AdSense: tool pages only -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5493851170081090"
     crossorigin="anonymous"></script>
+
+  <!-- Common UI helper -->
+  <script defer src="/assets/js/tools-ui.js"></script>
+
+  <!-- ✅ QR library loader: LOCAL first -> (optional) CDN fallback -->
+  <script>
+    (function () {
+      function loadScript(src) {
+        return new Promise((resolve, reject) => {
+          const s = document.createElement("script");
+          s.src = src;
+          s.onload = resolve;
+          s.onerror = reject;
+          document.head.appendChild(s);
+        });
+      }
+
+      // This page uses "qrcode-generator" style global: window.qrcode(typeNumber, ecLevel)
+      window.__ensureQRCodeLib = async function () {
+        if (typeof window.qrcode === "function") return true;
+
+        // 1) Local vendor (recommended, works offline)
+        try {
+          await loadScript("/assets/js/vendor/qrcode-generator.js");
+        } catch (_) {}
+
+        if (typeof window.qrcode === "function") return true;
+
+        // 2) Optional CDN fallback (only if you want)
+        // try { await loadScript("https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/dist/qrcode.js"); } catch (_) {}
+        // return (typeof window.qrcode === "function");
+
+        return false;
+      };
+    })();
+  </script>
+
+  <style>
+    .tool-grid.pg-stack { grid-template-columns: 1fr !important; }
+    .tool-grid.pg-stack > .card { margin-bottom: 16px; }
+
+    .form-row { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+    .control {
+      height:40px; padding:0 10px;
+      border-radius:12px; border:1px solid var(--border);
+      background:#fff; color:var(--text);
+      font-weight:800;
+    }
+    .small-muted{ color:var(--muted); font-weight:700; font-size:13px; }
+
+    .preview-wrap{
+      display:grid;
+      place-items:center;
+      padding:14px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      background:#fff;
+    }
+    #qrCanvas{ display:block; width:100%; max-width:320px; height:auto; }
+
+    .meta-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+      margin-top:12px;
+    }
+    .meta{
+      border:1px solid var(--border);
+      background:#fff;
+      border-radius:12px;
+      padding:10px 12px;
+    }
+    .meta .k{ color:var(--muted); font-weight:800; font-size:12px; }
+    .meta .v{ font-weight:900; margin-top:4px; }
+
+    @media (max-width: 520px){
+      .meta-grid{ grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 
 <body>
+  <div class="sidebar-overlay" data-sidebar-overlay></div>
+
   <header class="header">
     <div class="header-inner">
-      <a class="brand" href="/">
-        <div class="logo" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M5 5h5v5H5V5Zm9 0h5v5h-5V5ZM5 14h5v5H5v-5Zm9 0h5v5h-5v-5Z" fill="currentColor"/>
-          </svg>
+      <div class="brand">
+        <div class="logo" aria-label="Simple Web Tools logo">ST</div>
+        <div>
+          <div>Simple Web Tools <span class="badge">beta</span></div>
+          <div class="tagline">Fast, simple, private</div>
         </div>
-        <div><div>Simple Web Tools <span class="badge">beta</span></div></div>
-      </a>
+      </div>
 
       <nav class="nav" aria-label="Legal">
         <a href="/legal/privacy.html">Privacy</a>
@@ -32,8 +111,8 @@
         <a href="/legal/contact.html">Contact</a>
       </nav>
 
-      <button class="menu-btn" type="button" aria-label="Open categories" aria-expanded="false">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <button class="menu-btn" type="button" aria-label="Open menu" data-menu-btn>
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>
       </button>
@@ -42,127 +121,295 @@
 
   <main class="container">
     <div class="layout">
-      <aside class="sidebar" aria-label="Categories">
+
+      <aside class="sidebar" data-sidebar>
         <div class="card">
           <div class="section-title">
             <h2>Categories</h2>
-            <a class="hint" href="/">All tools</a>
+            <span class="hint">Browse</span>
           </div>
-          <div class="cat-list" id="sidebar-categories"></div>
+          <div class="cat-list" data-cat-list>
+            <a class="cat" href="/pdf/"><span>PDF</span><small>Tools</small></a>
+            <a class="cat" href="/image/"><span>Image</span><small>Tools</small></a>
+            <a class="cat" href="/text/"><span>Text</span><small>Tools</small></a>
+            <a class="cat" href="/math/"><span>Math</span><small>Tools</small></a>
+            <a class="cat" href="/utility/"><span>Utility</span><small>Tools</small></a>
+            <a class="cat" href="/developer/"><span>Developer</span><small>Tools</small></a>
+            <a class="cat" href="/ai-fun/"><span>AI Fun</span><small>Tools</small></a>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <div class="section-title">
+            <h2>Support</h2>
+            <span class="hint">Ads</span>
+          </div>
+          <div class="ad-slot" style="height:120px">Ad space</div>
+          <p class="small-muted" style="margin:10px 0 0">Ads appear after approval. Tools work without uploads.</p>
         </div>
       </aside>
 
-      <div class="main">
-        <section class="hero">
-          <div class="breadcrumbs" id="breadcrumbs"></div>
+      <section class="main">
+
+        <div class="hero">
+          <div class="breadcrumbs">
+            <a href="/">All tools</a> &nbsp;›&nbsp; <a href="/utility/">Utility</a> &nbsp;›&nbsp; <span>QR Code Generator</span>
+          </div>
           <h1>QR Code Generator</h1>
-          <p>Generate QR codes locally and download as PNG.</p>
-          <div class="note">Tip: Explanations come first. The tool is below. Ads are placed last.</div>
-        </section>
-
-        <section class="grid" aria-label="About QR Code Generator">
-          <div class="card">
-            <h2 style="margin-top:0;">Overview</h2>
-            <p style="color:var(--muted);line-height:1.8;">Generate QR codes locally from text, URLs, Wi‑Fi settings, or other short payloads. QR codes make it easy to share links and configuration data with a phone camera without typing.<br/>Enter the content, generate the QR code, and download it as an image. Processing happens in your browser, so your data stays on your device.</p>
-
-            <h2>How to use</h2>
-            <ol style="color:var(--muted);line-height:1.8;margin-top:8px;">
-              <li>Read the notes above so you know what the tool will do.</li>
-              <li>Enter your input and click the main action button.</li>
-              <li>Copy or download the result when you’re done.</li>
-            </ol>
-
-            <h2>Privacy</h2>
-            <p style="color:var(--muted);line-height:1.8;">
-              This page is designed for fast, local processing in your browser. We don’t ask you to create an account, and we avoid uploading inputs to our server whenever possible.
-            </p>
+          <p>
+            Generate QR codes locally in your browser and download as PNG.
+            Supports URLs and text. No uploads.
+          </p>
+          <div class="note">
+            Tip: Error “M” is a good default. Increase to “Q/H” for printing.
           </div>
-        </section>
+        </div>
 
-        <section class="grid" aria-label="Advertisement">
-          <div class="ad-slot">Ad space</div>
-        </section>
+        <div class="grid">
+          <div class="ad-slot">Ad space (below hero)</div>
+        </div>
 
-<section aria-label="QR Code Generator" class="grid">
-<div class="card">
-<div class="tool-grid">
-<div class="card">
-<label class="label">Text / URL</label>
-<textarea class="textarea" id="text" placeholder="https://example.com" rows="6"></textarea>
-<div class="row wrap">
-<label class="pill">Size:
-                    <input id="size" max="1024" min="128" style="width:110px;" type="number" value="256"/>
-</label>
-<label class="pill">Error:
-                    <select class="input" id="ec" style="width:140px;">
-<option value="L">L</option>
-<option selected="" value="M">M</option>
-<option value="Q">Q</option>
-<option value="H">H</option>
-</select>
-</label>
-<button class="btn action" id="gen">Generate</button>
-<button class="btn action" id="download">Download PNG</button>
-</div>
-</div>
-<div class="card">
-<label class="label">Preview</label>
-<canvas id="canvas"></canvas>
-<p class="muted" style="margin-top:10px;">No upload. Generated in your browser.</p>
-</div>
-</div>
-</div>
-</section>
+        <div class="grid">
+          <div class="tool-grid pg-stack">
 
-        <section class="grid" aria-label="FAQ">
-          <div class="card">
-            <h2 style="margin-top:0;">FAQ</h2>
-            <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
-              <strong>Does this tool upload my data?</strong><br/>
-              Most tools run locally in your browser. If a tool ever needs a network request (for example, to load a library), it will be mentioned on the page.
-            </p>
-            <p style="color:var(--muted);line-height:1.8;margin:0;">
-              <strong>Why does the output look different from another site?</strong><br/>
-              Different tools can use different defaults (timezones, whitespace rules, encoding behavior). Check the options and try a small sample first.
-            </p>
+            <!-- 1) Options -->
+            <div class="card">
+              <div class="section-title">
+                <h2>1) Options</h2>
+                <span class="hint">Customize</span>
+              </div>
+
+              <label class="label" for="text">Text / URL</label>
+              <textarea class="textarea" id="text" rows="6" placeholder="https://example.com"></textarea>
+
+              <div class="form-row" style="margin-top:12px">
+                <label for="size" style="font-weight:800">Size</label>
+                <input id="size" class="control" type="number" min="128" max="1024" value="256" style="width:110px" />
+                <span class="small-muted">px</span>
+
+                <label for="ec" style="font-weight:800; margin-left:6px;">Error</label>
+                <select id="ec" class="control" style="width:120px">
+                  <option value="L">L</option>
+                  <option value="M" selected>M</option>
+                  <option value="Q">Q</option>
+                  <option value="H">H</option>
+                </select>
+
+                <label for="margin" style="font-weight:800; margin-left:6px;">Margin</label>
+                <input id="margin" class="control" type="number" min="0" max="10" value="2" style="width:90px" />
+              </div>
+
+              <div class="row wrap" style="margin-top:14px">
+                <button id="gen" class="btn primary action" type="button">Generate</button>
+                <button id="download" class="btn action" type="button">Download PNG</button>
+                <button id="clear" class="btn action" type="button">Clear</button>
+              </div>
+
+              <p class="small-muted" style="margin-top:12px">
+                No upload. Everything runs in your browser.
+              </p>
+              <p class="small-muted" id="status" style="margin-top:6px">Status: Ready.</p>
+            </div>
+
+            <!-- 2) Result -->
+            <div class="card">
+              <div class="section-title">
+                <h2>2) Result</h2>
+                <span class="hint">Preview</span>
+              </div>
+
+              <div class="preview-wrap">
+                <canvas id="qrCanvas" width="256" height="256"></canvas>
+              </div>
+
+              <div class="meta-grid">
+                <div class="meta"><div class="k">Input length</div><div class="v" id="metaLen">0</div></div>
+                <div class="meta"><div class="k">Rendered size</div><div class="v" id="metaSize">256 × 256</div></div>
+                <div class="meta"><div class="k">Error correction</div><div class="v" id="metaEC">M</div></div>
+                <div class="meta"><div class="k">Margin</div><div class="v" id="metaMargin">2</div></div>
+              </div>
+
+              <div class="note" style="margin-top:12px">
+                Result shows the QR preview and the applied settings. Download exports exactly what you see.
+              </div>
+            </div>
+
           </div>
-        </section>
 
-      </div>
+          <div class="card">
+            <div class="section-title">
+              <h2>FAQ</h2>
+              <span class="hint">Help</span>
+            </div>
+            <p class="desc"><b>Why is my PNG blank?</b><br/>It happens when QR drawing fails (library missing / input empty). This page shows an error on the preview and blocks blank downloads.</p>
+          </div>
+
+          <div class="ad-slot">Ad space (below tool)</div>
+        </div>
+
+        <script>
+          const $ = (id) => document.getElementById(id);
+
+          const textEl = $("text");
+          const sizeEl = $("size");
+          const ecEl = $("ec");
+          const marginEl = $("margin");
+          const canvas = $("qrCanvas");
+          const ctx = canvas.getContext("2d");
+
+          const metaLen = $("metaLen");
+          const metaSize = $("metaSize");
+          const metaEC = $("metaEC");
+          const metaMargin = $("metaMargin");
+          const status = $("status");
+
+          let lastRenderOk = false;
+
+          function setStatus(msg){ status.textContent = "Status: " + msg; }
+          function clamp(n,a,b){ return Math.max(a, Math.min(b, n)); }
+
+          function paintBackground(){
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0,0,canvas.width,canvas.height);
+          }
+
+          function drawErrorOnCanvas(message){
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            paintBackground();
+            ctx.strokeStyle = "#e5e7eb";
+            ctx.lineWidth = 2;
+            ctx.strokeRect(1,1,canvas.width-2,canvas.height-2);
+
+            ctx.fillStyle = "#111827";
+            ctx.font = "bold 16px system-ui, -apple-system, Segoe UI, Roboto, Arial";
+            ctx.fillText("QR render failed", 14, 34);
+            ctx.font = "12px system-ui, -apple-system, Segoe UI, Roboto, Arial";
+            const lines = String(message || "").slice(0,180).match(/.{1,34}/g) || [];
+            lines.slice(0,7).forEach((ln,i)=> ctx.fillText(ln, 14, 60 + i*18));
+          }
+
+          function renderQRToCanvas(qr, sizePx, quietModules){
+            // qr is "qrcode-generator" instance
+            const count = qr.getModuleCount();
+
+            // total modules including quiet zone (margin)
+            const total = count + quietModules * 2;
+
+            // cell size (integer) + centered
+            const cell = Math.max(1, Math.floor(sizePx / total));
+            const renderSize = cell * total;
+            const offset = Math.floor((sizePx - renderSize) / 2);
+
+            // clear + white
+            ctx.clearRect(0,0,sizePx,sizePx);
+            paintBackground();
+
+            // draw modules
+            ctx.fillStyle = "#000000";
+            for (let r = 0; r < count; r++){
+              for (let c = 0; c < count; c++){
+                if (qr.isDark(r,c)){
+                  const x = offset + (c + quietModules) * cell;
+                  const y = offset + (r + quietModules) * cell;
+                  ctx.fillRect(x, y, cell, cell);
+                }
+              }
+            }
+          }
+
+          async function generate(){
+            lastRenderOk = false;
+
+            const ok = await window.__ensureQRCodeLib();
+            if (!ok){
+              setStatus("QR library not loaded. Put /assets/js/vendor/qrcode-generator.js");
+              drawErrorOnCanvas("Missing vendor JS: /assets/js/vendor/qrcode-generator.js");
+              return;
+            }
+
+            const text = (textEl.value || "").trim();
+            const size = clamp(Number(sizeEl.value || 256), 128, 1024);
+            const ec = (ecEl.value || "M").toUpperCase();
+            const margin = clamp(Number(marginEl.value || 2), 0, 10);
+
+            metaLen.textContent = String(text.length);
+            metaSize.textContent = size + " × " + size;
+            metaEC.textContent = ec;
+            metaMargin.textContent = String(margin);
+
+            canvas.width = size;
+            canvas.height = size;
+
+            if (!text){
+              setStatus("Ready. (input is empty)");
+              drawErrorOnCanvas("Input is empty.");
+              return;
+            }
+
+            try{
+              // qrcode(typeNumber, errorCorrectionLevel)
+              // typeNumber = 0 => auto
+              const qr = window.qrcode(0, ec);
+              qr.addData(text, "Byte");
+              qr.make();
+
+              renderQRToCanvas(qr, size, margin);
+
+              lastRenderOk = true;
+              setStatus("Generated.");
+            }catch(e){
+              console.error(e);
+              setStatus("Failed to generate.");
+              drawErrorOnCanvas(e && e.message ? e.message : String(e));
+            }
+          }
+
+          function downloadPng(){
+            if (!lastRenderOk){
+              setStatus("Download blocked (QR not generated).");
+              return;
+            }
+            canvas.toBlob((blob) => {
+              if (!blob){ setStatus("Download failed."); return; }
+              const a = document.createElement("a");
+              const url = URL.createObjectURL(blob);
+              a.href = url;
+              a.download = "qr.png";
+              document.body.appendChild(a);
+              a.click();
+              a.remove();
+              URL.revokeObjectURL(url);
+              setStatus("Downloaded PNG.");
+            }, "image/png");
+          }
+
+          function clearAll(){
+            textEl.value = "";
+            setStatus("Cleared.");
+            generate();
+          }
+
+          $("gen").addEventListener("click", generate);
+          $("download").addEventListener("click", downloadPng);
+          $("clear").addEventListener("click", clearAll);
+
+          let t = null;
+          function schedule(){
+            clearTimeout(t);
+            t = setTimeout(generate, 180);
+          }
+          textEl.addEventListener("input", schedule);
+          sizeEl.addEventListener("input", schedule);
+          ecEl.addEventListener("change", schedule);
+          marginEl.addEventListener("input", schedule);
+
+          // init
+          textEl.value = "https://simple-web-tools.com/";
+          generate();
+        </script>
+
+      </section>
     </div>
   </main>
-
-  <div class="sidebar-overlay"></div>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const $ = (id) => document.getElementById(id);
-
-      async function generate() {
-        const text = ($("text").value || "").trim();
-        const size = Math.max(128, Math.min(1024, Number($("size").value || 256)));
-        const ec = $("ec").value;
-        if (!text) return;
-
-        await QRCode.toCanvas($("canvas"), text, {
-          width: size,
-          errorCorrectionLevel: ec,
-          margin: 2
-        });
-      }
-
-      $("gen").addEventListener("click", generate);
-      $("download").addEventListener("click", () => {
-        const c = $("canvas");
-        const a = document.createElement("a");
-        a.href = c.toDataURL("image/png");
-        a.download = "qr.png";
-        a.click();
-      });
-
-      $("text").value = "https://simple-web-tools.com/";
-      generate();
-    });
-  </script>
 </body>
 </html>
