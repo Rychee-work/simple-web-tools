@@ -1,0 +1,24 @@
+{
+  "name": "simple-web-tools",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rychee-work/simple-web-tools.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Rychee-work/simple-web-tools/issues"
+  },
+  "homepage": "https://github.com/Rychee-work/simple-web-tools#readme",
+  "devDependencies": {
+    "wrangler": "^4.58.0"
+  }
+}
