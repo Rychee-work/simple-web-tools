@@ -59,14 +59,14 @@
   <!-- ✅ Header: keep your existing structure (logo / beta / legal / menu) -->
   <header class="header">
     <div class="header-inner">
-      <div class="brand">
-        <!-- ここ、あなたのサイトのロゴ構造があるならそのまま置き換えてOK（STのままで良いならそのまま） -->
-        <div class="logo" aria-label="Simple Web Tools logo">ST</div>
-        <div>
-          <div>Simple Web Tools <span class="badge">beta</span></div>
-          <div class="tagline">Fast, simple, private</div>
+      <a class="brand" href="/">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 5h5v5H5V5Zm9 0h5v5h-5V5ZM5 14h5v5H5v-5Zm9 0h5v5h-5v-5Z" fill="currentColor"/>
+          </svg>
         </div>
-      </div>
+        <div><div>Simple Web Tools <span class="badge">beta</span></div></div>
+      </a>
 
       <nav class="nav" aria-label="Legal">
         <a href="/legal/privacy.html">Privacy</a>
