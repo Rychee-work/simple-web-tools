@@ -58,24 +58,96 @@
           <div class="breadcrumbs" id="breadcrumbs"></div>
           <h1>Split PDF</h1>
           <p>Split a PDF into pages. Processing happens locally in your browser — we don&#x27;t upload your files to a server.</p>
-          <div class="note">Tip: Explanations come first. The tool is below. Ads are placed last.</div>
+          <div class="note">Tip: Explanations come first. The tool is below. Ads may appear below the explanation.</div>
         </section>
 
         <section class="grid" aria-label="About Split PDF">
           <div class="card">
             <h2 style="margin-top:0;">Overview</h2>
-            <p style="color:var(--muted);line-height:1.8;">Split a PDF into individual pages or specific page ranges directly in your browser. This is useful when you need to extract one page from a long document, share only a section, or separate scanned multi-page PDFs.<br/>The split process runs locally for speed and privacy — your PDF stays on your device. Choose pages or ranges, then export the result.</p>
+            <p style="color:var(--muted);line-height:1.8;">
+              Split PDF is a simple way to break one PDF into smaller PDFs directly in your browser. This is useful when a document is too large to
+              share, when you only need to send a few pages to someone, or when a website accepts a limited number of pages per upload. Instead of
+              editing the file in a heavy desktop app or uploading it to a third-party service, you can select your PDF here and export clean,
+              individual pages as separate PDF files.
+              <br/>Common situations include: extracting a signature page from a contract, pulling a single invoice from a monthly PDF bundle, separating
+              exam pages for printing, splitting a scanned multi-page document into one-page files, or saving each slide of a presentation as its own
+              PDF. Splitting is also handy when you want to reorganize later—once you have pages as separate files, you can merge only what you need in
+              a new order using a Merge PDF tool.
+              <br/>This page is designed for speed and privacy. The split operation runs locally in your browser, so your PDF content stays on your
+              device during processing. That matters for documents that may contain personal data, internal business information, addresses, account
+              numbers, or other sensitive details. You stay in control: you choose a file, split it, and download the results.
+            </p>
+
+            <h2>When to use</h2>
+            <p style="color:var(--muted);line-height:1.8;">
+              Use Split PDF when you need smaller, more shareable pieces of a document. If you are emailing attachments, splitting can reduce
+              confusion—recipients can open exactly the page they need. If you are submitting forms online, splitting helps when the destination system
+              only allows one page or a small number of pages per upload. It’s also a good approach when a scanned PDF contains multiple receipts,
+              certificates, or ID pages that you want to archive separately.
+              <br/>If your main goal is to reduce file size (for example, an image-heavy scan), splitting may not shrink the total size much; in that
+              case a compression tool is more appropriate. If your goal is to extract a few pages into a single new PDF (not one file per page),
+              splitting into pages first can still be useful, and then you can merge the selected pages into one file afterward. In short: split to
+              isolate pages, merge to assemble a new bundle, and compress when size is the primary constraint.
+            </p>
 
             <h2>How to use</h2>
             <ol style="color:var(--muted);line-height:1.8;margin-top:8px;">
-              <li>Read the notes above so you know what the tool will do.</li>
-              <li>Enter your input and click the main action button.</li>
-              <li>Copy or download the result when you’re done.</li>
+              <li>Select a PDF file using the file chooser.</li>
+              <li>Click the Split button to process the PDF locally in your browser.</li>
+              <li>Wait for the progress bar and status text to finish.</li>
+              <li>Download the generated page files from the list of links.</li>
+              <li>Clear by selecting another PDF (the list will refresh for the new file).</li>
             </ol>
+
+            <h2>Notes / limitations</h2>
+            <ul style="color:var(--muted);line-height:1.8;margin-top:8px;">
+              <li>Very large PDFs or many pages may take longer and can use more memory, depending on your device and browser.</li>
+              <li>Encrypted or password-protected PDFs may fail to load unless they are unlocked first in another viewer.</li>
+              <li>Some PDFs contain unusual structures; if splitting fails, try a smaller file to confirm your browser environment is stable.</li>
+              <li>Each output file contains one page as-is. This tool does not edit content or remove embedded images.</li>
+              <li>Privacy note: splitting is designed to run locally in your browser, so your selected PDF is not uploaded to our server.</li>
+              <li>If your PDF contains interactive forms or annotations, they usually remain, but certain viewers may display them differently after export.</li>
+              <li>If you need a single new PDF with only a few pages, you can download those page files and merge them into one document afterward.</li>
+              <li>For best results, avoid renaming output files before downloading. Use the generated links first, then organize files on your device.</li>
+            </ul>
 
             <h2>Privacy</h2>
             <p style="color:var(--muted);line-height:1.8;">
-              This page is designed for fast, local processing in your browser. We don’t ask you to create an account, and we avoid uploading inputs to our server whenever possible.
+              Many PDF documents include personal or confidential information, so this tool is built around local processing. When you choose a PDF,
+              your file is handled in your browser session while the split is performed, and the output files are created as downloads on your device.
+              We do not ask you to sign in or create an account for basic usage. If the page loads third-party libraries required to run the tool, that
+              happens as part of normal page loading; the PDF you select is processed locally so the contents are not sent to our server during the
+              splitting operation. For sensitive documents, consider closing the tab after finishing and storing the outputs in a secure folder.
+            </p>
+
+            <h2>FAQ</h2>
+            <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
+              <strong>Does this tool upload my PDF?</strong><br/>
+              The split operation is designed to run locally in your browser, so your PDF content stays on your device during processing. This page may
+              load required libraries as part of normal page loading, but the PDF you select is handled locally for the split.
+            </p>
+            <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
+              <strong>Will I get one file per page, or a single “split” PDF?</strong><br/>
+              This page exports one PDF per page, and you can download each page from the “Downloads” list. If you want a single file containing only
+              selected pages, you can download the pages you need and merge them afterward.
+            </p>
+            <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
+              <strong>Why did splitting fail?</strong><br/>
+              Some PDFs are encrypted, corrupted, or extremely large. Try unlocking the PDF first, or test with a smaller document to confirm the browser
+              can process it smoothly.
+            </p>
+            <p style="color:var(--muted);line-height:1.8;margin:0;">
+              <strong>Why does the output look slightly different in another viewer?</strong><br/>
+              PDF viewers can render fonts, smoothing, or color management differently. The exported page PDFs should remain standard and printable, but
+              minor visual differences can occur between viewers.
+            </p>
+
+            <h2>Summary</h2>
+            <p style="color:var(--muted);line-height:1.8;margin-bottom:0;">
+              Split PDF helps you turn one PDF into page-by-page files quickly, without installing software. It’s ideal for sharing only the pages you
+              need, extracting a single page from a large document, or separating scanned multi-page PDFs into clean, individual outputs. Processing is
+              designed to run locally in your browser, so you can work with sensitive documents more safely. If you need to create a new bundle from
+              specific pages, split first and then merge the pages you want in the correct order.
             </p>
           </div>
         </section>
@@ -84,55 +156,52 @@
           <div class="ad-slot">Ad space</div>
         </section>
 
-<section class="grid" style="margin-top:16px;">
-<div class="card">
-<div class="ad-slot">Ad space (after AdSense approval)</div>
-</div>
-<div class="grid" style="grid-template-columns: 1fr 1fr; gap:16px;">
-<div class="card">
-<div class="section-title">
-<h2>1) Choose a PDF</h2>
-<div class="hint">Upload</div>
-</div>
-<div class="drop">
-<div class="kv">
-<div style="font-weight:900;">Select a PDF file</div>
-<div style="color:var(--muted);">We will export each page as a separate PDF.</div>
-<div class="row" style="margin-top:8px;">
-<input accept="application/pdf" id="splitInput" type="file"/>
-</div>
-</div>
-</div>
-</div>
-<div class="card">
-<div class="section-title">
-<h2>2) Split</h2>
-<div class="hint">Download</div>
-</div>
-<button class="btn primary action" id="splitBtn" type="button">Split &amp; Download</button>
-<div aria-label="Progress" class="progress">
-<div id="bar"></div>
-</div>
-<p id="statusText" style="margin:10px 0 0;color:var(--muted);font-weight:700;">Ready.</p>
-<div style="margin-top:12px;">
-<div style="font-weight:900;margin-bottom:8px;">Downloads</div>
-<div id="outLinks" style="display:grid;gap:10px;"></div>
-</div>
-</div>
-</div>
-</section>
-
-        <section class="grid" aria-label="FAQ">
+        <section class="grid" style="margin-top:16px;">
           <div class="card">
-            <h2 style="margin-top:0;">FAQ</h2>
-            <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
-              <strong>Does this tool upload my data?</strong><br/>
-              Most tools run locally in your browser. If a tool ever needs a network request (for example, to load a library), it will be mentioned on the page.
-            </p>
-            <p style="color:var(--muted);line-height:1.8;margin:0;">
-              <strong>Why does the output look different from another site?</strong><br/>
-              Different tools can use different defaults (timezones, whitespace rules, encoding behavior). Check the options and try a small sample first.
-            </p>
+            <div class="ad-slot">Ad space (after AdSense approval)</div>
+          </div>
+        </section>
+
+        <section class="grid" style="margin-top:16px;grid-template-columns: 1fr 1fr; gap:16px;" aria-label="Split PDF Tool">
+          <div class="card">
+            <div class="section-title">
+              <h2>1) Choose a PDF</h2>
+              <div class="hint">Upload</div>
+            </div>
+            <div class="drop">
+              <div class="kv">
+                <div style="font-weight:900;">Select a PDF file</div>
+                <div style="color:var(--muted);">We will export each page as a separate PDF.</div>
+                <div class="row" style="margin-top:8px;">
+                  <input accept="application/pdf" id="splitInput" type="file"/>
+                </div>
+                <div style="color:var(--muted);font-size:13px;margin-top:6px;">Tip: For very large PDFs, try splitting on a desktop device for better performance.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="section-title">
+              <h2>2) Split</h2>
+              <div class="hint">Download</div>
+            </div>
+
+            <p style="color:var(--muted);margin-top:0;">Choose a PDF first, then click Split. Links will appear below for each page.</p>
+
+            <button class="btn primary action" id="splitBtn" type="button">Split &amp; Generate Downloads</button>
+
+            <div aria-label="Progress" class="progress">
+              <div id="bar"></div>
+            </div>
+
+            <p id="statusText" style="margin:10px 0 0;color:var(--muted);font-weight:700;">Ready.</p>
+
+            <div style="margin-top:12px;">
+              <div style="font-weight:900;margin-bottom:8px;">Downloads</div>
+              <div id="outLinks" style="display:grid;gap:10px;"></div>
+            </div>
+
+            <div class="ad-slot" style="margin-top:14px;">Ad space (after AdSense approval)</div>
           </div>
         </section>
 
@@ -143,68 +212,89 @@
   <div class="sidebar-overlay"></div>
 
   <script>
-const fileInput = document.getElementById('fileInput');
-const chooseBtn = document.getElementById('chooseBtn');
-const clearBtn  = document.getElementById('clearBtn');
-const splitBtn  = document.getElementById('splitBtn');
-const fileName  = document.getElementById('fileName');
-const rangeInput= document.getElementById('rangeInput');
-const statusText= document.getElementById('statusText');
+  const splitInput = document.getElementById('splitInput');
+  const splitBtn = document.getElementById('splitBtn');
+  const statusText = document.getElementById('statusText');
+  const outLinks = document.getElementById('outLinks');
+  const bar = document.getElementById('bar');
 
-let file = null;
+  let file = null;
+  /** @type {string[]} */
+  let urls = [];
 
-chooseBtn.onclick = e => { e.preventDefault(); fileInput.click(); };
-clearBtn.onclick  = e => { e.preventDefault(); file=null; fileName.textContent=''; statusText.textContent='Ready.'; };
+  function clearOutputs() {
+    urls.forEach(u => {
+      try { URL.revokeObjectURL(u); } catch (e) {}
+    });
+    urls = [];
+    outLinks.innerHTML = '';
+  }
 
-fileInput.onchange = e => {
-  file = e.target.files[0] || null;
-  fileName.textContent = file ? file.name : '';
-};
+  function setProgress(pct) {
+    bar.style.width = Math.max(0, Math.min(100, pct)) + '%';
+  }
 
-function parseRanges(text, max){
-  const pages = new Set();
-  text.split(',').forEach(part=>{
-    if(part.includes('-')){
-      const [a,b] = part.split('-').map(x=>parseInt(x,10));
-      for(let i=a;i<=b;i++) if(i>=1 && i<=max) pages.add(i-1);
-    }else{
-      const n = parseInt(part,10);
-      if(n>=1 && n<=max) pages.add(n-1);
+  splitInput.addEventListener('change', (e) => {
+    file = e.target.files && e.target.files[0] ? e.target.files[0] : null;
+    clearOutputs();
+    setProgress(0);
+    statusText.textContent = file ? `Ready: ${file.name}` : 'Ready.';
+  });
+
+  splitBtn.addEventListener('click', async (e) => {
+    e.preventDefault();
+    if (!file) { alert('Choose a PDF first'); return; }
+
+    clearOutputs();
+    setProgress(5);
+
+    try {
+      statusText.textContent = 'Loading PDF...';
+
+      const bytes = await file.arrayBuffer();
+      const pdf = await PDFLib.PDFDocument.load(bytes);
+      const total = pdf.getPageCount();
+
+      if (!total) {
+        statusText.textContent = 'Error: PDF has no pages.';
+        setProgress(0);
+        return;
+      }
+
+      statusText.textContent = `Splitting ${total} page(s)...`;
+
+      for (let i = 0; i < total; i++) {
+        const out = await PDFLib.PDFDocument.create();
+        const [page] = await out.copyPages(pdf, [i]);
+        out.addPage(page);
+
+        const outBytes = await out.save();
+        const blob = new Blob([outBytes], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        urls.push(url);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `page-${String(i + 1).padStart(3, '0')}.pdf`;
+        a.textContent = `Download page ${i + 1}`;
+        a.className = 'btn action';
+        a.style.textAlign = 'left';
+
+        outLinks.appendChild(a);
+
+        const pct = 5 + Math.round(((i + 1) / total) * 90);
+        setProgress(pct);
+      }
+
+      setProgress(100);
+      statusText.textContent = `Done. Generated ${total} file(s).`;
+      setTimeout(() => { setProgress(0); }, 900);
+    } catch (err) {
+      console.error(err);
+      statusText.textContent = 'Error: failed to split. Try a different PDF.';
+      setProgress(0);
     }
   });
-  return [...pages].sort((a,b)=>a-b);
-}
-
-splitBtn.onclick = async e => {
-  e.preventDefault();
-  if(!file){ alert('Choose a PDF first'); return; }
-
-  try{
-    statusText.textContent='Processing...';
-    const bytes = await file.arrayBuffer();
-    const pdf = await PDFLib.PDFDocument.load(bytes);
-    const max = pdf.getPageCount();
-
-    const indices = parseRanges(rangeInput.value || '1-'+max, max);
-    const out = await PDFLib.PDFDocument.create();
-    const pages = await out.copyPages(pdf, indices);
-    pages.forEach(p=>out.addPage(p));
-
-    const outBytes = await out.save();
-    const blob = new Blob([outBytes], {type:'application/pdf'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'split.pdf';
-    a.click();
-    URL.revokeObjectURL(url);
-
-    statusText.textContent='Done.';
-  }catch(err){
-    console.error(err);
-    statusText.textContent='Error.';
-  }
-};
-</script>
+  </script>
 </body>
 </html>

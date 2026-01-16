@@ -57,24 +57,42 @@
           <div class="breadcrumbs" id="breadcrumbs"></div>
           <h1>Text Sorter</h1>
           <p>Sort lines alphabetically, reverse, unique, and trim — locally in your browser.</p>
-          <div class="note">Tip: Explanations come first. The tool is below. Ads are placed last.</div>
+          <div class="note">Tip: Explanations come first. The tool is below. The ad section is shown between the explanation and the tool.</div>
         </section>
 
         <section class="grid" aria-label="About Text Sorter">
           <div class="card">
             <h2 style="margin-top:0;">Overview</h2>
-            <p style="color:var(--muted);line-height:1.8;">Sort lines of text A→Z, Z→A, numeric, or unique-only. This is useful for cleaning lists, removing duplicates, sorting CSV-like line lists, or organizing keywords.<br/>Paste lines, select a sorting mode, and get the output instantly. No data is uploaded — it all runs in your browser.</p>
+            <p style="color:var(--muted);line-height:1.8;">
+              Sort lines of text A→Z, Z→A, unique-only, and trimmed. This tool is useful for cleaning lists, removing duplicates, sorting CSV-like one-column line lists, or organizing keywords.
+              <br/><br/>
+              In real projects, “simple lists” often become messy because they come from multiple sources: copied from spreadsheets, exported from dashboards, pasted from emails, or collected from different people. The same value can appear with different capitalization (Apple vs apple), extra spaces (apple vs apple&nbsp;), or repeated lines. When you import or compare lists like that, the noise makes it hard to see what actually changed. Sorting and normalizing lines first gives you a stable order and makes issues obvious.
+              <br/><br/>
+              This page sorts lines in a case-insensitive way for readability, can remove duplicates, and can reverse the final order. Trimming is important because invisible whitespace is one of the most common causes of “why doesn’t this match?” in forms, tags, filters, and scripts. For example, an extra trailing space can create a separate category or prevent an exact match. By trimming and deduplicating, you can turn a pasted list into a clean, reusable set of values.
+              <br/><br/>
+              <strong>When to use:</strong> Use a text sorter whenever you need a consistent order or a clean unique set. Typical cases include keyword lists for SEO, tags and labels for content, product categories, filenames, domain lists, IDs, or any “one item per line” input field. It is also useful before sharing a list with someone else, because sorted unique lists are easier to read and review. If you maintain lists over time, sorting makes it easy to compare versions and spot additions or removals.
+              <br/><br/>
+              <strong>Notes / limitations:</strong> This tool treats each line as one item and sorts as text. It is not a full CSV parser for multiple columns or quoted fields. Numeric-looking values (1, 2, 10) will sort as text unless you normalize them (for example, 001, 002, 010). If you need locale-specific rules, keep a small sample and verify output behavior. Empty lines are removed so the result stays clean.
+              <br/><br/>
+              Paste lines, select options, and get the output instantly. No data is uploaded — it all runs in your browser.
+            </p>
 
             <h2>How to use</h2>
             <ol style="color:var(--muted);line-height:1.8;margin-top:8px;">
               <li>Read the notes above so you know what the tool will do.</li>
-              <li>Enter your input and click the main action button.</li>
-              <li>Copy or download the result when you’re done.</li>
+              <li>Paste one item per line into the input box.</li>
+              <li>Toggle options such as trimming, duplicate removal, and reverse order.</li>
+              <li>Click the main action button (Sort) to apply the settings.</li>
+              <li>Copy the output when you’re done, or clear to start over.</li>
             </ol>
 
             <h2>Privacy</h2>
             <p style="color:var(--muted);line-height:1.8;">
               This page is designed for fast, local processing in your browser. We don’t ask you to create an account, and we avoid uploading inputs to our server whenever possible.
+              <br/><br/>
+              Because the text stays on your device, you can safely use this tool for internal notes, work lists, customer labels, or draft content that you do not want to send to third-party services. If a tool ever needs a network request (for example, to load a library), it should be mentioned clearly on the page so you can decide whether to use it.
+              <br/><br/>
+              <strong>Summary:</strong> Text Sorter helps you turn messy one-item-per-line text into clean output. Use it to sort lines consistently, trim accidental whitespace, remove duplicates, and optionally reverse the final order. A stable list is easier to scan, easier to compare, and less likely to cause import or matching errors.
             </p>
           </div>
         </section>
@@ -117,9 +135,17 @@
               <strong>Does this tool upload my data?</strong><br/>
               Most tools run locally in your browser. If a tool ever needs a network request (for example, to load a library), it will be mentioned on the page.
             </p>
+            <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
+              <strong>Why is sorting case-insensitive?</strong><br/>
+              Case-insensitive sorting keeps lists readable and stable. Many real lists contain mixed capitalization, and this avoids surprising order changes caused only by letter case.
+            </p>
+            <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
+              <strong>How does “Remove duplicates” decide what is the same?</strong><br/>
+              Duplicate removal is based on a normalized key (lowercased). If “Trim lines” is enabled, trimming happens first, which prevents invisible trailing spaces from creating fake unique entries.
+            </p>
             <p style="color:var(--muted);line-height:1.8;margin:0;">
-              <strong>Why does the output look different from another site?</strong><br/>
-              Different tools can use different defaults (timezones, whitespace rules, encoding behavior). Check the options and try a small sample first.
+              <strong>Can I use this for multi-column CSV data?</strong><br/>
+              This tool is best for one item per line. If you need multi-column CSV parsing with quotes and commas, use a spreadsheet or a dedicated CSV tool, then paste a single column here when needed.
             </p>
           </div>
         </section>

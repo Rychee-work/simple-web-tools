@@ -57,24 +57,88 @@
           <div class="breadcrumbs" id="breadcrumbs"></div>
           <h1>Case Converter</h1>
           <p>Convert text case: uppercase, lowercase, sentence case, title case — locally in your browser.</p>
-          <div class="note">Tip: Explanations come first. The tool is below. Ads are placed last.</div>
+          <div class="note">Tip: Explanations come first. The tool is below. Ads may appear below the explanation.</div>
         </section>
 
         <section class="grid" aria-label="About Case Converter">
           <div class="card">
             <h2 style="margin-top:0;">Overview</h2>
-            <p style="color:var(--muted);line-height:1.8;">Convert text between common casing styles used in writing and programming. Switch to UPPERCASE or lowercase, Title Case for headlines, Sentence case for prose, and developer-friendly formats like snake_case and kebab-case.<br/>Paste text, pick a conversion mode, and copy the result. Processing runs locally in your browser.</p>
+            <p style="color:var(--muted);line-height:1.8;">
+              Case Converter is a simple text utility that transforms the “case” (capitalization style) of your text for writing, editing, and
+              development work. Everyday tasks like turning a headline into Title Case, converting a paragraph to sentence case, or switching a block of
+              text to UPPERCASE often seem small—but doing it by hand is slow and error-prone, especially when the text is long or when you have to
+              repeat the task many times. This page helps you convert quickly and consistently with one click.
+              <br/>You can paste any text—emails, blog drafts, subtitles, comments, notes, customer messages, support replies, or code snippets—then
+              choose a conversion mode. The Output updates immediately so you can copy the result and continue your work. Because the conversion runs
+              locally in your browser, the text stays on your device during processing, which is helpful when you’re working with private messages,
+              internal documentation, or content that should not be uploaded to third-party services.
+              <br/>This tool focuses on common casing formats used in real life. UPPERCASE and lowercase are useful for formatting, highlighting, or
+              normalizing input. Sentence case is often used for plain-language writing where only the first letter should be capitalized. Title Case is
+              a popular choice for headings, titles, and UI labels. The goal is not to enforce a single “correct” style for every context, but to give
+              you a fast way to apply a consistent format and then fine-tune the result if needed.
+              <br/>If you regularly paste text from different sources (PDFs, spreadsheets, chat logs, web pages, or auto-generated notes), you may notice
+              inconsistent capitalization, random ALL CAPS, or uneven formatting. Converting case is a simple normalization step that makes text easier
+              to scan, easier to edit, and more consistent across documents. This is especially useful when you collaborate with others and want your
+              final output to look clean and intentional.
+            </p>
+
+            <h2>When to use</h2>
+            <p style="color:var(--muted);line-height:1.8;">
+              Use Case Converter any time you need to normalize or reformat text without retyping it. Writers often use it to clean up drafts copied
+              from different sources (for example, turning random ALL CAPS into readable case). Students and researchers use it to format headings, lists,
+              and notes quickly. If you’re managing subtitles or transcripts, converting case can make a file easier to scan and edit.
+              <br/>In business communication, casing is often part of “tone.” UPPERCASE can feel like shouting, while sentence case can feel neutral and
+              readable. Title Case can look polished for headings, product names, sections of a report, or UI labels. Lowercase is frequently used for
+              quick notes, tags, and places where you want a minimal look. If you prepare templates (email subjects, meeting agendas, checklists), this
+              tool can help you keep formatting consistent across repeated documents.
+              <br/>For developers, case conversion is useful when preparing documentation, commit messages, tickets, and UI strings. You might want to
+              convert text to Title Case for menu labels, or to lowercase for consistent identifiers. Even when you’re not converting to special code
+              cases, consistent capitalization makes logs, dashboards, and support messages easier to read. The output can be used as-is, or as a clean
+              starting point before you apply project-specific rules.
+              <br/>If your goal is advanced linguistic formatting (such as sophisticated title-casing rules with exceptions, or locale-sensitive behavior),
+              you may still want to review the output carefully. This tool is designed to be fast, predictable, and lightweight rather than a full style
+              guide engine. It’s best used as a “first pass” that saves time and reduces repetitive editing.
+            </p>
 
             <h2>How to use</h2>
             <ol style="color:var(--muted);line-height:1.8;margin-top:8px;">
-              <li>Read the notes above so you know what the tool will do.</li>
-              <li>Enter your input and click the main action button.</li>
-              <li>Copy or download the result when you’re done.</li>
+              <li>Paste or type your text into the Input box.</li>
+              <li>Click one of the conversion buttons (UPPERCASE, lowercase, Sentence case, Title Case).</li>
+              <li>Check the Output preview to confirm the result looks correct.</li>
+              <li>Click Copy to copy the Output to your clipboard.</li>
+              <li>Use Clear to reset the page and start again with new text.</li>
             </ol>
+
+            <h2>Notes / limitations</h2>
+            <ul style="color:var(--muted);line-height:1.8;margin-top:8px;">
+              <li>Sentence case here capitalizes the first character of the trimmed text and lowercases the rest. It does not detect multiple sentences.</li>
+              <li>Title Case here capitalizes the first letter of each word. It does not apply special rules for articles or prepositions (e.g., “a”, “of”, “the”).</li>
+              <li>Spacing and punctuation are preserved as much as possible. If your input contains unusual whitespace, you may want to tidy it after converting.</li>
+              <li>For mixed-language text, results depend on how your browser handles casing rules for those characters.</li>
+              <li>If the Output looks unchanged, confirm that the Input is not empty and that you clicked a conversion button.</li>
+              <li>For acronyms and brand names (e.g., “iPhone”, “Wi-Fi”, “API”), Title Case may not match your preferred spelling. Review and adjust as needed.</li>
+              <li>For text that contains code, converting case can change meaning (for example, case-sensitive identifiers). Use with care on source code.</li>
+              <li>Some title styles treat hyphenated words or apostrophes differently. This tool uses a simple, consistent rule for speed and predictability.</li>
+            </ul>
+
+            <h2>Examples</h2>
+            <p style="color:var(--muted);line-height:1.8;">
+              Here are a few practical ways people use case conversion in daily work. If you copied a heading such as “WELCOME TO THE PRODUCT GUIDE” from
+              a PDF, you can convert it to Title Case and quickly get “Welcome To The Product Guide”, then manually tweak small words if your style guide
+              requires it. If you wrote notes in a hurry like “meeting follow up with client”, you can turn them into Sentence case for readability in a
+              report or shared document.
+              <br/>For UI text and labels, Title Case can make buttons and menu items look consistent across screens. For tagging systems or simple keys,
+              lowercase can help normalize values so searching and filtering becomes easier. The best approach is usually: convert quickly, then scan the
+              output once to correct brand names, acronyms, or special terms. This workflow is much faster than rewriting the whole text manually.
+            </p>
 
             <h2>Privacy</h2>
             <p style="color:var(--muted);line-height:1.8;">
-              This page is designed for fast, local processing in your browser. We don’t ask you to create an account, and we avoid uploading inputs to our server whenever possible.
+              This page is designed for fast, local processing in your browser. We don’t ask you to create an account, and we avoid uploading inputs to
+              our server whenever possible. Your text is processed on your device when you press a conversion button, and the result is shown instantly.
+              <br/>If you work with sensitive content (customer messages, internal notes, or personal information), local processing reduces the risk of
+              accidental sharing. You can also run the tool in a private browsing window and clear the Input when finished. Keep in mind that copying text
+              uses your device clipboard; if you’re on a shared computer, consider clearing your clipboard after you paste the result elsewhere.
             </p>
           </div>
         </section>
@@ -83,43 +147,83 @@
           <div class="ad-slot">Ad space</div>
         </section>
 
-<section aria-label="Case Converter Tool" class="grid">
-<div class="card">
-<h2 style="margin-top:0;">1) Input</h2>
-<textarea class="textarea" id="in" placeholder="Type or paste text here..."></textarea>
-<div class="tool-actions">
-<button class="btn primary action" data-act="upper">UPPERCASE</button>
-<button class="btn action" data-act="lower">lowercase</button>
-<button class="btn action" data-act="sentence">Sentence case</button>
-<button class="btn action" data-act="title">Title Case</button>
-<button class="btn action" id="clearBtn">Clear</button>
-</div>
-<p class="muted" style="margin-top:12px;">Click a button to convert and update the output.</p>
-</div>
-<div class="card">
-<h2 style="margin-top:0;">2) Output</h2>
-<div class="result-wrap">
-<div aria-live="polite" class="result-box mono" id="out">—</div>
-<div class="tool-actions" style="margin-top:0;">
-<button class="btn primary action" id="copyBtn">Copy</button>
-</div>
-</div>
-<div class="note" style="margin-top:12px;">
+        <section aria-label="Case Converter Tool" class="grid">
+          <div class="card">
+            <h2 style="margin-top:0;">1) Input</h2>
+            <textarea class="textarea" id="in" placeholder="Type or paste text here..."></textarea>
+            <div class="tool-actions">
+              <button class="btn primary action" data-act="upper">UPPERCASE</button>
+              <button class="btn action" data-act="lower">lowercase</button>
+              <button class="btn action" data-act="sentence">Sentence case</button>
+              <button class="btn action" data-act="title">Title Case</button>
+              <button class="btn action" id="clearBtn">Clear</button>
+            </div>
+            <p class="muted" style="margin-top:12px;">Click a button to convert and update the output.</p>
+          </div>
+          <div class="card">
+            <h2 style="margin-top:0;">2) Output</h2>
+            <div class="result-wrap">
+              <div aria-live="polite" class="result-box mono" id="out">—</div>
+              <div class="tool-actions" style="margin-top:0;">
+                <button class="btn primary action" id="copyBtn">Copy</button>
+              </div>
+            </div>
+            <div class="note" style="margin-top:12px;">
               All conversions run locally. No upload.
             </div>
-</div>
-</section>
+          </div>
+        </section>
 
         <section class="grid" aria-label="FAQ">
           <div class="card">
             <h2 style="margin-top:0;">FAQ</h2>
+
             <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
               <strong>Does this tool upload my data?</strong><br/>
-              Most tools run locally in your browser. If a tool ever needs a network request (for example, to load a library), it will be mentioned on the page.
+              This tool is designed to run locally in your browser. Your text is processed on your device when you click a conversion button, and the
+              output is displayed on the page for you to copy.
             </p>
+
+            <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
+              <strong>Why doesn’t Sentence case fix every sentence?</strong><br/>
+              Sentence case here is a lightweight conversion: it capitalizes the first character and lowercases the rest of the text. If you need true
+              multi-sentence detection, convert first, then adjust sentence-by-sentence as needed.
+            </p>
+
+            <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
+              <strong>Why is Title Case different from other sites?</strong><br/>
+              Title-casing rules vary (especially for small words like “and”, “of”, “the”). This tool uses a simple rule—capitalize each word—so it’s
+              predictable and fast. You can always edit a few words after converting.
+            </p>
+
+            <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
+              <strong>Will this preserve punctuation and line breaks?</strong><br/>
+              Yes, punctuation and line breaks are generally preserved. The tool focuses on letter casing, so the structure of your text stays the same,
+              but the letters may change depending on the chosen mode.
+            </p>
+
+            <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
+              <strong>Can I use this on code?</strong><br/>
+              You can, but be careful: many programming languages treat identifiers as case-sensitive. For documentation and comments it’s usually fine,
+              but converting actual variable names may break code.
+            </p>
+
             <p style="color:var(--muted);line-height:1.8;margin:0;">
-              <strong>Why does the output look different from another site?</strong><br/>
-              Different tools can use different defaults (timezones, whitespace rules, encoding behavior). Check the options and try a small sample first.
+              <strong>Can I convert code identifiers like snake_case or kebab-case?</strong><br/>
+              This page focuses on the most common writing-oriented cases (upper, lower, sentence, title). If you need developer-specific naming
+              conversions, check other Text tools in the sidebar when available.
+            </p>
+          </div>
+        </section>
+
+        <section class="grid" aria-label="Summary">
+          <div class="card">
+            <h2 style="margin-top:0;">Summary</h2>
+            <p style="color:var(--muted);line-height:1.8;margin-bottom:0;">
+              Case Converter helps you quickly normalize capitalization for writing and development tasks. Paste text, choose a conversion mode, review
+              the Output, and copy the result. It’s designed to be lightweight and predictable, with local processing in your browser for speed and
+              privacy. For best results, use the conversion as a clean starting point and make small edits if your style guide requires special
+              title-casing or sentence rules.
             </p>
           </div>
         </section>

@@ -60,23 +60,69 @@
         <section class="grid" aria-label="About Developer Tools">
           <div class="card">
             <h2 style="margin-top:0;">About this category</h2>
-            <p style="color:var(--muted);line-height:1.8;">Developer tools are practical utilities for everyday coding, debugging, and data handling. They focus on formats and encodings you frequently see in APIs, logs, and configuration files. Most tools run locally in your browser so you can work with sensitive snippets more safely.<br/>In this category you’ll find JSON formatting and validation, Base64 encode/decode, URL encode/decode, and quick hash generation. Open a tool below, follow the quick usage notes at the top, and copy the output when you’re done.</p>
-            <h2>How to use these tools</h2>
             <p style="color:var(--muted);line-height:1.8;">
+              Developer tools are practical utilities for everyday coding, debugging, and data handling. They focus on formats and encodings you
+              frequently see in APIs, logs, and configuration files, where a small mistake can break a request or make a bug harder to trace.
+              Most tools run locally in your browser so you can work with sensitive snippets more safely, without uploading secrets or internal
+              identifiers to an unknown service.
+              <br/>In this category you’ll find JSON formatting and validation, Base64 encode/decode, URL encode/decode, and quick hash generation.
+              These helpers are useful for backend and frontend work, test automation, documentation, and quick sanity checks when something looks
+              “almost right” but still fails. They’re also helpful for students learning web basics and for non-developers who occasionally need to
+              inspect data (for example, decoding a token-like string or cleaning a JSON payload before submitting it).
+              <br/>Each page follows a consistent pattern: a short explanation first, then the tool, then notes and FAQs. This makes the pages
+              readable as reference material and reduces copy/paste errors in day-to-day work.
+            </p>
+
+            <h2>How to choose the right developer tool</h2>
+            <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
+              When debugging, the fastest path is to identify what kind of data you’re holding: structured text (JSON), an encoded blob (Base64),
+              a URL parameter that needs escaping, or a value you want to fingerprint (hash). Use the guide below to pick the right tool, then
+              copy the result back into your editor or API client.
+            </p>
+            <ul style="color:var(--muted);line-height:1.8;margin:0 0 12px 18px;">
+              <li><strong>JSON Formatter / Validator</strong> → pretty-print and validate payloads for APIs, configs, and logs.</li>
+              <li><strong>Base64 Encode / Decode</strong> → convert binary-like text for headers, tokens, and data transport.</li>
+              <li><strong>URL Encode / Decode</strong> → escape query parameters and safely read encoded URLs.</li>
+              <li><strong>Hash</strong> → create a quick checksum/fingerprint for comparisons and integrity checks.</li>
+            </ul>
+            <p style="color:var(--muted);line-height:1.8;margin:0;">
+              If you’re unsure, start with JSON formatting (it reveals structure), then move to encoding/decoding if the data looks compact or
+              unreadable. For security, avoid sharing secrets publicly even when tools run locally.
+            </p>
+
+            <h2>How to use these tools</h2>
+            <p style="color:var(--muted);line-height:1.8;margin:0;">
               Open a tool, read the short explanation at the top, then run it in your browser. For more categories, use the sidebar.
+            </p>
+
+            <h2>FAQ</h2>
+            <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
+              <strong>Do you upload my code or data to a server?</strong><br/>
+              These tools are designed to run locally in your browser whenever possible, so the text you paste stays on your device and is not
+              uploaded to our server.
+            </p>
+            <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
+              <strong>Is it safe to paste API keys or tokens?</strong><br/>
+              Even with local processing, it’s best practice to avoid pasting real secrets unless necessary. Prefer using sample data or
+              redacting sensitive parts when debugging.
+            </p>
+            <p style="color:var(--muted);line-height:1.8;margin:0;">
+              <strong>Why does formatting matter for JSON?</strong><br/>
+              Pretty-printing makes nesting, missing commas, and mismatched brackets easier to spot. Validation helps you catch syntax errors
+              before sending a request or committing a config file.
             </p>
           </div>
         </section>
 
-<section aria-label="Developer Tools" class="grid">
-<div class="card">
-<div class="section-title">
-<h2>Tools</h2>
-<div class="hint">Developer</div>
-</div>
-<div class="tool-list" id="category-tools"></div>
-</div>
-</section>
+        <section aria-label="Developer Tools" class="grid">
+          <div class="card">
+            <div class="section-title">
+              <h2>Tools</h2>
+              <div class="hint">Developer</div>
+            </div>
+            <div class="tool-list" id="category-tools"></div>
+          </div>
+        </section>
       </div>
     </div>
   </main>

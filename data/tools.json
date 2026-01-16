@@ -88,5 +88,61 @@
     "slug": "hash-generator",
     "title": "Hash Generator",
     "description": "Generate hashes locally (SHA family via Web Crypto). MD5 via lightweight JS."
+  },
+  {
+    "category": "image",
+    "slug": "image-resizer",
+    "title": "Image Resizer",
+    "description": "Resize images locally in your browser. Preview and download. No upload.",
+    "status": "live"
+  },
+  {
+    "category": "image",
+    "slug": "image-compressor",
+    "title": "Image Compressor",
+    "description": "Compress images locally by exporting to JPG/WebP with a quality slider. No upload.",
+    "status": "live"
+  },
+  {
+    "category": "image",
+    "slug": "png-to-jpg-converter",
+    "title": "PNG to JPG Converter",
+    "description": "Convert PNG to JPG locally. Choose background color for transparency and download.",
+    "status": "live"
+  },
+  {
+    "category": "image",
+    "slug": "image-cropper",
+    "title": "Image Cropper",
+    "description": "Crop images locally. Drag to select an area, preview, and download.",
+    "status": "live"
+  },
+  {
+    "category": "math",
+    "slug": "percentage-calculator",
+    "title": "Percentage Calculator",
+    "description": "Instantly calculate X% of Y and see increase/decrease results.",
+    "status": "live"
+  },
+  {
+    "category": "math",
+    "slug": "average-calculator",
+    "title": "Average Calculator",
+    "description": "Compute the average (mean) of a list of numbers instantly.",
+    "status": "live"
+  },
+  {
+    "category": "math",
+    "slug": "gcd-lcm-calculator",
+    "title": "GCD / LCM Calculator",
+    "description": "Calculate greatest common divisor and least common multiple of two integers.",
+    "status": "live"
+  },
+  {
+    "category": "math",
+    "slug": "prime-number-checker",
+    "title": "Prime Number Checker",
+    "description": "Check whether a number is prime instantly with a brief explanation.",
+    "status": "live"
   }
 ]

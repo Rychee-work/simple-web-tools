@@ -60,64 +60,101 @@
           <div class="note">Tip: Explanations come first. The tool is below. Ads are placed last.</div>
         </section>
 
+        <!-- STEP4 order: Overview -> When to use -> How to use -> Notes -> FAQ -> Summary -->
         <section class="grid" aria-label="About Character Counter">
           <div class="card">
             <h2 style="margin-top:0;">Overview</h2>
-            <p style="color:var(--muted);line-height:1.8;">Measure character counts the way real systems do: characters, lines, and estimated UTF‑8 bytes. This is helpful when you’re working with platform limits (tweets, SMS, API fields, database columns, etc.).<br/>Paste text to see totals and line counts immediately. Everything stays on your device — no uploads.</p>
+            <p style="color:var(--muted);line-height:1.8;">
+              A “character limit” sounds straightforward, but different products measure text in different ways. Some systems count visible characters, some count code units, and others apply special rules for emoji, combined characters, or newline handling. This Character Counter provides a clear, practical baseline that matches what many everyday tools do: it reports the total number of characters (including spaces) and a second count that removes all whitespace. These two numbers are often enough to prevent failures when you’re posting to social platforms, filling out constrained form fields, generating short descriptions, or preparing text for templates.
+              <br/><br/>
+              The results update as you type, so you can quickly edit until you fit your target. You can also paste large blocks of text and immediately see whether you are over a limit. Because the counting happens locally in your browser, you can use it for drafts, internal notes, and sensitive snippets without sending your content to a server. For teams, it’s a fast way to align on “what counts” before you ship copy or automation that depends on strict length constraints.
+              <br/><br/>
+              In addition to simple totals, this tool highlights the difference between “with spaces” and “no spaces.” That distinction matters when a platform ignores whitespace, when you need compact identifiers, or when you’re troubleshooting unexpected validation errors caused by hidden tabs, line breaks, or multiple spaces. Use the notes below to understand the rules, then rely on the live counts while you refine your text.
+            </p>
+
+            <h2>When to use</h2>
+            <p style="color:var(--muted);line-height:1.8;margin-top:8px;margin-bottom:10px;">
+              Use a character counter whenever text length is enforced by a limit or when formatting details can change what is accepted. It’s especially helpful when you’re preparing content that will be copied into another system and you want to avoid trial-and-error submissions.
+              The “no spaces” count is also useful when whitespace is ignored by a platform or when you are creating compact tokens that must stay under a fixed size.
+            </p>
+            <ul style="color:var(--muted);line-height:1.8;margin-top:0;">
+              <li><strong>Social posts, bios, and captions:</strong> Fit a strict character cap before you publish, and compare counts when emoji or line breaks are involved.</li>
+              <li><strong>Forms and database fields:</strong> Confirm an input stays under a maximum length (for example, 140/200/500 characters) to avoid validation errors.</li>
+              <li><strong>APIs and automation:</strong> Check text fields before sending requests, especially when failures are costly or rate-limited.</li>
+              <li><strong>Whitespace-sensitive rules:</strong> Diagnose cases where tabs, newlines, or extra spaces cause unexpected rejections or mismatched lengths.</li>
+              <li><strong>Editing and copywriting:</strong> Tighten wording to a target size while preserving readability and the intended formatting.</li>
+            </ul>
 
             <h2>How to use</h2>
             <ol style="color:var(--muted);line-height:1.8;margin-top:8px;">
-              <li>Read the notes above so you know what the tool will do.</li>
-              <li>Enter your input and click the main action button.</li>
-              <li>Copy or download the result when you’re done.</li>
+              <li>Paste or type your text into the <strong>Input</strong> box below.</li>
+              <li>As you type, check the live totals in <strong>Results</strong> (no need to press anything).</li>
+              <li>If you prefer manual recalculation, press <strong>Count</strong> to refresh the numbers.</li>
+              <li>Use <strong>Copy</strong> to copy the input text, or <strong>Clear</strong> to reset and start over.</li>
+              <li>Adjust wording, spacing, or line breaks until you meet your target limit.</li>
             </ol>
 
-            <h2>Privacy</h2>
-            <p style="color:var(--muted);line-height:1.8;">
-              This page is designed for fast, local processing in your browser. We don’t ask you to create an account, and we avoid uploading inputs to our server whenever possible.
-            </p>
-          </div>
-        </section>
+            <h2>Notes / Limitations</h2>
+            <ul style="color:var(--muted);line-height:1.8;margin-top:8px;">
+              <li><strong>Whitespace removal:</strong> “No spaces” removes all whitespace characters, including spaces, tabs, and line breaks.</li>
+              <li><strong>Emoji and combined characters:</strong> Some platforms count emoji and certain combined characters differently than a simple counter.</li>
+              <li><strong>Hidden characters:</strong> Non-breaking spaces or zero-width characters can affect totals even if they are hard to see.</li>
+              <li><strong>Platform-specific rules:</strong> Some services apply additional processing (trimming, link handling, markup removal). If a limit is strict, test with a small sample.</li>
+              <li><strong>Privacy:</strong> Processing runs locally in your browser. Your text is not uploaded to our server.</li>
+            </ul>
 
-        <section class="grid" aria-label="Advertisement">
-          <div class="ad-slot">Ad space</div>
-        </section>
-
-<section aria-label="Character Counter Tool" class="grid">
-<div class="card">
-<h2 style="margin-top:0;">1) Input</h2>
-<textarea class="textarea" id="in" placeholder="Type or paste text here..."></textarea>
-<div class="tool-actions">
-<button class="btn primary action" id="countBtn">Count</button>
-<button class="btn action" id="clearBtn">Clear</button>
-<button class="btn action" id="copyBtn">Copy</button>
-</div>
-<p class="muted" style="margin-top:12px;">Counts update instantly when you type.</p>
-</div>
-<div class="card">
-<h2 style="margin-top:0;">2) Results</h2>
-<div aria-live="polite" class="stats" role="status">
-<div class="stat-card"><div class="label">Characters (with spaces)</div><div class="value" id="withSpaces">0</div></div>
-<div class="stat-card"><div class="label">Characters (no spaces)</div><div class="value" id="noSpaces">0</div></div>
-</div>
-<div class="note" style="margin-top:12px;">
-              “No spaces” removes all whitespace characters (spaces, tabs, and line breaks).
-            </div>
-</div>
-</section>
-
-        <section class="grid" aria-label="FAQ">
-          <div class="card">
-            <h2 style="margin-top:0;">FAQ</h2>
+            <h2>FAQ</h2>
             <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
               <strong>Does this tool upload my data?</strong><br/>
-              Most tools run locally in your browser. If a tool ever needs a network request (for example, to load a library), it will be mentioned on the page.
+              No. Your text is processed locally in your browser and is not sent to our server. If a page ever needs a network request (for example, to load a library), it will be mentioned on the page so you can decide whether to use it.
+            </p>
+            <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
+              <strong>Why does “no spaces” remove tabs and line breaks too?</strong><br/>
+              Many systems treat all whitespace as “spacing,” not just the plain space character. This tool removes any whitespace character so you can see a compact count that matches common “ignore whitespace” rules.
+            </p>
+            <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
+              <strong>Why can my count differ from a specific platform?</strong><br/>
+              Some platforms apply extra logic such as trimming, link rewriting, markup removal, or special emoji counting. If you’re targeting a strict limit, compare with a short sample and adjust formatting to match that platform’s behavior.
             </p>
             <p style="color:var(--muted);line-height:1.8;margin:0;">
-              <strong>Why does the output look different from another site?</strong><br/>
-              Different tools can use different defaults (timezones, whitespace rules, encoding behavior). Check the options and try a small sample first.
+              <strong>Is the count updated automatically?</strong><br/>
+              Yes. Counts update instantly while you type, and the <em>Count</em> button is available if you prefer a manual refresh after pasting or editing large text blocks.
+            </p>
+
+            <h2>Summary</h2>
+            <p style="color:var(--muted);line-height:1.8;">
+              Character limits are easy to underestimate because real systems don’t always count text the same way. This tool gives you two practical totals—characters with spaces and characters with all whitespace removed—so you can validate content before posting, submitting forms, or sending API payloads. Counts update as you type, making it simple to edit down to a target. Because everything runs locally in your browser, you can check sensitive text without uploading it. Use the results to spot hidden whitespace, compare formatting choices, and confidently meet length constraints.
             </p>
           </div>
+        </section>
+
+        <section aria-label="Character Counter Tool" class="grid">
+          <div class="card">
+            <h2 style="margin-top:0;">1) Input</h2>
+            <textarea class="textarea" id="in" placeholder="Type or paste text here..."></textarea>
+            <div class="tool-actions">
+              <button class="btn primary action" id="countBtn">Count</button>
+              <button class="btn action" id="clearBtn">Clear</button>
+              <button class="btn action" id="copyBtn">Copy</button>
+            </div>
+            <p class="muted" style="margin-top:12px;">Counts update instantly when you type.</p>
+          </div>
+
+          <div class="card">
+            <h2 style="margin-top:0;">2) Results</h2>
+            <div aria-live="polite" class="stats" role="status">
+              <div class="stat-card"><div class="label">Characters (with spaces)</div><div class="value" id="withSpaces">0</div></div>
+              <div class="stat-card"><div class="label">Characters (no spaces)</div><div class="value" id="noSpaces">0</div></div>
+            </div>
+            <div class="note" style="margin-top:12px;">
+              “No spaces” removes all whitespace characters (spaces, tabs, and line breaks).
+            </div>
+          </div>
+        </section>
+
+        <!-- Ads placed last (per hero note) -->
+        <section class="grid" aria-label="Advertisement">
+          <div class="ad-slot">Ad space</div>
         </section>
 
       </div>

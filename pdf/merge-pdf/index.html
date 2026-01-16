@@ -58,24 +58,62 @@
           <div class="breadcrumbs" id="breadcrumbs"></div>
           <h1>Merge PDF</h1>
           <p>Combine multiple PDF files into one. Processing happens locally in your browser — we don&#x27;t upload your files to a server.</p>
-          <div class="note">Tip: Explanations come first. The tool is below. Ads are placed last.</div>
+          <div class="note">Tip: Explanations come first. The tool is below. Ads may appear below the explanation.</div>
         </section>
 
         <section class="grid" aria-label="About Merge PDF">
           <div class="card">
             <h2 style="margin-top:0;">Overview</h2>
-            <p style="color:var(--muted);line-height:1.8;">Combine multiple PDF files into a single PDF in your browser. Merging is useful when you want to attach several documents as one file, build a packet of invoices, or join scanned pages.<br/>This tool is designed to be simple and privacy‑friendly: the merge happens locally on your device, so your PDFs are not uploaded to a server. Add files, reorder them if needed, and export the merged PDF.</p>
+            <p style="color:var(--muted);line-height:1.8;">
+              Merge PDF helps you combine multiple PDF files into a single, ordered document directly in your browser. This is useful when you need to
+              submit several attachments as one file, create a packet of invoices, build a set of scanned pages, or assemble a small “bundle” for
+              school, work, or government applications. Instead of opening a desktop editor or uploading files to an online service, you can select
+              PDFs here, put them in the right order, and export one merged PDF in seconds.
+              <br/>This page is designed to be simple and privacy-friendly. The merge process runs locally on your device, so your PDFs are not uploaded
+              to our server. That matters when you work with documents that may contain personal information, internal company details, addresses,
+              contracts, receipts, or account numbers. You stay in control of what you select and what you download. When you are done, you can clear
+              the list and run another merge with a different set of files.
+              <br/>The output is a standard PDF that you can share by email, upload to a form, or store in your own archive. If you want to combine
+              pages from different sources into one readable document, merging is usually the fastest and most compatible approach.
+            </p>
+
+            <h2>When to use</h2>
+            <p style="color:var(--muted);line-height:1.8;">
+              Use this tool when you have multiple PDFs that should be treated as one document. Common examples include: joining scanned pages into one
+              submission, combining monthly invoices into a single attachment, merging resumes and supporting documents, or creating a “single file”
+              version of a multi-part report. Merging is also helpful when a website or email system only accepts one PDF upload.
+              <br/>If you only need a specific page range from a large document, a Split PDF tool is usually a better first step. If your goal is to
+              reduce file size rather than combine documents, a PDF compression tool is more appropriate. Merge PDF focuses on ordering and combining,
+              not editing the content of pages.
+            </p>
 
             <h2>How to use</h2>
             <ol style="color:var(--muted);line-height:1.8;margin-top:8px;">
-              <li>Read the notes above so you know what the tool will do.</li>
-              <li>Enter your input and click the main action button.</li>
-              <li>Copy or download the result when you’re done.</li>
+              <li>Add your PDF files (drag &amp; drop, or click the file picker).</li>
+              <li>Confirm the list and reorder if needed (Up/Down changes the merge order).</li>
+              <li>Remove any file you don’t want included (optional).</li>
+              <li>Click the merge button and wait for the progress bar to complete.</li>
+              <li>Download the merged PDF, then merge again or clear the list when finished.</li>
             </ol>
 
-            <h2>Privacy</h2>
-            <p style="color:var(--muted);line-height:1.8;">
-              This page is designed for fast, local processing in your browser. We don’t ask you to create an account, and we avoid uploading inputs to our server whenever possible.
+            <h2>Notes / limitations</h2>
+            <ul style="color:var(--muted);line-height:1.8;margin-top:8px;">
+              <li>Large PDFs or many files may take longer to merge and can use more memory, depending on your device and browser.</li>
+              <li>Encrypted or password-protected PDFs may fail to load unless they are unlocked first in another viewer.</li>
+              <li>Some PDFs contain unusual fonts or page settings; the merged file should remain readable, but minor rendering differences can occur across viewers.</li>
+              <li>The merge order is exactly the order shown in the list. If the output looks “wrong,” reorder and merge again.</li>
+              <li>This tool combines pages as-is. It does not edit text, remove pages, or compress images inside the PDF.</li>
+              <li>Privacy note: the merge is designed to run locally in your browser, so selected PDF files are not uploaded to our server.</li>
+            </ul>
+
+            <h2>Summary</h2>
+            <p style="color:var(--muted);line-height:1.8;margin-bottom:0;">
+              Merge PDF is a simple way to combine multiple PDFs into one file without installing software. Add files, reorder them, and export a single
+              merged document you can share or upload. The workflow is designed to be quick and consistent across devices, and the merge happens locally
+              in your browser so you can handle sensitive documents more safely.
+              <br/>Before you merge, confirm the file order (the list order is the merge order). If merging fails, try fewer files or unlock any
+              password-protected PDFs first. If the merged output looks different in another viewer, test with a small sample and verify in the PDF
+              viewer your recipient will use. These quick checks cover the most common questions users have when merging PDFs.
             </p>
           </div>
         </section>
@@ -84,56 +122,77 @@
           <div class="ad-slot">Ad space</div>
         </section>
 
-<section class="grid" style="margin-top:16px;">
-<div class="card">
-<div class="ad-slot">Ad space (after AdSense approval)</div>
-</div>
-<div class="grid" style="grid-template-columns: 1fr 1fr; gap:16px;">
-<div class="card">
-<div class="section-title">
-<h2>1) Add PDFs</h2>
-<div class="hint">Drag &amp; drop</div>
-</div>
-<div class="drop" id="dropzone">
-<div class="kv">
-<div style="font-weight:900;">Drag &amp; drop PDFs here</div>
-<div style="color:var(--muted);">or click “Choose files”.</div>
-<div class="row" style="margin-top:6px;">
-<button class="btn primary action" id="pickBtn" type="button">Choose files</button>
-<button class="btn action" id="clearBtn" type="button">Clear</button>
-<input accept="application/pdf" hidden="" id="fileInput" multiple="" type="file"/>
-</div>
-<div style="color:var(--muted);font-size:13px;">Tip: Use Up/Down to reorder before merging.</div>
-</div>
-</div>
-<ul class="filelist" id="fileList" style="list-style:none;padding-left:0;margin:14px 0 0;display:grid;gap:10px;"></ul>
-</div>
-<div class="card">
-<div class="section-title">
-<h2>2) Merge</h2>
-<div class="hint">Download</div>
-</div>
-<p style="color:var(--muted);margin-top:0;">Select PDFs first, then click Merge. Your merged file will download automatically.</p>
-<button class="btn primary action" id="mergeBtn" type="button">Merge &amp; Download</button>
-<div aria-label="Progress" class="progress">
-<div id="bar"></div>
-</div>
-<p id="statusText" style="margin:10px 0 0;color:var(--muted);font-weight:700;">Ready.</p>
-<div class="ad-slot" style="margin-top:14px;">Ad space (after AdSense approval)</div>
-</div>
-</div>
-</section>
+        <section class="grid" style="margin-top:16px;">
+          <div class="card">
+            <div class="ad-slot">Ad space (after AdSense approval)</div>
+          </div>
+        </section>
+
+        <section class="grid" style="margin-top:16px;grid-template-columns: 1fr 1fr; gap:16px;" aria-label="Merge PDF Tool">
+          <div class="card">
+            <div class="section-title">
+              <h2>1) Add PDFs</h2>
+              <div class="hint">Drag &amp; drop</div>
+            </div>
+
+            <div class="drop" id="dropzone">
+              <div class="kv">
+                <div style="font-weight:900;">Drag &amp; drop PDFs here</div>
+                <div style="color:var(--muted);">or click “Choose files”.</div>
+                <div class="row" style="margin-top:6px;">
+                  <button class="btn primary action" id="pickBtn" type="button">Choose files</button>
+                  <button class="btn action" id="clearBtn" type="button">Clear</button>
+                  <input accept="application/pdf" hidden="" id="fileInput" multiple="" type="file"/>
+                </div>
+                <div style="color:var(--muted);font-size:13px;">Tip: Use Up/Down to reorder before merging.</div>
+              </div>
+            </div>
+
+            <p id="countText" style="margin:12px 0 0;color:var(--muted);font-weight:700;"></p>
+            <ul class="filelist" id="fileList" style="list-style:none;padding-left:0;margin:14px 0 0;display:grid;gap:10px;"></ul>
+          </div>
+
+          <div class="card">
+            <div class="section-title">
+              <h2>2) Merge</h2>
+              <div class="hint">Download</div>
+            </div>
+            <p style="color:var(--muted);margin-top:0;">Select PDFs first, then click Merge. Your merged file will download automatically.</p>
+            <button class="btn primary action" id="mergeBtn" type="button">Merge &amp; Download</button>
+            <div aria-label="Progress" class="progress">
+              <div id="bar"></div>
+            </div>
+            <p id="statusText" style="margin:10px 0 0;color:var(--muted);font-weight:700;">Ready.</p>
+            <div class="ad-slot" style="margin-top:14px;">Ad space (after AdSense approval)</div>
+          </div>
+        </section>
 
         <section class="grid" aria-label="FAQ">
           <div class="card">
             <h2 style="margin-top:0;">FAQ</h2>
+
             <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
-              <strong>Does this tool upload my data?</strong><br/>
-              Most tools run locally in your browser. If a tool ever needs a network request (for example, to load a library), it will be mentioned on the page.
+              <strong>Does this tool upload my PDF files?</strong><br/>
+              The merge process is designed to run locally in your browser, so your selected PDF files are not uploaded to our server.
+              Like many websites, this page may load required libraries as part of normal page loading, but the PDFs you choose stay on your device during the merge.
             </p>
+
+            <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
+              <strong>What order will the PDFs be merged in?</strong><br/>
+              Pages are merged in the exact order shown in the file list. If the output order is not what you expected, use the Up/Down buttons to reorder,
+              then merge again.
+            </p>
+
+            <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
+              <strong>Why did merging fail or show an error?</strong><br/>
+              Some PDFs are encrypted, password-protected, very large, or contain uncommon structures that are harder to process in the browser.
+              Try fewer files, unlock the PDF first, or test with a smaller sample to confirm everything works.
+            </p>
+
             <p style="color:var(--muted);line-height:1.8;margin:0;">
-              <strong>Why does the output look different from another site?</strong><br/>
-              Different tools can use different defaults (timezones, whitespace rules, encoding behavior). Check the options and try a small sample first.
+              <strong>Why does the output look different from another site or app?</strong><br/>
+              Different tools can handle embedded fonts, metadata, or viewer defaults differently. The merged file should remain a standard PDF, but
+              rendering can vary between PDF viewers. If you need a specific layout, test the merged PDF in the viewer your recipient will use.
             </p>
           </div>
         </section>
@@ -147,7 +206,7 @@
   <script>
 const dropzone = document.getElementById('dropzone');
   const fileInput = document.getElementById('fileInput');
-  const chooseBtn = document.getElementById('chooseBtn');
+  const pickBtn = document.getElementById('pickBtn');
   const clearBtn = document.getElementById('clearBtn');
   const mergeBtn = document.getElementById('mergeBtn');
   const fileListEl = document.getElementById('fileList');
@@ -214,7 +273,7 @@ const dropzone = document.getElementById('dropzone');
     render();
   }
 
-  chooseBtn.addEventListener('click', (e) => { e.preventDefault(); fileInput.click(); });
+  pickBtn.addEventListener('click', (e) => { e.preventDefault(); fileInput.click(); });
   clearBtn.addEventListener('click', (e) => {
     e.preventDefault();
     files = [];

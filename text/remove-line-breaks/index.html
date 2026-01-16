@@ -32,7 +32,7 @@
         <a href="/legal/contact.html">Contact</a>
       </nav>
 
-      <button class="menu-btn" type="button" aria-label="Open categories" aria-expanded="false">
+      <button class="menu-btn" type="button" aria-label="Open categories" aria-expanded="false" data-menu-btn>
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>
@@ -42,7 +42,7 @@
 
   <main class="container">
     <div class="layout">
-      <aside class="sidebar" aria-label="Categories">
+      <aside class="sidebar" aria-label="Categories" data-sidebar>
         <div class="card">
           <div class="section-title">
             <h2>Categories</h2>
@@ -57,24 +57,66 @@
           <div class="breadcrumbs" id="breadcrumbs"></div>
           <h1>Remove Line Breaks</h1>
           <p>Remove line breaks from text locally in your browser. Join lines with a space or nothing.</p>
-          <div class="note">Tip: Explanations come first. The tool is below. Ads are placed last.</div>
+          <div class="note">Tip: Explanations come first. The tool is below. Ads appear after the explanation.</div>
         </section>
 
         <section class="grid" aria-label="About Remove Line Breaks">
           <div class="card">
             <h2 style="margin-top:0;">Overview</h2>
-            <p style="color:var(--muted);line-height:1.8;">Remove line breaks and normalize whitespace when you need a single clean paragraph. This is handy for fixing PDFs copied to text, email drafts, chat logs, or wrapped lines from terminals.<br/>Paste your text, choose whether to replace breaks with spaces or nothing, and copy the cleaned result — all locally.</p>
+            <p style="color:var(--muted);line-height:1.8;">
+              “Line breaks” are useful when text is meant to be read in narrow columns (PDF pages, chat windows, terminal outputs, or wrapped email replies).
+              But when you copy that text into another app, those breaks often become noise: sentences get split in the middle, paragraphs turn into dozens of short lines,
+              and the result is hard to edit or reformat. This tool removes line breaks to produce a cleaner paragraph that’s easier to read, search, and reuse.
+              <br/><br/>
+              The tool supports two common cleanup styles. If you enable <em>Join with spaces</em>, it turns one or more line breaks into a single space and then normalizes
+              repeated whitespace. This is great for typical prose where a wrapped line should become a continuous sentence. If you disable it, the tool removes line breaks
+              without inserting spaces, which is useful for cases where line breaks appear inside structured strings (IDs, codes, or lines broken mid-token).
+              <br/><br/>
+              Everything runs locally in your browser. Your input is processed on your device, and the output is generated instantly without sending your text to a server.
+              That makes it suitable for sensitive drafts, internal notes, or copied snippets that you don’t want to upload anywhere.
+            </p>
+
+            <h2>When to use</h2>
+            <p style="color:var(--muted);line-height:1.8;">
+              Use this tool whenever copied text looks “stair-stepped” or artificially wrapped. Common examples include: paragraphs copied from PDFs or e-books;
+              academic papers where each line ends early; Slack/Teams exports; log or terminal outputs pasted into documentation; and email quotes that include manual line wrapping.
+              It’s also handy when preparing text for forms, CMS editors, translation tools, or prompts where unintended line breaks can change meaning or formatting.
+              <br/><br/>
+              Choose <strong>Join with spaces</strong> for normal writing (articles, emails, notes) because it preserves word boundaries and then compresses multiple spaces.
+              Choose <strong>off</strong> when line breaks are purely visual separators and you want a compact string: for example, when a long URL or token was wrapped across lines,
+              or when you’re cleaning up data where spaces are not desired. If you’re not sure, try a small sample first and compare the results.
+            </p>
 
             <h2>How to use</h2>
             <ol style="color:var(--muted);line-height:1.8;margin-top:8px;">
-              <li>Read the notes above so you know what the tool will do.</li>
-              <li>Enter your input and click the main action button.</li>
-              <li>Copy or download the result when you’re done.</li>
+              <li>Paste your text into the <strong>Input</strong> box. The tool updates as you type.</li>
+              <li>Keep <strong>Join with spaces</strong> enabled for normal sentences and paragraphs.</li>
+              <li>Turn it off if you want to remove line breaks without adding spaces (useful for tokens/URLs).</li>
+              <li>Review the <strong>Output</strong> box and confirm the spacing looks correct.</li>
+              <li>Click <strong>Copy</strong> to copy the result to your clipboard, or click <strong>Clear</strong> to start over.</li>
             </ol>
+
+            <h2>Notes / limitations</h2>
+            <ul style="color:var(--muted);line-height:1.8;margin-top:8px;">
+              <li>This tool removes all newline characters. If you need to keep paragraph breaks, consider pasting a small section at a time (paragraph-by-paragraph).</li>
+              <li>When <strong>Join with spaces</strong> is enabled, the tool also normalizes whitespace (multiple spaces/tabs become a single space) and trims edges.</li>
+              <li>When <strong>Join with spaces</strong> is disabled, the tool does not attempt to “guess” missing spaces. That’s intentional for cases like wrapped tokens.</li>
+              <li>Very large inputs may feel slower depending on your device, but processing still happens locally in the browser.</li>
+              <li>Clipboard access can be restricted by some browsers or privacy settings. If copying fails, try selecting the output manually and copying normally.</li>
+            </ul>
 
             <h2>Privacy</h2>
             <p style="color:var(--muted);line-height:1.8;">
               This page is designed for fast, local processing in your browser. We don’t ask you to create an account, and we avoid uploading inputs to our server whenever possible.
+              Your text stays on your device during conversion. If you use the <strong>Copy</strong> button, the tool writes the output to your clipboard using your browser’s standard
+              clipboard API (or a safe fallback method if needed). For more details about advertising and site-wide data practices, please review the Privacy page linked in the header.
+            </p>
+
+            <h2>Summary</h2>
+            <p style="color:var(--muted);line-height:1.8;">
+              Remove Line Breaks helps you turn wrapped, line-broken text into a clean, usable paragraph in seconds. Paste your text, choose whether to join lines with spaces,
+              and copy the result. The conversion runs locally in your browser for speed and privacy, making it a simple, reliable way to clean text from PDFs, emails, chat logs,
+              and terminal outputs.
             </p>
           </div>
         </section>
@@ -111,13 +153,23 @@
         <section class="grid" aria-label="FAQ">
           <div class="card">
             <h2 style="margin-top:0;">FAQ</h2>
+
             <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
               <strong>Does this tool upload my data?</strong><br/>
-              Most tools run locally in your browser. If a tool ever needs a network request (for example, to load a library), it will be mentioned on the page.
+              No. The conversion happens locally in your browser, and the text you paste is not sent to a server as part of the cleaning process.
+              If a page ever needs a network request (for example, to load a library), it should be clearly mentioned on that page.
             </p>
+
+            <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
+              <strong>Why did some spaces change in the output?</strong><br/>
+              When <em>Join with spaces</em> is enabled, the tool replaces line breaks with spaces and then normalizes repeated whitespace into a single space.
+              This helps produce a clean paragraph, but it can remove extra spacing that was only there due to wrapping or copying.
+            </p>
+
             <p style="color:var(--muted);line-height:1.8;margin:0;">
               <strong>Why does the output look different from another site?</strong><br/>
-              Different tools can use different defaults (timezones, whitespace rules, encoding behavior). Check the options and try a small sample first.
+              Different tools can use different defaults (whitespace rules, how multiple newlines are handled, and whether tabs are preserved).
+              Try toggling <em>Join with spaces</em>, and test with a short sample to confirm the behavior matches what you need.
             </p>
           </div>
         </section>
@@ -126,7 +178,7 @@
     </div>
   </main>
 
-  <div class="sidebar-overlay"></div>
+  <div class="sidebar-overlay" data-sidebar-overlay></div>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {

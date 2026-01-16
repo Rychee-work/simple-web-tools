@@ -60,23 +60,74 @@
         <section class="grid" aria-label="About PDF Tools">
           <div class="card">
             <h2 style="margin-top:0;">About this category</h2>
-            <p style="color:var(--muted);line-height:1.8;">PDF tools help you edit and manage PDF documents without installing software. This category focuses on everyday tasks such as combining multiple PDFs into one file, splitting a PDF into pages, and preparing documents to share with clients, schools, or government forms. The goal is speed and privacy: whenever possible, processing happens locally in your browser, so your files are not uploaded to our server.<br/>If you often handle scanned documents, invoices, contracts, or application forms, PDF utilities can save a lot of time. Start with Merge PDF when you need a single consolidated document, or Split PDF when you only need a few pages. We’ll continue to add more PDF helpers over time.</p>
-            <h2>How to use these tools</h2>
             <p style="color:var(--muted);line-height:1.8;">
+              PDF tools help you edit and manage PDF documents without installing software. This category focuses on everyday tasks
+              such as combining multiple PDFs into one file, splitting a PDF into pages, and preparing documents to share with clients,
+              schools, or government forms. The goal is speed and privacy: whenever possible, processing happens locally in your browser,
+              so your files are not uploaded to our server.
+              <br/>If you often handle scanned documents, invoices, contracts, or application forms, PDF utilities can save a lot of time.
+              Start with Merge PDF when you need a single consolidated document, or Split PDF when you only need a few pages. We’ll continue
+              to add more PDF helpers over time.
+              <br/>These tools are useful for students submitting assignments, office workers preparing reports, freelancers sending invoices,
+              and anyone who needs to assemble documents quickly. Local processing is especially convenient when files contain personal details
+              (names, addresses, IDs) because you can complete common tasks without emailing attachments back and forth or relying on unfamiliar apps.
+            </p>
+
+            <h2>How to choose the right PDF tool</h2>
+            <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
+              Most PDF tasks fall into a few common patterns. Use the quick guide below to pick the fastest option without trial and error.
+            </p>
+            <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
+              If you’re new to PDF editing, it’s easy to choose the wrong action (for example, compressing when you actually need to extract pages,
+              or merging when you only need to reorder). The guide below maps your goal to the simplest tool, so you can finish the task in one pass
+              and avoid repeated downloads. Once you pick a tool, the page will explain the steps and any limitations for large or scanned PDFs.
+            </p>
+            <ul style="color:var(--muted);line-height:1.8;margin:0 0 12px 18px;">
+              <li><strong>Merge</strong> → combine multiple PDFs into a single file (useful for submissions and sharing).</li>
+              <li><strong>Split</strong> → extract specific pages or ranges when you only need part of a document.</li>
+              <li><strong>Compress / Reduce size</strong> → shrink file size for email limits, uploads, or faster downloads.</li>
+              <li><strong>Reorder / Rotate</strong> → fix page order or orientation after scanning.</li>
+              <li><strong>Convert</strong> → change formats (for example, images to PDF) when your workflow requires a single PDF.</li>
+            </ul>
+            <p style="color:var(--muted);line-height:1.8;margin:0;">
+              Each tool page includes a short explanation, steps, and notes about limitations (for example, very large files may take longer
+              to process depending on your device). If you’re unsure where to start, pick the tool that matches your goal above, then follow
+              the steps on the page.
+            </p>
+
+            <h2>How to use these tools</h2>
+            <p style="color:var(--muted);line-height:1.8;margin:0;">
               Open a tool, read the short explanation at the top, then run it in your browser. For more categories, use the sidebar.
+            </p>
+
+            <h2>FAQ</h2>
+            <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
+              <strong>Do you upload my PDF to a server?</strong><br/>
+              Whenever possible, processing runs locally in your browser, so files are not uploaded to our server. Some tools may use browser
+              features (memory, storage, or download APIs) to complete the task on your device.
+            </p>
+            <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
+              <strong>Why does a large PDF feel slow?</strong><br/>
+              PDF processing depends on your device, browser, and file size. Very large PDFs, scanned images, or many-page documents can take
+              longer because the work happens on your device instead of a remote server.
+            </p>
+            <p style="color:var(--muted);line-height:1.8;margin:0;">
+              <strong>Will the output quality change?</strong><br/>
+              It depends on the tool. Merging and splitting typically keep content unchanged, while compression may reduce file size by adjusting
+              embedded images or PDF structure. Each tool page explains what changes (if any) are applied.
             </p>
           </div>
         </section>
 
-<section aria-label="PDF Tools" class="grid">
-<div class="card">
-<div class="section-title">
-<h2>Tools</h2>
-<div class="hint">PDF</div>
-</div>
-<div class="tool-list" id="category-tools"></div>
-</div>
-</section>
+        <section aria-label="PDF Tools" class="grid">
+          <div class="card">
+            <div class="section-title">
+              <h2>Tools</h2>
+              <div class="hint">PDF</div>
+            </div>
+            <div class="tool-list" id="category-tools"></div>
+          </div>
+        </section>
       </div>
     </div>
   </main>

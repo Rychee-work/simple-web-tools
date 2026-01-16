@@ -32,7 +32,7 @@
         <a href="/legal/contact.html">Contact</a>
       </nav>
 
-      <button class="menu-btn" type="button" aria-label="Open categories" aria-expanded="false">
+      <button class="menu-btn" type="button" aria-label="Open categories" aria-expanded="false" data-menu-btn>
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>
@@ -42,7 +42,7 @@
 
   <main class="container">
     <div class="layout">
-      <aside class="sidebar" aria-label="Categories">
+      <aside class="sidebar" aria-label="Categories" data-sidebar>
         <div class="card">
           <div class="section-title">
             <h2>Categories</h2>
@@ -57,24 +57,70 @@
           <div class="breadcrumbs" id="breadcrumbs"></div>
           <h1>Word Counter</h1>
           <p>Count words, characters, sentences, and paragraphs locally in your browser.</p>
-          <div class="note">Tip: Explanations come first. The tool is below. Ads are placed last.</div>
+          <div class="note">Tip: Explanations come first. The tool is below. Ads appear after the explanation.</div>
         </section>
 
         <section class="grid" aria-label="About Word Counter">
           <div class="card">
             <h2 style="margin-top:0;">Overview</h2>
-            <p style="color:var(--muted);line-height:1.8;">Count words, characters, sentences, and paragraphs for any text — instantly and locally. Word counts are useful for essays, blog posts, subtitles, and UI copy where limits matter.<br/>Paste your text, and the tool updates counts in real time. Because it runs in your browser, your text is not uploaded to a server.</p>
+            <p style="color:var(--muted);line-height:1.8;">
+              A word counter is one of those simple tools that becomes essential the moment a limit matters. Whether you are writing an essay with a minimum word count,
+              preparing a blog post for SEO guidelines, drafting UI microcopy for buttons, or trimming a subtitle script to fit timing, knowing the exact length helps you
+              make fast decisions. This tool counts words and characters instantly as you type, and also provides sentence and paragraph estimates to give you a quick sense
+              of structure. The goal is to remove guesswork so you can focus on writing and editing.
+              <br/><br/>
+              The counts update in real time, which makes it useful for iterative work: you can delete one sentence and immediately see the impact on word count, check how
+              many characters you have left for a form field, or compare different versions of a paragraph. Because everything runs locally in your browser, your text is not
+              uploaded to a server as part of the counting process. That makes the tool suitable for sensitive drafts, internal notes, or private messages you do not want to
+              paste into an online service that performs remote processing.
+              <br/><br/>
+              Word counting is based on whitespace separation (spaces, tabs, and line breaks). Character counting includes all characters, including spaces and punctuation.
+              Sentence and paragraph counts are best-effort heuristics that work well for everyday English writing, but they may be approximate for special formats such as code,
+              poetry, or texts with unusual punctuation.
+            </p>
+
+            <h2>When to use</h2>
+            <p style="color:var(--muted);line-height:1.8;">
+              Use Word Counter whenever you need to meet or stay under a text limit. Common examples include school assignments (minimum or maximum words), scholarship
+              applications, cover letters, and short-form writing where every word matters. It is also useful for web publishing: many CMS editors, SEO checklists, and social
+              platforms have recommended or enforced lengths for titles, descriptions, and excerpts. If you write product descriptions, job posts, or ad copy, character counts
+              can prevent truncation and keep key information visible.
+              <br/><br/>
+              The extra metrics help in different ways. Word count is the standard for essays and articles. Character count is often the constraint for UI fields, forms, and
+              metadata. Sentence and paragraph counts can help you quickly judge readability and structure: too many long sentences can feel dense, while too many paragraphs
+              can feel fragmented. For code blocks, logs, or data, you may still want word and character counts, but sentence/paragraph numbers should be treated as approximate.
+            </p>
 
             <h2>How to use</h2>
             <ol style="color:var(--muted);line-height:1.8;margin-top:8px;">
-              <li>Read the notes above so you know what the tool will do.</li>
-              <li>Enter your input and click the main action button.</li>
-              <li>Copy or download the result when you’re done.</li>
+              <li>Paste or type your text into the <strong>Input</strong> box.</li>
+              <li>Watch the <strong>Results</strong> update automatically as you type.</li>
+              <li>If you prefer manual updates, click <strong>Count</strong> to refresh the numbers.</li>
+              <li>Use <strong>Copy</strong> to copy the current input text to your clipboard.</li>
+              <li>Click <strong>Clear</strong> to reset the input and start again.</li>
             </ol>
+
+            <h2>Notes / limitations</h2>
+            <ul style="color:var(--muted);line-height:1.8;margin-top:8px;">
+              <li><strong>Words:</strong> counted by splitting on whitespace. Multiple spaces or line breaks do not inflate the count.</li>
+              <li><strong>Characters:</strong> includes spaces and punctuation (it is the raw text length).</li>
+              <li><strong>Sentences:</strong> estimated using simple punctuation heuristics. Text without punctuation may be counted as 1 sentence.</li>
+              <li><strong>Paragraphs:</strong> counted by blank-line separation (one or more empty lines between blocks).</li>
+              <li>For code, tables, or formatted data, sentence/paragraph counts may not match your expectations. Use word/character counts as the reliable metrics.</li>
+              <li>Clipboard behavior can vary by browser and permissions. If the button fails, you can still select and copy text manually.</li>
+            </ul>
 
             <h2>Privacy</h2>
             <p style="color:var(--muted);line-height:1.8;">
-              This page is designed for fast, local processing in your browser. We don’t ask you to create an account, and we avoid uploading inputs to our server whenever possible.
+              This tool runs entirely in your browser. The counting happens on your device and does not require uploading your text to a server.
+              If you click <strong>Copy</strong>, your browser’s clipboard API is used to copy the current input text (with a safe fallback for older browsers).
+              For site-wide advertising and cookie details, see the Privacy page linked in the header.
+            </p>
+
+            <h2>Summary</h2>
+            <p style="color:var(--muted);line-height:1.8;">
+              Word Counter provides instant word and character counts, plus helpful sentence and paragraph estimates, so you can meet limits and improve structure without guesswork.
+              Paste or type your text, review the live results, and keep everything private with browser-only processing.
             </p>
           </div>
         </section>
@@ -111,13 +157,23 @@
         <section class="grid" aria-label="FAQ">
           <div class="card">
             <h2 style="margin-top:0;">FAQ</h2>
+
             <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
-              <strong>Does this tool upload my data?</strong><br/>
-              Most tools run locally in your browser. If a tool ever needs a network request (for example, to load a library), it will be mentioned on the page.
+              <strong>Does this tool upload my text?</strong><br/>
+              No. Counting happens locally in your browser. Your text is not sent to a server as part of the counting process.
+              If a tool ever needs a network request (for example, to load a library), it will be clearly mentioned on the page.
             </p>
+
+            <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
+              <strong>Why are sentence and paragraph counts “approximate”?</strong><br/>
+              Sentences are estimated from punctuation patterns, and paragraphs are detected by blank lines. This works well for typical writing,
+              but special formats (lists, code, poetry, dialogue, or texts with unusual punctuation) can produce different results.
+            </p>
+
             <p style="color:var(--muted);line-height:1.8;margin:0;">
-              <strong>Why does the output look different from another site?</strong><br/>
-              Different tools can use different defaults (timezones, whitespace rules, encoding behavior). Check the options and try a small sample first.
+              <strong>Why do word counts differ between tools?</strong><br/>
+              Different sites use different definitions for what counts as a “word” (hyphenated terms, emojis, punctuation, or language-specific rules).
+              This tool uses whitespace separation, which is simple, fast, and predictable for most everyday use cases.
             </p>
           </div>
         </section>
@@ -126,7 +182,7 @@
     </div>
   </main>
 
-  <div class="sidebar-overlay"></div>
+  <div class="sidebar-overlay" data-sidebar-overlay></div>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {

@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Image Compressor | Simple Web Tools</title>
+  <meta name="description" content="Compress images locally in your browser. Adjust quality, preview before/after, and download — no upload." />
+  <meta name="page-type" content="tool" />
+  <meta name="page-category" content="image" />
+  <link rel="canonical" href="/image/image-compressor/" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+  <script defer src="/assets/js/tools-ui.js"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5493851170081090"
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a class="brand" href="/">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 5h5v5H5V5Zm9 0h5v5h-5V5ZM5 14h5v5H5v-5Zm9 0h5v5h-5v-5Z" fill="currentColor"/>
+          </svg>
+        </div>
+        <div><div>Simple Web Tools <span class="badge">beta</span></div></div>
+      </a>
+
+      <nav class="nav" aria-label="Legal">
+        <a href="/legal/privacy.html">Privacy</a>
+        <a href="/legal/terms.html">Terms</a>
+        <a href="/legal/contact.html">Contact</a>
+      </nav>
+
+      <button class="menu-btn" type="button" aria-label="Open categories" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="layout">
+      <aside class="sidebar" aria-label="Categories">
+        <div class="card">
+          <div class="section-title">
+            <h2>Categories</h2>
+            <a class="hint" href="/">All tools</a>
+          </div>
+          <div class="cat-list" id="sidebar-categories"></div>
+        </div>
+      </aside>
+
+      <div class="main">
+        <section class="hero">
+          <div class="breadcrumbs" id="breadcrumbs"></div>
+          <h1>Image Compressor</h1>
+          <p>Compress images locally in your browser. Adjust quality, preview before/after, and download — no upload.</p>
+          <div class="note">Tip: Explanations come first. The tool is below. Ads are placed last.</div>
+        </section>
+
+        <section class="grid" aria-label="About Hash Generator">
+          <div class="card">
+            <h2 style="margin-top:0;">Overview</h2>
+            <p style="color:var(--muted);line-height:1.8;">
+              Compress images locally for faster sharing and smaller uploads. Choose an output format (JPG/WebP/PNG), adjust quality (for JPG/WebP),
+              and optionally limit the maximum width/height. You can preview the result before downloading. Your file never leaves your device.
+            </p>
+
+            <h2>How to use</h2>
+            <ol style="color:var(--muted);line-height:1.8;margin-top:8px;">
+              <li>Drop an image (or click to select a file).</li>
+              <li>Adjust format, quality, and max size options.</li>
+              <li>Preview and download the compressed result.</li>
+            </ol>
+
+            <h2>Privacy</h2>
+            <p style="color:var(--muted);line-height:1.8;">
+              This tool processes images locally in your browser using the Canvas API. We don’t upload your files to any server.
+            </p>
+          </div>
+        </section>
+
+        <section class="grid" aria-label="Advertisement">
+          <div class="ad-slot">Ad space</div>
+        </section>
+
+<section aria-label="Hash Generator Tool" class="grid">
+<div class="card">
+  <div class="algo-row">
+    <label class="pill switch">
+      <span style="margin-right:6px;">Format</span>
+      <select id="fmt" aria-label="Output format" style="background:transparent;border:none;outline:none;color:inherit;">
+        <option value="image/jpeg">JPG</option>
+        <option value="image/webp">WebP</option>
+        <option value="image/png">PNG</option>
+      </select>
+    </label>
+
+    <label class="pill switch">
+      <span style="margin-right:6px;">Quality</span>
+      <input id="q" type="range" min="0.1" max="1" step="0.05" value="0.8"/>
+      <span class="small-note" id="qVal" style="margin-left:6px;">0.80</span>
+    </label>
+
+    <label class="pill switch">
+      <span style="margin-right:6px;">Max W</span>
+      <input id="maxW" type="number" inputmode="numeric" min="0" step="1" value="0" style="width:88px;background:transparent;border:none;outline:none;color:inherit;"/>
+    </label>
+
+    <label class="pill switch">
+      <span style="margin-right:6px;">Max H</span>
+      <input id="maxH" type="number" inputmode="numeric" min="0" step="1" value="0" style="width:88px;background:transparent;border:none;outline:none;color:inherit;"/>
+    </label>
+
+    <label class="pill switch">
+      <input id="keep" type="checkbox" checked />
+      Keep aspect
+    </label>
+
+    <span class="small-note">Drop an image to preview compression locally.</span>
+  </div>
+
+  <div class="stack">
+    <!-- Input -->
+    <div>
+      <h2 style="margin:0;">1) Input</h2>
+      <p class="small-note" style="margin:6px 0 10px;">Drag &amp; drop an image (or click the box) to load it.</p>
+
+      <div id="drop" class="result-box" style="border:1px dashed var(--border); cursor:pointer; text-align:center; padding:18px;">
+        <div style="font-weight:600;">Drag &amp; drop an image</div>
+        <div class="muted" style="margin-top:6px;">or click to choose a file</div>
+        <input id="file" type="file" accept="image/*" style="display:none;" />
+      </div>
+
+      <div class="tool-actions">
+        <button class="btn primary action" id="downloadBtn" disabled>Download</button>
+        <button class="btn action" id="clearBtn">Clear</button>
+      </div>
+    </div>
+
+    <!-- Output -->
+    <div>
+      <h2 style="margin:0;">2) Output</h2>
+      <p class="small-note" style="margin:6px 0 10px;">Preview updates when settings change.</p>
+
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+        <div>
+          <div class="small-note" style="margin-bottom:6px;">Original</div>
+          <div class="result-box" style="display:flex; align-items:center; justify-content:center; min-height:160px;">
+            <img id="prevIn" alt="Original preview" style="max-width:100%; max-height:220px; display:none;" />
+            <span id="emptyIn" class="muted">No image selected.</span>
+          </div>
+          <div class="small-note" style="margin-top:8px;">
+            Type: <span id="inType">—</span><br/>
+            Size: <span id="inSize">—</span><br/>
+            Dimensions: <span id="inDim">—</span>
+          </div>
+        </div>
+
+        <div>
+          <div class="small-note" style="margin-bottom:6px;">Compressed</div>
+          <div class="result-box" style="display:flex; align-items:center; justify-content:center; min-height:160px;">
+            <img id="prevOut" alt="Compressed preview" style="max-width:100%; max-height:220px; display:none;" />
+            <span id="emptyOut" class="muted">Waiting for output…</span>
+          </div>
+          <div class="small-note" style="margin-top:8px;">
+            Type: <span id="outType">—</span><br/>
+            Size: <span id="outSize">—</span><br/>
+            Dimensions: <span id="outDim">—</span><br/>
+            Saved: <span id="savedPct">—</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div aria-live="polite" class="status" id="status">Ready.</div>
+
+  <div class="card" style="margin-top:16px;">
+    <div class="ad-slot">Ad space (below tool)</div>
+  </div>
+</div>
+</section>
+
+        <section class="grid" aria-label="FAQ">
+          <div class="card">
+            <h2 style="margin-top:0;">FAQ</h2>
+            <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
+              <strong>Does this tool upload my image?</strong><br/>
+              No. Compression runs locally in your browser. Your file is never uploaded to any server.
+            </p>
+            <p style="color:var(--muted);line-height:1.8;margin:0;">
+              <strong>Why can the file size become larger?</strong><br/>
+              PNG output or very high quality settings can increase size. Try JPG/WebP and reduce quality for smaller files.
+            </p>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <div class="sidebar-overlay"></div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const $ = (id) => document.getElementById(id);
+      const status = $("status");
+
+      const drop = $("drop");
+      const fileInput = $("file");
+
+      const prevIn = $("prevIn");
+      const prevOut = $("prevOut");
+      const emptyIn = $("emptyIn");
+      const emptyOut = $("emptyOut");
+
+      const inType = $("inType");
+      const inSize = $("inSize");
+      const inDim  = $("inDim");
+
+      const outType = $("outType");
+      const outSize = $("outSize");
+      const outDim  = $("outDim");
+      const savedPct = $("savedPct");
+
+      const fmt = $("fmt");
+      const q = $("q");
+      const qVal = $("qVal");
+      const maxW = $("maxW");
+      const maxH = $("maxH");
+      const keep = $("keep");
+
+      const downloadBtn = $("downloadBtn");
+      const clearBtn = $("clearBtn");
+
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+
+      let srcFile = null;
+      let srcImg = new Image();
+      let lastBlob = null;
+      let lastName = "compressed-image";
+
+      function setStatus(text, kind){
+        status.textContent = text;
+        status.classList.remove("ok","bad");
+        if (kind) status.classList.add(kind);
+      }
+
+      function bytes(n){
+        if (!Number.isFinite(n)) return "—";
+        const units = ["B","KB","MB","GB"];
+        let i = 0;
+        let v = n;
+        while (v >= 1024 && i < units.length-1){ v/=1024; i++; }
+        return `${v.toFixed(i===0?0:2)} ${units[i]}`;
+      }
+
+      function clampInt(v){
+        const n = Number(v);
+        if (!Number.isFinite(n) || n < 0) return 0;
+        return Math.floor(n);
+      }
+
+      function updateQualityLabel(){
+        qVal.textContent = Number(q.value).toFixed(2);
+        // PNG ignores quality; keep UI but clarify via status if user selects PNG
+        if (fmt.value === "image/png") setStatus("PNG output ignores quality. Preview updated.", "");
+      }
+
+      function resetOutput(){
+        lastBlob = null;
+        prevOut.style.display = "none";
+        emptyOut.style.display = "";
+        outType.textContent = "—";
+        outSize.textContent = "—";
+        outDim.textContent = "—";
+        savedPct.textContent = "—";
+        downloadBtn.disabled = true;
+      }
+
+      function resetAll(){
+        srcFile = null;
+        prevIn.style.display = "none";
+        emptyIn.style.display = "";
+        prevIn.removeAttribute("src");
+        prevOut.removeAttribute("src");
+
+        inType.textContent = "—";
+        inSize.textContent = "—";
+        inDim.textContent = "—";
+        resetOutput();
+
+        setStatus("Ready.", "");
+      }
+
+      function safeExt(mime){
+        if (mime === "image/png") return "png";
+        if (mime === "image/webp") return "webp";
+        return "jpg";
+      }
+
+      function safeFilename(base, mime){
+        return `${base}.${safeExt(mime)}`;
+      }
+
+      function computeTargetSize(w, h){
+        const mw = clampInt(maxW.value);
+        const mh = clampInt(maxH.value);
+        if (!mw && !mh) return {w, h};
+
+        if (keep.checked){
+          const rw = mw ? mw / w : Infinity;
+          const rh = mh ? mh / h : Infinity;
+          const r = Math.min(rw, rh);
+          if (!Number.isFinite(r) || r <= 0 || r >= 1) return {w, h};
+          return {w: Math.max(1, Math.round(w * r)), h: Math.max(1, Math.round(h * r))};
+        }
+
+        return { w: mw ? Math.max(1, mw) : w, h: mh ? Math.max(1, mh) : h };
+      }
+
+      async function compressNow(){
+        if (!srcFile) return;
+
+        const mime = fmt.value;
+        const quality = Number(q.value);
+
+        const w0 = srcImg.naturalWidth || srcImg.width;
+        const h0 = srcImg.naturalHeight || srcImg.height;
+        const target = computeTargetSize(w0, h0);
+
+        canvas.width = target.w;
+        canvas.height = target.h;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(srcImg, 0, 0, target.w, target.h);
+
+        setStatus("Compressing…", "");
+
+        const blob = await new Promise((resolve) => {
+          if (mime === "image/png") canvas.toBlob(resolve, mime);
+          else canvas.toBlob(resolve, mime, quality);
+        });
+
+        if (!blob){
+          resetOutput();
+          setStatus("Failed to generate output.", "bad");
+          return;
+        }
+
+        lastBlob = blob;
+
+        const outUrl = URL.createObjectURL(blob);
+        prevOut.src = outUrl;
+        prevOut.style.display = "";
+        emptyOut.style.display = "none";
+
+        outType.textContent = mime.replace("image/","").toUpperCase();
+        outSize.textContent = bytes(blob.size);
+        outDim.textContent = `${target.w} × ${target.h}`;
+
+        const saved = srcFile.size > 0 ? (1 - (blob.size / srcFile.size)) * 100 : 0;
+        savedPct.textContent = `${saved.toFixed(1)}%`;
+
+        downloadBtn.disabled = false;
+        setStatus("Done.", "ok");
+      }
+
+      function loadFile(file){
+        if (!file || !file.type || !file.type.startsWith("image/")){
+          setStatus("Please choose an image file.", "bad");
+          return;
+        }
+
+        resetOutput();
+        srcFile = file;
+
+        const base = (file.name || "image").replace(/\.[^.]+$/, "");
+        lastName = `${base}-compressed`;
+
+        inType.textContent = (file.type || "image").replace("image/","").toUpperCase();
+        inSize.textContent = bytes(file.size);
+
+        const url = URL.createObjectURL(file);
+        srcImg = new Image();
+        srcImg.onload = () => {
+          prevIn.src = url;
+          prevIn.style.display = "";
+          emptyIn.style.display = "none";
+
+          const w = srcImg.naturalWidth || srcImg.width;
+          const h = srcImg.naturalHeight || srcImg.height;
+          inDim.textContent = `${w} × ${h}`;
+
+          setStatus("Image loaded. Updating preview…", "");
+          compressNow();
+        };
+        srcImg.onerror = () => {
+          resetAll();
+          setStatus("Could not read the image.", "bad");
+        };
+        srcImg.src = url;
+      }
+
+      function handleFiles(files){
+        if (!files || !files.length) return;
+        loadFile(files[0]);
+      }
+
+      drop.addEventListener("click", () => fileInput.click());
+      drop.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = "copy";
+      });
+      drop.addEventListener("drop", (e) => {
+        e.preventDefault();
+        handleFiles(e.dataTransfer.files);
+      });
+
+      fileInput.addEventListener("change", () => handleFiles(fileInput.files));
+
+      fmt.addEventListener("change", () => { updateQualityLabel(); compressNow(); });
+      q.addEventListener("input", () => { updateQualityLabel(); compressNow(); });
+      maxW.addEventListener("input", compressNow);
+      maxH.addEventListener("input", compressNow);
+      keep.addEventListener("change", compressNow);
+
+      downloadBtn.addEventListener("click", () => {
+        if (!lastBlob) return;
+        const mime = fmt.value;
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(lastBlob);
+        a.download = safeFilename(lastName, mime);
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setStatus("Downloaded.", "ok");
+      });
+
+      clearBtn.addEventListener("click", () => {
+        resetAll();
+        setStatus("Cleared.", "");
+      });
+
+      updateQualityLabel();
+      resetAll();
+    });
+  </script>
+</body>
+</html>

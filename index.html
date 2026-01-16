@@ -63,13 +63,85 @@
         <section class="grid" aria-label="About Simple Web Tools">
           <div class="card">
             <h2 style="margin-top:0;">What this site is</h2>
-            <p style="color:var(--muted);line-height:1.8;margin:0;">Simple Web Tools is a collection of small, focused utilities that help you solve everyday problems in seconds. Instead of long articles that bury the answer, each page follows the same pattern: a clear explanation first, then a fast tool you can use immediately. This structure makes the pages useful even if you never click a button — and it also helps you choose the right tool with confidence.</p><p style="color:var(--muted);line-height:1.8;margin:12px 0 0;"></p><p style="color:var(--muted);line-height:1.8;margin:12px 0 0;">Many tools run locally in your browser, which means your inputs (text, settings, and in some cases files) are processed on your device and are not uploaded to our server. This is especially helpful when you’re working with private snippets like passwords, IDs, JSON payloads, or internal URLs. We still keep things simple: no accounts, no tracking walls, and no unnecessary steps.</p><p style="color:var(--muted);line-height:1.8;margin:12px 0 0;"></p><p style="color:var(--muted);line-height:1.8;margin:12px 0 0;">Browse by category in the sidebar. PDF tools help you merge or split documents. Text tools help you count, clean, and transform text. Utility tools include generators and converters you use all the time. Developer tools cover common encodings and formats used in APIs and debugging. New tools are added regularly, and the UI stays consistent so you always know where to find the explanation, the tool, and the FAQs.</p>
+            <p style="color:var(--muted);line-height:1.8;margin:0;">
+              Simple Web Tools is a collection of small, focused utilities that help you solve everyday problems in seconds.
+              Instead of long articles that bury the answer, each page follows the same pattern: a clear explanation first,
+              then a fast tool you can use immediately. This structure makes the pages useful even if you never click a button
+              — and it also helps you choose the right tool with confidence.
+            </p>
+            <p style="color:var(--muted);line-height:1.8;margin:12px 0 0;">
+              Many tools run locally in your browser, which means your inputs (text, settings, and in some cases files) are
+              processed on your device and are not uploaded to our server. This is especially helpful when you’re working with
+              private snippets like passwords, IDs, JSON payloads, or internal URLs. We still keep things simple: no accounts,
+              no tracking walls, and no unnecessary steps.
+            </p>
+            <p style="color:var(--muted);line-height:1.8;margin:12px 0 0;">
+              Browse by category in the sidebar. PDF tools help you merge or split documents. Text tools help you count, clean,
+              and transform text. Utility tools include generators and converters you use all the time. Developer tools cover
+              common encodings and formats used in APIs and debugging. New tools are added regularly, and the UI stays consistent
+              so you always know where to find the explanation, the tool, and the FAQs.
+            </p>
+
             <h2>Popular starting points</h2>
             <p style="color:var(--muted);line-height:1.8;margin:0;">
               Try <a href="/utility/password-generator/">Password Generator</a> for strong passwords,
               <a href="/developer/json-formatter/">JSON Formatter</a> for API debugging,
               and <a href="/text/word-counter/">Word Counter</a> for writing limits.
             </p>
+          </div>
+        </section>
+
+        <!-- ✅ Added: fixed, HTML-guaranteed "cards + 1-line description" to satisfy STEP2-B -->
+        <section class="grid" aria-label="Popular tools with quick descriptions">
+          <div class="card">
+            <h2 style="margin-top:0;">Popular tools</h2>
+            <p style="color:var(--muted);line-height:1.8;margin:0 0 12px;">
+              Start with these commonly used tools. Each link includes a short description so you can choose quickly.
+            </p>
+
+            <div style="display:grid;gap:12px;">
+              <div>
+                <strong><a href="/utility/password-generator/">Password Generator</a></strong>
+                <div style="color:var(--muted);line-height:1.6;">
+                  Create strong, random passwords locally in your browser without sending inputs to a server.
+                </div>
+              </div>
+
+              <div>
+                <strong><a href="/developer/json-formatter/">JSON Formatter</a></strong>
+                <div style="color:var(--muted);line-height:1.6;">
+                  Pretty-print and validate JSON to make API responses easier to read and debug.
+                </div>
+              </div>
+
+              <div>
+                <strong><a href="/text/word-counter/">Word Counter</a></strong>
+                <div style="color:var(--muted);line-height:1.6;">
+                  Count words, characters, and lines instantly for essays, forms, and writing limits.
+                </div>
+              </div>
+
+              <div>
+                <strong><a href="/developer/base64/">Base64 Encode/Decode</a></strong>
+                <div style="color:var(--muted);line-height:1.6;">
+                  Encode or decode Base64 strings quickly for tokens, headers, and debugging tasks.
+                </div>
+              </div>
+
+              <div>
+                <strong><a href="/math/percentage-calculator/">Percentage Calculator</a></strong>
+                <div style="color:var(--muted);line-height:1.6;">
+                  Calculate percentages, increases, and decreases with a clear explanation of the result.
+                </div>
+              </div>
+
+              <div>
+                <strong><a href="/image/image-compressor/">Image Compressor</a></strong>
+                <div style="color:var(--muted);line-height:1.6;">
+                  Reduce image file size for web and sharing, with a preview before downloading.
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 

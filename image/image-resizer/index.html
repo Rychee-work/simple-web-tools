@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Image Resizer | Simple Web Tools</title>
+  <meta name="description" content="Resize images locally in your browser. Set width/height, keep aspect ratio, preview, and download. No upload." />
+  <meta name="page-type" content="tool" />
+  <meta name="page-category" content="image" />
+  <link rel="canonical" href="/image/image-resizer/" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+  <script defer src="/assets/js/tools-ui.js"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5493851170081090"
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a class="brand" href="/">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 5h5v5H5V5Zm9 0h5v5h-5V5ZM5 14h5v5H5v-5Zm9 0h5v5h-5v-5Z" fill="currentColor"/>
+          </svg>
+        </div>
+        <div><div>Simple Web Tools <span class="badge">beta</span></div></div>
+      </a>
+
+      <nav class="nav" aria-label="Legal">
+        <a href="/legal/privacy.html">Privacy</a>
+        <a href="/legal/terms.html">Terms</a>
+        <a href="/legal/contact.html">Contact</a>
+      </nav>
+
+      <button class="menu-btn" type="button" aria-label="Open categories" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="layout">
+      <aside class="sidebar" aria-label="Categories">
+        <div class="card">
+          <div class="section-title">
+            <h2>Categories</h2>
+            <a class="hint" href="/">All tools</a>
+          </div>
+          <div class="cat-list" id="sidebar-categories"></div>
+        </div>
+      </aside>
+
+      <div class="main">
+        <section class="hero">
+          <div class="breadcrumbs" id="breadcrumbs"></div>
+          <h1>Image Resizer</h1>
+          <p>Resize images locally in your browser. Change dimensions, keep aspect ratio, preview the result, and download.</p>
+          <div class="note">Privacy: processing happens locally in your browser. Your images are not uploaded.</div>
+        </section>
+
+        <section class="grid" aria-label="About Image Resizer">
+          <div class="card">
+            <h2 style="margin-top:0;">Overview</h2>
+            <p style="color:var(--muted);line-height:1.8;">Resize images safely in your browser. This tool redraws your image on a local canvas at the size you choose, then lets you preview and download the result. Use it for faster uploads, sharing, or fitting an exact width/height. Processing stays on your device.</p>
+
+            <h2>How to use</h2>
+            <ol style="color:var(--muted);line-height:1.8;margin-top:8px;">
+              <li>Drop an image file into the input area (or click to choose a file).</li>
+              <li>Set the target width/height and choose whether to keep aspect ratio.</li>
+              <li>Preview the resized image, then download it.</li>
+            </ol>
+
+            <h2>Privacy</h2>
+            <p style="color:var(--muted);line-height:1.8;">
+              This page is designed for fast, local processing in your browser. We don’t ask you to create an account, and we avoid uploading inputs to our server whenever possible.
+            </p>
+          </div>
+        </section>
+
+        <section class="grid" aria-label="Advertisement">
+          <div class="ad-slot">Ad space</div>
+        </section>
+
+<section aria-label="Image Resizer Tool" class="grid">
+<div class="card">
+  <div class="row-lite">
+    <label class="pill switch"><input id="keepAspect" type="checkbox" checked/> Keep aspect ratio</label>
+    <label class="pill switch"><input id="lockToWidth" type="checkbox"/> Lock to width</label>
+    <span class="small-note">Tip: If only one dimension is set, we calculate the other.</span>
+  </div>
+
+  <div class="stack">
+    <!-- 1) Input -->
+    <div>
+      <h2 style="margin:0;">1) Input</h2>
+      <p class="small-note" style="margin:6px 0 10px;">Drop an image here. We never upload it.</p>
+
+      <input id="file" type="file" accept="image/*" style="display:none;" />
+      <div class="result-box" id="drop" role="button" tabindex="0" style="text-align:center;padding:16px;cursor:pointer;">
+        Drag &amp; drop an image here, or click to select
+      </div>
+
+      <div style="margin-top:12px;">
+        <img id="origImg" alt="Original preview" style="display:none;max-width:100%;border-radius:12px;border:1px solid var(--border);" />
+        <div class="small-note" id="origInfo" style="margin-top:8px;">—</div>
+      </div>
+
+      <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:12px;align-items:end;">
+        <div>
+          <label class="small-note" for="w">Width (px)</label><br/>
+          <input class="textarea" id="w" inputmode="numeric" placeholder="e.g. 1200" style="height:42px;" />
+        </div>
+        <div>
+          <label class="small-note" for="h">Height (px)</label><br/>
+          <input class="textarea" id="h" inputmode="numeric" placeholder="e.g. 800" style="height:42px;" />
+        </div>
+        <div>
+          <label class="small-note" for="format">Output</label><br/>
+          <select class="textarea" id="format" style="height:42px;">
+            <option value="image/png">PNG</option>
+            <option value="image/jpeg">JPG</option>
+            <option value="image/webp">WebP</option>
+          </select>
+        </div>
+        <div id="qualityWrap" style="min-width:220px;display:none;">
+          <label class="small-note" for="quality">Quality</label><br/>
+          <input id="quality" type="range" min="0.1" max="1" step="0.05" value="0.85" />
+          <div class="small-note">Quality: <span id="qualityVal">0.85</span></div>
+        </div>
+      </div>
+
+      <div class="tool-actions" style="margin-top:12px;">
+        <button class="btn primary action" id="resizeBtn">Resize</button>
+        <button class="btn action" id="clearBtn">Clear</button>
+      </div>
+    </div>
+
+    <!-- 2) Output -->
+    <div>
+      <h2 style="margin:0;">2) Output</h2>
+      <p class="small-note" style="margin:6px 0 10px;">Preview the resized image and download it.</p>
+
+      <div style="margin-top:6px;">
+        <img id="outImg" alt="Resized preview" style="display:none;max-width:100%;border-radius:12px;border:1px solid var(--border);" />
+        <div class="small-note" id="outInfo" style="margin-top:8px;">—</div>
+      </div>
+
+      <div class="tool-actions" style="margin-top:12px;">
+        <button class="btn primary action" id="downloadBtn" disabled>Download</button>
+        <button class="btn action" id="copyDimsBtn" disabled>Copy size</button>
+      </div>
+    </div>
+  </div>
+
+  <div aria-live="polite" class="status" id="status">Ready.</div>
+
+  <div class="card" style="margin-top:16px;">
+    <div class="ad-slot">Ad space (below tool)</div>
+  </div>
+</div>
+</section>
+
+
+        <section class="grid" aria-label="FAQ">
+          <div class="card">
+            <h2 style="margin-top:0;">FAQ</h2>
+            <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
+              <strong>Does this tool upload my images?</strong><br/>
+              No. Resizing runs locally in your browser. Files are not uploaded to our server.
+            </p>
+            <p style="color:var(--muted);line-height:1.8;margin:0 0 10px;">
+              <strong>Why is the downloaded file size different?</strong><br/>
+              Different formats (PNG/JPG/WebP) and quality settings affect file size. Try WebP or lower quality for smaller files.
+            </p>
+            <p style="color:var(--muted);line-height:1.8;margin:0;">
+              <strong>Can I resize without changing aspect ratio?</strong><br/>
+              Turn off “Keep aspect ratio” to set width and height independently.
+            </p>
+          </div>
+        </section>
+
+</div>
+    </div>
+  </main>
+
+  <div class="sidebar-overlay"></div>
+
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const $ = (id) => document.getElementById(id);
+      const status = $("status");
+
+      const fileInput = $("file");
+      const drop = $("drop");
+      const origImg = $("origImg");
+      const outImg = $("outImg");
+      const origInfo = $("origInfo");
+      const outInfo = $("outInfo");
+
+      const wEl = $("w");
+      const hEl = $("h");
+      const keepAspect = $("keepAspect");
+      const lockToWidth = $("lockToWidth");
+      const formatEl = $("format");
+      const qualityWrap = $("qualityWrap");
+      const quality = $("quality");
+      const qualityVal = $("qualityVal");
+
+      const resizeBtn = $("resizeBtn");
+      const clearBtn = $("clearBtn");
+      const downloadBtn = $("downloadBtn");
+      const copyDimsBtn = $("copyDimsBtn");
+
+      let srcImg = null;
+      let outBlob = null;
+      let outW = 0;
+      let outH = 0;
+
+      function setStatus(text, kind){
+        status.textContent = text;
+        status.classList.remove("ok","bad");
+        if (kind) status.classList.add(kind);
+      }
+
+      function showQualityIfNeeded(){
+        const t = formatEl.value;
+        const needs = (t === "image/jpeg" || t === "image/webp");
+        qualityWrap.style.display = needs ? "" : "none";
+      }
+
+      function parsePx(v){
+        const n = Number(String(v || "").trim());
+        if (!Number.isFinite(n) || n <= 0) return 0;
+        return Math.floor(n);
+      }
+
+      function setButtonsEnabled(enabled){
+        downloadBtn.disabled = !enabled;
+        copyDimsBtn.disabled = !enabled;
+      }
+
+      function resetOutput(){
+        outBlob = null;
+        outW = 0;
+        outH = 0;
+        outImg.style.display = "none";
+        outImg.src = "";
+        outInfo.textContent = "—";
+        setButtonsEnabled(false);
+      }
+
+      function setOriginalInfo(file, img){
+        const kb = file ? (file.size / 1024) : 0;
+        origInfo.textContent = file
+          ? `Original: ${img.naturalWidth}×${img.naturalHeight}px • ${(kb).toFixed(1)} KB • ${file.type || "image"}`
+          : "—";
+      }
+
+      function setOutputInfo(blob, w, h){
+        const kb = blob ? (blob.size / 1024) : 0;
+        outInfo.textContent = blob
+          ? `Output: ${w}×${h}px • ${(kb).toFixed(1)} KB • ${blob.type}`
+          : "—";
+      }
+
+      function loadFile(file){
+        if (!file) return;
+        if (!file.type || !file.type.startsWith("image/")){
+          setStatus("Please choose an image file.", "bad");
+          return;
+        }
+        resetOutput();
+        setStatus("Loading image…", "");
+        const url = URL.createObjectURL(file);
+        const img = new Image();
+        img.onload = () => {
+          URL.revokeObjectURL(url);
+          srcImg = img;
+          origImg.src = img.src;
+          origImg.style.display = "";
+          setOriginalInfo(file, img);
+
+          // default dims
+          wEl.value = String(img.naturalWidth);
+          hEl.value = String(img.naturalHeight);
+
+          setStatus("Ready. Set dimensions and click Resize.", "ok");
+        };
+        img.onerror = () => {
+          URL.revokeObjectURL(url);
+          setStatus("Failed to load image.", "bad");
+        };
+        img.src = url;
+      }
+
+      function pickFile(){
+        fileInput.click();
+      }
+
+      function handleDropFiles(files){
+        if (!files || !files.length) return;
+        loadFile(files[0]);
+      }
+
+      function prevent(e){
+        e.preventDefault();
+        e.stopPropagation();
+      }
+
+      ["dragenter","dragover"].forEach(ev=>{
+        drop.addEventListener(ev, (e)=>{ prevent(e); drop.classList.add("is-dragover"); });
+      });
+      ["dragleave","drop"].forEach(ev=>{
+        drop.addEventListener(ev, (e)=>{ prevent(e); drop.classList.remove("is-dragover"); });
+      });
+      drop.addEventListener("drop", (e)=>handleDropFiles(e.dataTransfer.files));
+
+      drop.addEventListener("click", pickFile);
+      drop.addEventListener("keydown", (e)=>{ if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pickFile(); }});
+
+      fileInput.addEventListener("change", ()=>handleDropFiles(fileInput.files));
+
+      quality.addEventListener("input", ()=>{
+        qualityVal.textContent = String(quality.value);
+      });
+      formatEl.addEventListener("change", showQualityIfNeeded);
+      showQualityIfNeeded();
+
+      function autoSyncDims(changed){
+        if (!srcImg) return;
+        if (!keepAspect.checked) return;
+
+        const sw = srcImg.naturalWidth;
+        const sh = srcImg.naturalHeight;
+
+        const w = parsePx(wEl.value);
+        const h = parsePx(hEl.value);
+
+        if (changed === "w" && w){
+          const nh = Math.max(1, Math.round(w * (sh / sw)));
+          hEl.value = String(nh);
+        }else if (changed === "h" && h){
+          const nw = Math.max(1, Math.round(h * (sw / sh)));
+          wEl.value = String(nw);
+        }
+      }
+
+      wEl.addEventListener("input", ()=>{ if (lockToWidth.checked) { autoSyncDims("w"); }});
+      hEl.addEventListener("input", ()=>{ if (!lockToWidth.checked) { autoSyncDims("h"); }});
+      keepAspect.addEventListener("change", ()=>{
+        if (keepAspect.checked){
+          autoSyncDims(lockToWidth.checked ? "w" : "h");
+        }
+      });
+
+      function resize(){
+        if (!srcImg){
+          setStatus("Drop an image first.", "bad");
+          return;
+        }
+        const sw = srcImg.naturalWidth;
+        const sh = srcImg.naturalHeight;
+
+        let w = parsePx(wEl.value);
+        let h = parsePx(hEl.value);
+
+        if (!w && !h){
+          w = sw; h = sh;
+        }else if (!w && h){
+          w = Math.max(1, Math.round(h * (sw / sh)));
+        }else if (!h && w){
+          h = Math.max(1, Math.round(w * (sh / sw)));
+        }else if (keepAspect.checked){
+          // adjust based on the larger scale change
+          const wr = w / sw;
+          const hr = h / sh;
+          if (wr < hr){
+            h = Math.max(1, Math.round(w * (sh / sw)));
+          }else{
+            w = Math.max(1, Math.round(h * (sw / sh)));
+          }
+        }
+
+        setStatus("Resizing…", "");
+        const canvas = document.createElement("canvas");
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext("2d", { alpha: true });
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "high";
+        ctx.drawImage(srcImg, 0, 0, w, h);
+
+        const type = formatEl.value;
+        const q = Number(quality.value);
+
+        canvas.toBlob((blob)=>{
+          if (!blob){
+            setStatus("Failed to export image.", "bad");
+            return;
+          }
+          outBlob = blob;
+          outW = w;
+          outH = h;
+
+          const url = URL.createObjectURL(blob);
+          outImg.src = url;
+          outImg.style.display = "";
+          setOutputInfo(blob, w, h);
+          setButtonsEnabled(true);
+          setStatus("Done. Preview updated.", "ok");
+        }, type, (type === "image/jpeg" || type === "image/webp") ? q : undefined);
+      }
+
+      function download(){
+        if (!outBlob) return;
+        const type = outBlob.type || "image/png";
+        const ext = type === "image/jpeg" ? "jpg" : (type === "image/webp" ? "webp" : "png");
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(outBlob);
+        a.download = `image-resized-${outW}x${outH}.${ext}`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setStatus("Downloaded.", "ok");
+      }
+
+      function clearAll(){
+        srcImg = null;
+        fileInput.value = "";
+        origImg.style.display = "none";
+        origImg.src = "";
+        origInfo.textContent = "—";
+        wEl.value = "";
+        hEl.value = "";
+        resetOutput();
+        setStatus("Cleared.", "");
+      }
+
+      copyDimsBtn.addEventListener("click", async ()=>{
+        if (!outW || !outH) return;
+        const txt = `${outW}x${outH}`;
+        try { await navigator.clipboard.writeText(txt); setStatus("Copied size.", "ok"); }
+        catch{
+          const t = document.createElement("textarea");
+          t.value = txt;
+          document.body.appendChild(t);
+          t.select();
+          document.execCommand("copy");
+          t.remove();
+          setStatus("Copied size.", "ok");
+        }
+      });
+
+      resizeBtn.addEventListener("click", resize);
+      clearBtn.addEventListener("click", clearAll);
+      downloadBtn.addEventListener("click", download);
+    });
+  </script>
+</body>
+</html>
